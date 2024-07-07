@@ -1,0 +1,22 @@
+# Parte 1: Don't Repeat Yourself
+
+O primeiro conceito que vamos abordar é *Don't Repeat Yourself* (não te repitas!). Só por evitarmos repetições, já estamos a implementar as melhores práticas para tornar os nossos pipelines reprodutíveis.
+
+## Introdução
+
+Nesta primeira parte, vamo-nos focar nos ingredientes principais da reproducibilidade. E por ingredientes principais referimo-nos às ferramentas indispensáveis na nossa caixa de ferramentas que devemos de ter antes de tentarmos sequer fazer um projecto reprodutível. Estas ferramentas são tão importantes que lhes didicaremos uma grande parte deste livro:
+
++ Controlo de versões;
++ Programação funcional;
++ Programação letrada.
+
+Mesmo que já estejamos familiarizados com estes tópicos e mesmo que os utilizamos no nosso dia-a-dia, vale a pena espreitarmos para esta Parte 1 do livro antes de abordarmos a Parte 2. Na segunda parte o focus recairá noutro conjunto de ferramentas que permitem criar os RAP.
+
+Ou seja, nesta primeira parte não vamos a aprender a construir RAPs mas n ão podemos saltar para a criação de RAPs antes de comprendermos os conceitos supracitados.
+
+Vamos começar por analisar alguns con juntos de dados. Fazer o *download*, limpar os dados e fazer alguns gráficos. Isto será feito em dois *scripts*, escritos duma forma comum sem "engenharia de software", para assim replicarmos a forma como analistas de dados, cientistas de dados ou investigadores, que não têm qualquer tipo de form ação em ciência de computação, fazem este tipo de análises. Ou seja, estes programadores têm como objectivo principal a entraga rápida de resultados, sem olhar a meios. 
+
+Poderemos então mostrar que adotando algumas ideias simples da engebnharia de *software*, podemos obter resultados tão rápidos quanto antes mas duma forma mais con sistente e robusta.
+
+
+

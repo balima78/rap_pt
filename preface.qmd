@@ -1,0 +1,51 @@
+# Prefácio {.unnumbered}
+
+Este livro é uma tradução livre de [Building reproducible analytical pipelines with R](https://raps-with-r.dev/). O autor do livro original,  [Bruno Rodrigues](https://www.brodrigues.co/about/me/), tem uma vasto trabalho desenvolvido na área da programação estatística e para nosso deleite tem o bom hábito de partilhar algum do seu trabalho, quer seja através [do seu blog](https://www.brodrigues.co/),  [do seu X](https://twitter.com/brodriguesco), [do seu canal de youtube](https://www.youtube.com/user/cbrunos) ou [do seu Github](https://github.com/b-rodrigues). Depois de nos disponibilizar o *ebook* [Modern R with the tidyverse](https://modern-rstats.eu/), fomos agora presenteados com [Building reproducible analytical pipelines with R](https://www.brodrigues.co/about/me/) que mostra uma abordagem pragmática de bem programar em estatística. 
+
+O Bruno Rodrigues apresenta-se como *lusoburguês*, ou seja, é um luxemburguês descendente de portugueses. Também por isto, espero que esta tradução possa também ser vista como uma singela homenagem a tudo o que o Bruno Rodrigues nos tem oferecido. 
+
+De um ponto de vista mais pessoal, trabalho em estatísca há quase de 25 anos e com R há cerca de uma dúzia de anos, ainda assim encontrei neste livro [Building reproducible analytical pipelines with R](https://www.brodrigues.co/about/me/) o meu guia de trabalho e o meu manual de boas práticas. E que melhor forma de estudar este livro do que fazer uma tradução para português?
+
+Muitos de nós que trabalhmos com dados não temos bases de engenharia de *software*. A nossa form ação assenta na teoria de probabilidade, algebra linear, algoritmos, alguma programação mas não em engenharia de *software*. Embora os estatísticos, cientistas de dados (ou como nos queiram chamar atualmente) não sejam engenheiros de *software* têm de escrever muito código e código muito relevante. No entanto, muitos de nós escrevemos sem regras.
+
+Por exemplo, quanto do nosso código que produz resultados altamente sensíveis, seja na ciência ou na industria, é devidamente testado? Quanto do código que usamos depende duma só pessoa aparecer no trabalho e que usa um conhecimento *secreto* que não está documentado? Quanto do código que corremos ninguém se atreve a mexer porque a pessoa que o escreveu originalmente arranjou melhores coisas que fazer?
+
+Em colaborações com colegas de equipa para produzir um relatório ou um artigo científico consideramos os riscos potencias?
+
+Somos capazes de dizer *exactamente*, como um número de um relatório usado por um superior foi produzido? E se houver uma auditoria externa? Serão os aujditores capazes de executar o nosso código sem a nossa intervenção?  
+
+Quando trabalhamos em ciência o nosso trabalho é auditado, ou pelo menos, em teoria, deveria sê-lo. As ideias de *open science*, *open data* e reproducibilidade são geralmente bem aceites na comunidade científica, no entanto, na prática, quantos artigos são de facto reprodutíveis? Quantos resultados científicos são auditáveis e rastreáveis?
+
+O conceito de Pipelines de Análise Reprodutíveis (originalmente, *Reproducible Analytical Pipelines*) foi desenvolvido pelo [*Office for National Statistics*](https://analysisfunction.civilservice.gov.uk/support/reproducible-analytical-pipelines/) (ONS). Em 2019, a equipa do ONS responsável pela divulgação deste conceito publicou um [*ebook* gratuito](https://ukgovdatascience.github.io/rap_companion/). Deve-se também salientar o trabalho de [*Software Carpentery*](https://software-carpentry.org/), onde encontramos muitas bases que podem ser aplicadas na programação estística.
+
+Resumidamente, aqui podemos encontrar algumas ideias, que embora não sejam novas podem ser do interesse de quem usa o ambiente de programação em R.
+
+Este livro divide-se em duas partes. A primeira apresenta o conhecimento básico que devemos adquirir para criar pipelines verdadeiramente reprodutíveis, nomeadamente:
+
++ Controlo de versões com o Git e gestão de projectos com o Github;
++ Programação funcional;
++ Programação letrada.
+
+O principal conceito da Parte 1 é "não te repitas" (*"don't repeat yourself"*). O Git e o Github podem-nos ajudar a não perdermos código, nem a perdermos o controlo de quem deve fazer o quê num projecto (mesmo se trabalharmos sozinhos, a utilização do Git e do Github podem-nos econonmizar muitas horas e muitas dores de cabeça). A programação funcional e a programação letrada podem ajudar-nos a melhorar o nosso código evitando duas fontes de erros muito habituais: resultados de computação que dependem do estado do noso programa (e também do estado de todo o hardware que estamos a usar) e os erros de copiar e colar.  
+
+Na segunda parte deste livro utilizaremos os conhecimentos anteriores na utilização de várias ferramentas qua nos ajudarão a ir para lá do controlo de versões e da programa ção funcional e letrada: 
+
++ Gestão de dependencias com `{renv}`;
++ Desenvolvimento de pacotes com `{fusen}`;
++ Testes unitários e de integração;
++ Criação de automação com `{targets}`;
++ Ambientes reprodutíveis com Docker;
++ Integração contínua e entrega.
+
+Embora este não seja um livro para iniciantes (precisamos estar familiarizados com o ambiente de programação R), não assumiremos que temos um conhecimento prévio das ferramentas apresentadas na Parte 2. Na verdade, mesmo que já estejamos familiarizados com Git, Github, programação funcional e letrada, podemos sempre apren der mais alguma coisa com na Parte 1. Mas fica já o aviso, se queremos tirar proveito deste livro vamos ter de escrever muito código.
+
+Mais uma vez quero reforçar que esta é uma tradução livre do exelente trabalho que foi desenvolvido pelo [Bruno Rodrigues](https://www.brodrigues.co/about/me/) e não pretende ser uma alternativa ao [original](https://raps-with-r.dev/). 
+
+
+```{r, echo = F, out.width="250px"}
+#| fig-cap: "Capa do livro original"
+knitr::include_graphics("IMG/cover_rap4all.png")
+```
+
+Muito pelo contrário, espero que este livro, pelo menos, sirva de incentivo para desbravar [Building reproducible analytical pipelines with R](https://leanpub.com/raps-with-r).
+

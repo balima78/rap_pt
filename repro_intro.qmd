@@ -1,0 +1,372 @@
+# Reproducibilidade básica: congelar pacotes
+
+Nesta fase já temos a nossa análise feita. Converter os nossos *scripts* em Rmd foi fácil de justificar, uma vez que ao escrevermos os Rmd já estamos a escrever o relatório que temos de entregar (ou o artigo, ou etc.). Mas é mais díficil de justificar a necessidade de escrever mais documentação ou passar para um pacote as funções que já fizemos para que sejam reutilizáveis no futuro ou para garantirmos que a nossa análise é e permanece reprodutível. Vamos então pela solução mais simples e mais eficiente para o problema da reproducibilidade, ou seja, vamos guardar as versões dos pacotes que já usamos. Isto é muito fácil e rápido de fazer e dá-nos alguma esperança de que a nossa análise permaneça reprodutível. Mas infelizmente, com isto não faremos que a nossa análise seja mais facilmente reutilizável, não vamos melhorar a documentação, nem garantir que o que já escrevemos está correcto. Para isto, teremos de escrever os testes que nos faltam na nossa análise. Se optarmos por fazer um pacote temos uma *framework* para a documentação, para os testes e para a partilha de código (mesmo que a partilha seja apenas interna ou apenas para nós próprios). Assim, para tirarmos partido dos benefícios de criarmos um pacote, utilizaremos o `{fusen}` no próximo capítulo. O `{fusen}` permitir-nos-á converter os nossos ficheiros Rmd num pacote rapidamente; a nossa análise já está muito perto de se tornar num pacote.   
+
+Não é recomendável que paremos neste ponto, mas a verdade é que vivemos no mundo real e temos limitações físicas. E porque vivemos num mundo imperfeito, às vezes temos de entregar trabalho imperfeito. Vejamos o que podemos fazer por um baixo custo de tempo e esforço mas que ainda assim nos permite ter alguma esperança de que a nossa análise seja reprodutível, tudo graças ao pacote `{renv}`. Com o `{renv}` apenas temos de o instalar e usar um comando para pedirmos um registo dos pacotes usados e das suas versões. Este registo fica guardado num ficheiro que pode ser usado para restaurar a livraria deste projecto (uma livraria é um conjunto de pacotes R instalados), no futuro, e sem interferirmos com outros pacotes que já tenham sido instalados na nossa máquina. O `{renv}` cria uma livraria por projecto, o que significa que podemos ter tantas versões do `{dplyr}` como as que necessitarmos. A versão correcta do `{dplyr}` será instalada e usada apenas no projecto correcto, sem interferir com outras versões que tenhamos instaladas.
+
+## Gravar as versões dos pacotes com `{renv}`
+
+Agora que já usamos a programação funcional e letrada, temos de começar a pensar sobre a insfraestrutura que rodeia o nosso código. Ou seja:
+
++ a versão do R;
++ os pacotes usados para a análise;
++ e todo o ambiente computacional, incluindo o próprio *hardware*.
+
+O `{renv}` permite-nos criar ambientes reprodutíveis, tratando do segundo ponto. Isto é, permite-nos registar os pacotes que foram usados num determinado projecto. Este registo é um ficheiro designado `renv.lock` que aparece na raíz do nosso projecto quando executamos o `{renv}`. Podemos usar o `{renv}` depois de fazermos a análise (como neste caso), ou imediatamente depois de iniciarmos o nosso projecto. Podemos atualizar o `renv.lock` à medida que formos adicionando ou removendo pacotes à nossa análise. O ficheiro `renv.lock` pode ser usado para restaurar exatamente a mesma livraria de pacotes usada na nossa análise, noutro computador, ou no nosso, num futuro.
+
+Isto funciona porque o `{renv}` faz mais do que manter uma lista dos pacotes usados e das suas versões, no ficheiro `renv.lock`. Na verdade é criada uma livraria por projecto que fica completamente isolada da livraria principal do R que temos na nossa máquina, mas também de outras livrarias que possamos ter criado com o `{renv}`. Para nos poupar tempo, ao criamos a livraria `{renv}`, os pacotes são copiados da livraria principal em vez de serem baixados e re-instalados (se o pacote usado já está instalado na nossa livraria principal).
+
+Começamos então por instalar pacote `{renv}`:
+
+```{r, eval = F}
+install.packages("renv")
+```
+
+
+a partir da pasta onde temos os nossos ficheiros Rmd que fizemos no capítulo anterior:
+
+- `save_data.Rmd`, o *script* que faz o *download* e prepara os dados;
+- `analyse_data.Rmd`, o *script* que faz a análise dos dados.
+
+e depois de garantirmos que as últimas alterações já estão em Github (se não estiverem fazemos o *commit* e o *push* para o *branch* `rmd`), criamos um novo *branch* designado como `renv` porque vamos experimentar uma nova funcionalidade, ou seja:
+
+```bash
+owner@localhost ➤ git checkout -b renv
+```
+
+e agora trabalharemos neste novo *branch* como habitualmente, garantindo que antes de fazermos *push* estamos no *branch* `renv`:
+
+```bash
+owner@localhost ➤ git add .
+owner@localhost ➤ git commit -m "some changes"
+owner@localhost ➤ git push origin renv
+```
+
+Agora apenas temos de reiniciar a sessão do R e executar o comando:
+
+```{r, eval = F}
+renv::init()
+```
+
+deveremos ver qualquer coisa como:
+
+```{r, eval = F}
+* Initializing project ...
+* Discovering package dependencies ... Done!
+* Copying packages into the cache ... [76/76] Done!
+The following package(s) will be updated in the lockfile:
+
+# CRAN ===============================
+***and then a long list of packages***
+
+The version of R recorded in the lockfile will be updated:
+- R              [*] -> [4.2.2]
+
+* Lockfile written to 'path/to/housing/renv.lock'.
+* Project 'path/to/housing' loaded. [renv 0.16.0]
+* renv activated -- please restart the R session.
+```
+
+vamos espreitar os ficheiros que criamos:
+
+```bash
+owner@localhost ➤ ls -la
+```
+
+```bash
+total 1070
+drwxr-xr-x 1 owner Domain Users     0 Feb 27 12:44 .
+drwxr-xr-x 1 owner Domain Users     0 Feb 27 12:35 ..
+-rw-r--r-- 1 owner Domain Users    27 Feb 27 12:44 .Rprofile
+drwxr-xr-x 1 owner Domain Users     0 Feb 27 12:40 .git
+-rw-r--r-- 1 owner Domain Users   306 Feb 27 12:35 README.md
+-rw-r--r-- 1 owner Domain Users  2398 Feb 27 12:38 analyse_data.Rmd
+drwxr-xr-x 1 owner Domain Users     0 Feb 27 12:44 renv
+-rw-r--r-- 1 owner Domain Users 20502 Feb 27 12:44 renv.lock
+-rw-r--r-- 1 owner Domain Users  6378 Feb 27 12:38 save_data.Rmd
+```
+
+Como podemos ver, temos dois novos ficheiros e uma nova pasta. Os novos ficheiros são o já referido `renv.lock` e o `.Rprofile`. A nova pasta tem o nome `renv`. O `renv.lock` é o ficheiro que lista os pacotes usados na nossa análise. O ficheiro `.Rprofile` tem os ficheiros que são lidos pelo R automaticamente no arranque. Devemos ter um ficheiro de sistema que é lido pelo R no arranque, mas se o R detecta um ficheiro `.Rprofile` na directoria em que é iniciado, então é este ficheiro que é lido. Vejamos o conteúdo deste ficheiro.  
+
+```bash
+owner@localhost ➤ cat .Rprofile
+```
+
+O ficheiro tem apenas uma linha:
+
+```r
+source("renv/activate.R")
+```
+O *script* `activate.R` na pasta `renv` foi criado pelo `renv::init()`. Vejamos todo o conteúdo desta pasta:
+
+```bash
+owner@localhost ➤ ls -la renv
+```
+
+```bash
+total 107
+drwxr-xr-x 1 owner Domain Users     0 Feb 27 12:44 .
+drwxr-xr-x 1 owner Domain Users     0 Feb 27 12:35 ..
+-rw-r--r-- 1 owner Domain Users    27 Feb 27 12:44 activate.R
+drwxr-xr-x 1 owner Domain Users     0 Feb 27 12:40 .gitignore
+drwxr-xr-x 1 owner Domain Users     0 Feb 27 12:40 library
+-rw-r--r-- 1 owner Domain Users  6378 Feb 27 12:38 settings.dcf
+```
+
+Na pasta `renv`, temos outra pasta `library`: esta é a pasta que tem a livraria isolada para o nosso projecto. Não queremos fazer backup a esta pasta, nem a queremos passar para o Github, pois tende a crescer muito rapidamente. Podemos ver também que temos o ficheiro `.gitignore` que contém caminhos para outros ficheiros e pastas às quais não queremos fazer backup  e que devem ser ignorados pelo Git. Se abrirmos o `.gitignore` podemos ver que temos lá a pasta `library/` listada para ser ignorada. Podemos ter tantos ficheiros `.gitignore` quantos quiseremos mas se tivermos um na raíz do projecto este é aplicado a todo o projecto.
+
+Por exemplo, se estivermos a trabalhar com dados sensíveis, podemos criar um ficheiro `.gitignore` no directório do nosso projecto e listar a pasta que tem os dados sensíveis. Podemos criar este ficheiro com um simples editor de texto e para este exemplo apenas escrevemos:
+
+```bash
+datasets/
+```
+Assim, garantimos que o conteúdo desta pasta será ignorado pelo Git e não passará para o Github. 
+
+Vamos reiniciar uma nova sessão do R, no directório do nosso projecto; deveremos ver a seguinte mensagem de início:
+
+```{r, eval = F}
+* Project 'path/to/housing' loaded. [renv 0.16.0]
+```
+
+Isto significa que esta sessão do R usará os pacotes instalados na livraria isolada que acabamos de criar. Vejamos o ficheiro `renv.lock`:
+
+```bash
+owner@localhost ➤ cat renv.lock
+```
+
+```json
+{
+"R": {
+  "Version": "4.2.2",
+  "Repositories": [
+  {
+   "Name": "CRAN",
+   "URL": "https://packagemanager.rstudio.com/ all/latest"
+  }
+  ]
+},
+"Packages": {
+  "MASS": {
+    "Package": "MASS",
+    "Version": "7.3-58.1",
+    "Source": "Repository",
+    "Repository": "CRAN",
+    "Hash": "762e1804143a332333c054759f89a706",
+    "Requirements": []
+  },
+  "Matrix": {
+    "Package": "Matrix",
+    "Version": "1.5-1",
+    "Source": "Repository",
+    "Repository": "CRAN",
+    "Hash": "539dc0c0c05636812f1080f473d2c177",
+    "Requirements": [
+      "lattice"
+    ]
+
+    ***and many more packages***
+```
+
+O `renv.lock` é um ficheiro JSON que lista todos os pacotes, bem como as suas dependências, usados neste projecto. No início do ficheiro está a versão R usada para gerar este `renv.lock`. É importante relembrar que quando usamos o `{renv}` para recuperar uma livraria dum projecto numa nova máquina, a versão do R não será restaurada. Ou seja, no futuro poderemos restaurar este projecto com versões antigas de pacotes que usaremos numa versão mais nova do R, o que pode gerarn problemas.
+
+E é isto... Geramos um ficheiro `renv.lock` o que significa que nós no futuro ou outra pessoa poderá usar a livraria que usamos neste projecto. Para isto apenas é necessário que a outra pessoa (ou nós no futuro) instale o `{renv}` e use o ficheiro `renv.lock` que criamos, para restaurar a livraria. Vejamos como é que isto funciona, clonando o repositório Github deste [*link*](https://is.gd/jMVfCu) (que por sua vez é um *fork* [daqui](https://github.com/wlandau/targets-minimal)^[https://is.gd/AAnByB]))
+
+```bash
+owner@localhost ➤ git clone git@github.com:b-rodrigues/targets-minimal.git
+```
+Deveremos ver a pasta `tagets-minimal` no nosso computador e depois de iniciarmos uma sessão do R nesta pasta, temos de executar o comando:
+
+```{r, eval = F}
+renv::restore()
+```
+
+Somos então questionados sobre a activação deste projecto:
+
+```{r, eval = F}
+This project has not yet been activated.
+Activating this project will ensure the project library
+is used during restore.
+Please see `?renv::activate` for more details.
+
+Would you like to activate this project before restore? [Y/n]: 
+```
+
+teclamos em `Y` e deveremos ver a lista de pacotes que precisam de ser instalados. Seremos questionados mais uma vez se queremos continuar e teclando `y` poderemos ver os pacotes a serem instalados. Se repararmos nos *links*, veremos que muitos são baixados do arquivo do CRAN, por exemplo:
+
+```r
+Retrieving 'https://cloud.r-project.org/src/contrib/Archive /vroom/vroom_1.5.5.tar.gz'
+```
+
+Podemos ver a palavra *Archive* no *url*. Isto acontece porque a versão usada do `{vroom}` neste projecto não é a mais recente.
+
+Ainda assim, há a possibilidade de fazermos `renv::restore()` e a instalação dos pacotes falhar. Vejamos o exemplo em que tentamos restaurar uma livraria em dois computadores diferentes, um Windows e um Linux. No primeiro caso o `renv::restore()` falhou e no segundo foi bem sucedido. Isto aconteceu porque a compilação do pacote `{dplyr}` falhou no caso do Windows provavelmente por não ter a versão correcta do Rtools instalada. Ou seja, se no ficheiro `renv.lock` estiver registado a versão 4.1.0 do R mas depois quisermos restaurar a livraria num computador com a versão 4.2.2, os pacotes serão compilados com o Rtools 4.2 e não com o Rtools 4.0 (que também compila livrarias para o R 4.1). Assim, neste caso para não termos problemas em restaurar a livraria no novo Windows teriamos de instalar primeiro as versões correctas do R e do Rtools.
+
+Isto não quer dizer que o `{renv}` é inútil, pelo menos serve para garantir que atualizações de livrarias não interferem nos nossos projectos anteriores. Ou seja, podemos trabalhar em vários projectos simultaneamente e termos a certeza de que se atualizamos a nossa livraria (por exemplo para podermos usar uma nova função de um determinado pacote), isto só afecatará a livraria em que este pacote foi atualizado e não as outras livrarias dos outros projectos. Quando trabalhamos apenas com uma livraria para todo o sistema, a atualização de um pacote pode fazer falhas noutros projectos, quer seja porque atualizamos também outro pacote inadevertidamente ou porque uma qualquer função que também foi atualizada neste processo mudou de nome ou passou a usar parametros diferentes. Podemos evitar este tipo de problemas se usarmos sempre uma livraria por projecto com o `{renv}`.
+
+Para além desta característica, o ficheiro `renv.lock` também fornece uma impressão digital muito útil para o Docker e que abordaremos num próximo capítulo. Resumidamente, como o `renv.lock` regista a versão do R utilizado, podemos logo começar com uma imagem Docker que contenha a versão correcta do R e a partir daqui já não deveremos ter problemas ao fazermos o `renv::restore()`.
+
+Podemos então usar o `{renv}` em duas situações:
+
++ Concluimos o nosso projecto e apenas queremos registar os pacotes usados. Basta então executar `renv::init()` no final do projecto, fazemos *commit* e o *push* do ficheiro `renv.lock` para o Github.
++ Usamos o `{renv}` logo ao iniciarmos o nosso projecto para assim isolarmos uma livraria para o projecto e evitarmos interferências de outras livrarias do R.
+
+### Uso corrente do `{renv}`
+
+No caso de querermos usar o `{renv}` logo quando iniciamos um novo projecto, podemos seguir este exemplo. Começamos numa nova directoria e adicionamos um template `.Rmd` como este:
+
+````{verbatim}
+---
+title: "My new project"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(dplyr)
+``
+
+## Overview
+
+## Analysis
+````
+
+Antes de continuarmos, verificamos que compila num ficheiro HTML, na nossa directoria, executando:
+
+```{r}
+#| eval: false
+
+rmarkdown::render("test.Rmd")
+```
+
+No *chunk* de `setup` definimos os pacotes que vamos usar e depois de reiniciarmos a sessão do R na mesma directoria podemos executar `renv::init()`. Devemos a gora ver as questões que já referias em cima e por fim um ficheiro `renv.lock` (com o pacote `{dplyr}` e as suas dependências).
+
+Agora se adicionarmos a linha `libraray(ggplot2)` ao *chunk* de `setup` gravarmos o nosso `.Rmd` e voltarmos a compilar `rmarkdown::render("test.Rmd)` vamos ter a seguinte mensagem de erro: 
+
+```r
+Quitting from lines 7-9 (my_new_project.Rmd)
+Error in library(ggplot2) : there is no package called 'ggplot2'
+```
+
+Uma vez que temos o `{renv}` ativado e consequentemente temos uma livraria específica para este projecto temos de instalar o pacote `{ggplot2}` antes de o usarmos (ainda que já possa estar instalado na livraria do nosso sistema). Para o instalarmos apenas temos de reiniciar a sessão do R e executamos `install.packages("ggplot2")`. Se a versão disponível na livraria do nosso sistema for a mais actual então apenas será copiada para a livraria do nosso projecto, caso contrário será instalada a versão mais actual que estiver no CRAN. Podemos agora atualizar o ficheiro `renv.lock` com o comando `renv::snapshot()`. Lista dos pacotes a serem registados no `renv.lock`:
+
+```{r, eval = F}
+**list of many packages over here**
+
+Do you want to proceed? [y/N]: 
+* Lockfile written to 'path/to/my_new_project/renv.lock'.
+```
+
+Se abrirmos o ficheiro `renv.lock` e procurarmos por `"ggplot2"` veremos esta pacote listado junto com as suas dependências. Esta versão do `{ggplot2}` é única para o nosso projecto, podemos usar outras versões do `{ggplot2}` em outros projectos sem que tenham interferência neste. Se por qualuer motivo não quisermos usar a versão mais recente de um qualquer pacote no nosso projecto podemos instalar uma outra versão, ainda graças ao `{renv}`. Por exemplo, para instalarmos uma versão antiga do `{AER}`, apenas temos de executar: 
+
+```{r, eval = F}
+renv::install("AER@1.0-0") # this is a version from August 2008
+```
+
+Ainda assim a instalação de versões antigas de pacotes pode dar erros  e veremos em próximos capítulos como contornar estes potenciais erros.
+
+
+Sempre que instalamos mais pacotes necessários para o nosso projecto, temos de executar `renv::snapshot()`, para adicionarmos estes pacotes ao `renv.lock`. No final do nosso projecto devemos sempre executar `renv::snapshot()` para garantirmos que não nos esquecemos de nenhum pacote. Depois é só fazer o devido *commit* e o *push* para termos o *backup* do ficheiro `renv.lock`.
+
+### Colaborar com o `{renv}`
+
+O `{renv}` tabém pode ser muito útil em trabalho colaborativo. Ao iniciarmos o projecto geramos o ficheiro `renv.lock` e quando o projecto for clonado por outros colaboradores já terá as versões correctas dos pacotes a serem usados. No entanto todos os colaboradores devem garantir que trabalham com a mesma versão do R para evitarem problemas de maior. Fica [aqui](https://rstudio.github.io/renv/articles/collaborating.html) uma vinheta que explica isto mesmo.  
+
+### Atalhos do `{renv}`
+
+Por muito útil que seja o `{renv}` há sempre alguns atalhos que importa sublinhar. Devemos perceber o que o `{renv}` faz e também o que não faz. E porque é que o `{renv}` apenas não é suficiente para garantirmos a reproducibilidade do nosso projecto.
+
+O primeiro problema (como já referimos) reside no facto do `renv.lock` apenas registar a versão do R que é usada e não a restaura quando usamos o `renv::restore()`. Temos que ser nós próprios a instalarmos a versão correcta do R. No Windows isto não é difícil, o problema é quando temos a necessidade de usar versões diferentes do R em projectos diferentes, o que pode ser confuso.
+
+O pacote `{rig}` pode facilitar  a instalação e a troca entre versões do R tal como descrito [aqui](https://github.com/r-lib/rig)^[https://is.gd/dvH2Sj]. Mas a forma mais segura deverá ser o Docker que abordaremos mais à frente.
+
+Outro problema do `{renv}` é que a instalção de versões antigas de pacotes pode ser problemática. Por exemplo, se precisarmos de especificidades do sistema que nos estejam limitadas por falta de permissões de administrador, para instalarmos versões mais antigas, pomos em causa a reproducibilidade do nosso projecto. Mais uma vez o Docker pode resolver este problema. No futuro apenas precisariamos de correr um contentor Docker que é muito mais simples do que instalar algumas versões antigas de pacotes.
+
+Registemos também que no desenvolvimento do nosso projecto podemos ter a necessidade de atualizarmos alguns pacotes para melhorarmos a qualidade dos nossos *scripts*. Podemos fazer isto com `update.packages()` e depois com `renv::snapshot()` para gerarmos um novo ficheiro `renv.lock`. Mas como podemos ter a certeza que estas atualizações não deitam a perder outras partes do nosso código? Transformar a nossa análise num pacote pode ajudar-nos a garantir que não temos quebras pois será mais fácil de definirmos testes para o nosso código. Se os testes indicarem que algo correu mal, apenas temos de recuperar o ficheiro `renv.lock` anterior com a ajuda do Git e voltamos a restaurar a livraria antiga.
+
+Podemos usar o `{renv}` junto com o Docker para garantirmos a reproducilbilidade do nosso projecto, sendo que o ficheiro `renv.lock` nos dá a impressão digital para construirmos a imagem Docker para uma reproducibilidade a longo prazo.
+
+Mas e se não tivermos um ficheiro `renv.lock`, como podemos executar uma análise antiga?
+
+## O aRqueologista
+
+Imaginemos que temos de executar um *script* antigo para o qual não temos um ficheiro `renv.lock` que nos permita saber que versões de R e dos pacotes temos de instalar. Ainda assim pode haver uma solução (que não seja executar tudo e rezar para que não dê erros) mas temos de saber pelo menos em que altura é que o *script* foi escrito. Digamos que o *script* foi escrito em 2017, por volta de outubro. Com esta informação, podemos usar os pacotes `{rang}` ou `{groundhog}` para fazermos o *download* dos pacotes de outubro de 2017 para uma livraria em separado e depois correremos o *script*.  
+
+A utilização do `{rang}` está documentada num [prepint](https://arxiv.org/abs/2303.04758)^[https://arxiv.org/abs/2303.04758] [@schoch2023] e no [seu repositório](https://github.com/chainsawriot/rang)^[https://is.gd/sQu7NV] no Github.
+
+A outra opção é usar o `{groundhog}` ([website](https://groundhogr.com)^[https://groundhogr.com]). Esta opção já não é nova e é de fácil utilização. Suponhamos que temos um *script* de outubro de 2017 como este:
+
+```{r, eval = F}
+library(purrr)
+library(ggplot2)
+
+data(mtcars)
+
+myplot <- ggplot(mtcars) +
+  geom_line(aes(y = hp, x = mpg))
+
+ggsave("/home/project/output/myplot.pdf", myplot)
+```
+
+Se quisermos executar este *script* com versões do `{purrr}` e `{ggplot2}`
+que eram atuais em outubro de 2017, podemos fazê-lo apenas alterando `library()` por:
+
+```{r, eval = F}
+groundhog::groundhog.library("
+    library(purrr)
+    library(ggplot2)",
+    "2017-10-04"
+    )
+
+data(mtcars)
+
+myplot <- ggplot(mtcars) +
+  geom_line(aes(y = hp, x = mpg))
+
+ggsave("/home/project/output/myplot.pdf", myplot)
+```
+
+mas vamos ter a seguinte mensagem:
+
+```r
+-----------------------------------------------
+|IMPORTANT.
+|    Groundhog says: you are using R-4.2.2, but the version of R current
+|    for the entered date, '2017-10-04', is R-3.4.x. It is recommended
+|    that you either keep this date and switch to that version of R, or
+|    you keep the version of R you are using but switch the date to
+|    between '2022-04-22' and '2023-01-08'.
+|
+|    You may bypass this R-version check by adding:
+|    `tolerate.R.version='4.2.2'`as an option in your groundhog.library()
+|    call. Please type 'OK' to confirm you have read this message.
+|   >ok
+```
+O `{grounghog}` sugere-nos que devemos mudar para a versão do R que era usada na altura que o *script* foi escrito. Se quisermos ignorar a mensagem de aviso, podemos adicionar o parâmetro `tolerate.R.version = '4.2.2'`, e talvez consigamos que o *script* corra na mesma:
+
+```{r, eval = F}
+groundhog.library("
+    library(purrr)
+    library(ggplot2)",
+    "2017-10-04",
+    tolerate.R.version = "4.2.2")
+
+data(mtcars)
+
+myplot <- ggplot(mtcars) +
+  geom_line(aes(y = hp, x = mpg))
+
+ggsave("/home/project/output/myplot.pdf", myplot)
+```
+
+Mas tal como o `{renv}`, com o `{rang}` a instalação dos pacotes pode falhar e pelas mesmas razões já referidas.
+
+De novo, a solução é tratarmos da peça no *puzzle* da reproducibilidade que é o próprio ambiente computacional.
+
+## Conclusão
+
+Neste capítulo tivemos a primeira amostra da reproducibilidade. As ferramentas aqui apresentadas, embora sejam muito úteis, não são suficientes se quisermos o nosso projecto verdadeiramente reprodutível, especialmente a longo prazo. Há muitas coisas que podem correr mal quando pretendemos instalar versões antigas de pacotes, pelo que temos de arranjar maneiras de não o fazermos. É aqui que o Docker pode ser útil. Mas antes disso temos de voltar ao nosso projecto e transformar a nossa análise num pacote. E como poderemos ver, isto será fácil, uma vez que já temos 95% do trabalho feito. 
+
+
+
+
+
+

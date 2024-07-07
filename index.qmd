@@ -1,0 +1,26 @@
+# Bem-vindo! {.unnumbered}
+
+## Como ajudar cientistas de dados, analistas e investigadores a escrever código fiável com a ajuda de algumas ideias da engenharia de *software*.
+
+```{r, include = FALSE}
+library(formatR)
+knitr::opts_chunk$set(tidy.opts = list(width.cutoff = 60), tidy = TRUE)
+```
+
+![](IMG/cover.jpg)
+
+Cientistas de dados, estatísticos, analistas, investigadores e profissionais similares escrevem *muito código*.
+
+Não só escrevem muito código como têm também de ler e rever código. Ou trabalham em equipas e precisam de rever código uns dos outros ou então precisam de reproduzir resultados de projectos antigos, seja no contexto de revisão por pares, seja em auditorias. No entanto, nunca, ou muito raramente, aprenderam técnicas e ferramentas que facilitam o processo de escrita, colaboração, revisão e reprodução de projectos. 
+
+O que é de lamentar, pois os engenheiros de *software* enfrentam o mesmo tipo de desafios e já foram capazes de resolver este problema há várias décadas.
+
+O objectivo deste livro é o de mostrar algumas das melhores práticas da engenharia de *software* e DevOps para tornar os nosso projectos mais robustos, fiáveis e reprodutíveis. Não importa se trabalhamos sozinhos, em equipas pequenas ou grandes. Não importa se o nosso trabalho vai ser revisto por pares ou auditado: as técnicas que aqui serão apresentadas tornarão os nossos projectos mais fiáveis e poupar-nos-ão a muitas frustações.   
+
+Enquanto analistas de dados, somos tentados a pensar que não somos desenvolvedores de código. Os desenvolvedores são aqueles génios que escrevem código de alta qualidade e criam aqueles pacotes de grande utilidade. Mas na verdade, nós também fazemos desenvolvimento de código. A diferença é que o nosso focus reside em escrever código para as nossas análises funcionarem e não para outras pessoas. Pelo menos, esta é a nossa ideia. Nas *outras pessoas* devemos incluir os nossos colegas de equipa, revisores, auditores, chefias... Todas as pessoas que possam vir a ler o nosso código devem ser incluídas. No mínimo, nós próprios voltaremos a ler o nosso código no futuro. 
+
+Ao aprendermos a desenhar projectos e a escrever código de uma forma que futuros usuários possam entender o que foi feito e não nos queiram assassinar, estamos a melhorar a qualidade do nosso trafbalho duma forma natural.
+
+
+A abertura de *issues*, *PRs* ou outras questões podem ser feitas no repositório deste livro: 
+[Github repository](https://github.com/balima78/rap_pt)^[https://github.com/balima78/rap_pt].

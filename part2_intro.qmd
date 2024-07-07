@@ -1,0 +1,52 @@
+# Parte 2: Write IT Down
+
+Nesta parte do livro vamo-nos focar na segunda ideia principal: *Write IT Down* (passa a escrito!). Temos de reconhecer que os nossos cérebros são falíveis (e estão a ficar mais velhos), e portanto, precisamos de escrever muitas salvaguardas para garantir que as nossas análise são de alta qualidade.
+
+Não podemos deixar a qualidade do código, a documentaçã e, finalmente, a reproducibilidade ao acaso. Precisamos de escrever tudo o que precisamos para garantir a reproducibilidade a lon go prazo dos nossos pipelines.
+
+## O iceberg da reproducibilidade
+
+vamos refletir um pouco sobre a primeira parte do livro e porque é que ainda não falamos de nada directamente relacionado com a reproducibilidade.
+
+Na introdução falamos sobre o continuum ou o espectro da reproducibilidade e agora vamos detalhar este conceito. Chamemos-lhe o iceberg da reproducibilidade:
+
+
+```{r, echo = F}
+#| fig-cap: "O iceberg da reproducibilidade."
+knitr::include_graphics("IMG/repro_iceberg.png")
+```
+
+
+Porquê iceberg? Porque as partes do iceberg que vemos, são óbvias, são como executarmos as nossas análises num ambiente baseado em cliques, como o Excel. Isto é, não é necessário nenhum conhecimento especial mnem mesmo nenhuma formação específica. Apenas precisamos de tempo, pelo que quem usa estas ferramentas não .é eficiente e portanto tendem a compensar com muitas horas de trabalho.  
+
+Vamos um nível mais abaixo e escrever um guião. Foi aqui que começamos. O nosso *script* nem é assim tão mau, fazia o que pretendíamos. Ao contrário do fluxo de trabalho baseado em cliques, pelo menos podemos relê-lo, outras pessoas podem lê-lo, e até seria possível executá-lo no futuro, ainda que com algum esforço e com um pouco de sorte. Para que este script possa se executado no futuro com êxito, não pode depender de pacotes com atualizações que ponham em causa o código (por exemplo, funções que são renomeadas). Além disso, se esse *script* depender de uma fonte de dados, os autores originais também terão de garantir que a mesma fonte de dados continua disponível. Outro problema são as colaborações ao escrever esse *script.* Sem nenhuma ferramenta de controle de versões nem plataforma de hospedagem de código, a colaboração neste *script* pode se transformar rapidamente em um pesadelo.  
+
+É aqui que o Git e Github entram em acção, num nível mais profundo. Temos a vantagem que a colaboração foi simplificada. O histórico de alterações está disponível para todos os elementos da equipe e é possível reverter alterações, experimentar novos recursos usando ramificações e gerir o projeto de modo geral. Neste níveltambém usamos novos paradigmas de programação para tornar o código do projeto menos verboso, usando a programação funcional, com os benefícios adicionais de facilitar o teste, a documentação e a partilha (que discutiremos em sua plenitude nesta parte do livro). Usando a programação letrada, também é muito mais fácil chegar ao nosso resultado final (que geralmente é um relatório). Exploramos ao máximo as ideias DRY, para garantir que nosso código seja de alta qualidade.
+
+Mas, se o orçamento e o tempo permitirem, ainda podemos ir mais fundo, e definitivamente devemos fazê-lo. No futuro podemos querer atualizar o nosso *script* para usarmos a funcionalidade mais recente do nosso pacote preferido mas com a gravação da versão do pacote, ficamos limitados a uma versão muito antiga e às suas dependências. Como podemos saber que ao atualizarmos aquele pacote não partimos o nosso fluxo de trabalho? Além disso, queremos tornar a execução do *script* o mais fácil possível e, idealmente, o nemos interactivo possível. Na verdade, qualquer interação humanacom na análise é uma fonte de erros. É por isso que precisamos de testar o nosso código de uma forma completa e sistemática. E esses testes também pecisam de ser executados duma forma não interactiva. Com as ferramentes que usaremos nesta segunda parte, podemos, de facto, configurar o nosso projecto, desde o início, de modo a que seja reprodutível naturalmente. Usando as ferramentas certas e configurando as coisas correctamente, não precisamos realmente de investir mais tempo para tornar o processo reprodutível. O projeto simplesmente será reprodutível porque foi desenhado dessa forma. Praticamente sem nenhum custo adicional!
+
+Outro problema de apenas registarmos a versão dos pacotes utilizados é que às vezes isso  não é suficiente. Isto porque a instalação de pacotes antigos pode ser desafiante por dois motivos:
+
++ Pacotes antigos podem precisar de versões antigas do R, e a isntalação de versões antigas do R pode ser complidaca (dependendo do sistema operacional que tivermos);
++ Os pacotes mais antigos podem precisar de ser compilados e, consequentemente, dependem de versões mais antigas de bibliotecas de desenvolvimentonecessárias paar a compilação.
+
+Para resolvermos este problema precisamos congelar o próprio ambiente computacional, e para isto usaremos o Docker. 
+
+Por fim, e este é o último nível do iceberg que não faz parte deste livro, é também necessário tornar a construção do ambiente computacional reprodutível. O Guix é a ferramenta que permite fazer exatamente isso. No entanto, esse é um tópico muito profundo por si só, e há soluções alternativas para conseguir isso usando o Docker, por isso não falaremos sobre o Guix.
+
+Nos próximos capítulos, vamos percorrer o iceberg. Primeiro, vamos reescrever nosso projeto usando programação funcional e letrada. O nosso projecto não será composto por dois *scripts* mas sim por dois ficheiros de Rmarkdown que podemos executar para se sejam legíveis e partilháveis com quaisquer partes interessadas.
+
+Em seguida, transformaremos esses dois ficheiros .Rmd num pacote. Isso será feito usando o [pacote de Sébastien Rochette {fusen}](https://thinkr-open.github.io/fusen/)^[https://thinkr-open.github.io/fusen/].
+O `{fusen}` facilita muito a passagem dos nossos ficheiros .Rmd para um pacote, usando o que Sébastien chamou de método *Rmarkdown first*. 
+
+Uma vez que tenhamos o nosso pacote, podemos usar o {testthat} para fazermos testes unitários, e funções do R base para fazermos programação assertiva. Nesta fase o nosso código deverá estar bem documentado, fácil de partilhar, e amplamente testado.
+
+Começámos com *scripts* muito simples, que é como a maioria das análises é feita. Em seguida, usando programação funcional e letrada, esses *scripts* foram transformados em ficheiros RMarkdown e, nesta parte do livro, esses ficheiros RMarkdown serão transformados em um pacote. É claro que, no futuro, podemos começar imediatamente a partir dos ficheiros RMarkdown ou do pacote. Devemos começar pelo pacote, pois, como veremos, começar pelo pacote é basicamente o mesmo esforço que começar por um arquivo RMarkdown simples, graças a `{fusen}`, mas agora temos os benefícios adicionais de usar os recursos de desenvolvimento de pacotes para melhorar a nossa análise.
+
+Depois de termos o pacote podemos criar um verdadeiro pipeline usando `{targets}`, um pacote incrivelmente útil para automatizar a compilação.
+
+Chegados a este ponto, podemos finalmente falar em reproducibilidade mais concretamente. O motivo porque demoramos tanto tempo a chegar aqui é que para tornamos o nosso pipeline reprodutível precisamos de bases sólidas. Não faz sentido tornar reprodutível uma análise que é instável.
+
+
+
+
