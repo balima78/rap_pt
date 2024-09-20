@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Criação de pipelines de análise reprodutíveis em R - 13&nbsp; Automatização com targets</title>
+<title>Criação de pipelines de análise reprodutíveis em R - 13&nbsp; Automatização com {targets}</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,7 +20,61 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-</style>
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
@@ -72,8 +126,12 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 <script data-goatcounter="https://brodriguesco-raps-with-r.goatcounter.com/count" async="" src="//gc.zgo.at/count.js"></script>
+
 <noscript>
+
     </noscript></head><body class="nav-sidebar floating"><img src="https://brodriguesco-raps-with-r.goatcounter.com/count?p=/test-noscript">
+
+
 
 
 
@@ -89,7 +147,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./part2_intro.html">Parte 2: Write IT Down</a></li><li class="breadcrumb-item"><a href="./targets.html"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Automatização com targets</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./part2_intro.html">Parte 2: Write IT Down</a></li><li class="breadcrumb-item"><a href="./targets.html"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Automatização com <code>{targets}</code></span></a></li></ol></nav>
         <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -200,7 +258,7 @@ ul.task-list li input[type="checkbox"] {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./github.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Colaboração com desenvolvimento Trunk-based</span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Colaboração com desenvolvimento <em>Trunk-based</em></span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -259,7 +317,7 @@ ul.task-list li input[type="checkbox"] {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./targets.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Automatização com targets</span></span></a>
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Automatização com <code>{targets}</code></span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -300,14 +358,40 @@ ul.task-list li input[type="checkbox"] {
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#introdução" id="toc-introdução" class="nav-link active" data-scroll-target="#introdução"><span class="header-section-number">13.1</span> Introdução</a></li>
+  <li><a href="#inicialização-rápida-com-o-targets" id="toc-inicialização-rápida-com-o-targets" class="nav-link" data-scroll-target="#inicialização-rápida-com-o-targets"><span class="header-section-number">13.2</span> Inicialização rápida com o <code>{targets}</code></a>
+  <ul class="collapse">
+  <li><a href="#a-anatomia-do-_targets.r" id="toc-a-anatomia-do-_targets.r" class="nav-link" data-scroll-target="#a-anatomia-do-_targets.r"><span class="header-section-number">13.2.1</span> A anatomia do <code>_targets.R</code></a></li>
+  </ul></li>
+  <li><a href="#um-pipeline-é-composto-por-funções-puras" id="toc-um-pipeline-é-composto-por-funções-puras" class="nav-link" data-scroll-target="#um-pipeline-é-composto-por-funções-puras"><span class="header-section-number">13.3</span> Um pipeline é composto por funções puras</a></li>
+  <li><a href="#tratar-ficheiros" id="toc-tratar-ficheiros" class="nav-link" data-scroll-target="#tratar-ficheiros"><span class="header-section-number">13.4</span> Tratar ficheiros</a></li>
+  <li><a href="#o-gráfico-de-dependências" id="toc-o-gráfico-de-dependências" class="nav-link" data-scroll-target="#o-gráfico-de-dependências"><span class="header-section-number">13.5</span> O gráfico de dependências</a></li>
+  <li><a href="#executar-o-pipeline-em-paralelo" id="toc-executar-o-pipeline-em-paralelo" class="nav-link" data-scroll-target="#executar-o-pipeline-em-paralelo"><span class="header-section-number">13.6</span> Executar o pipeline em paralelo</a></li>
+  <li><a href="#o-targets-e-o-rmarkdown-ou-o-quarto" id="toc-o-targets-e-o-rmarkdown-ou-o-quarto" class="nav-link" data-scroll-target="#o-targets-e-o-rmarkdown-ou-o-quarto"><span class="header-section-number">13.7</span> O <code>{targets}</code> e o RMarkdown (ou o Quarto)</a></li>
+  <li><a href="#rescrever-o-nosso-projecto-como-um-pipeline" id="toc-rescrever-o-nosso-projecto-como-um-pipeline" class="nav-link" data-scroll-target="#rescrever-o-nosso-projecto-como-um-pipeline"><span class="header-section-number">13.8</span> Rescrever o nosso projecto como um pipeline</a></li>
+  <li><a href="#mais-algumas-pequenas-dicas" id="toc-mais-algumas-pequenas-dicas" class="nav-link" data-scroll-target="#mais-algumas-pequenas-dicas"><span class="header-section-number">13.9</span> Mais algumas pequenas dicas</a>
+  <ul class="collapse">
+  <li><a href="#carregar-todos-os-targets-duma-vez" id="toc-carregar-todos-os-targets-duma-vez" class="nav-link" data-scroll-target="#carregar-todos-os-targets-duma-vez"><span class="header-section-number">13.9.1</span> Carregar todos os <em>targets</em> duma vez</a></li>
+  <li><a href="#adicionar-meta-informação-ao-pipeline" id="toc-adicionar-meta-informação-ao-pipeline" class="nav-link" data-scroll-target="#adicionar-meta-informação-ao-pipeline"><span class="header-section-number">13.9.2</span> Adicionar meta informação ao pipeline</a></li>
+  <li><a href="#tornar-um-target-ou-todo-o-pipeline-outdated" id="toc-tornar-um-target-ou-todo-o-pipeline-outdated" class="nav-link" data-scroll-target="#tornar-um-target-ou-todo-o-pipeline-outdated"><span class="header-section-number">13.9.3</span> Tornar um <em>target</em> ou todo o pipeline <em>outdated</em></a></li>
+  <li><a href="#visualizações-costumizadas" id="toc-visualizações-costumizadas" class="nav-link" data-scroll-target="#visualizações-costumizadas"><span class="header-section-number">13.9.4</span> Visualizações costumizadas</a></li>
+  <li><a href="#usar-targets-dum-pipeline-noutro-projecto" id="toc-usar-targets-dum-pipeline-noutro-projecto" class="nav-link" data-scroll-target="#usar-targets-dum-pipeline-noutro-projecto"><span class="header-section-number">13.9.5</span> Usar <em>targets</em> dum pipeline noutro projecto</a></li>
+  <li><a href="#perceber-uma-mensagem-de-erro-críptica" id="toc-perceber-uma-mensagem-de-erro-críptica" class="nav-link" data-scroll-target="#perceber-uma-mensagem-de-erro-críptica"><span class="header-section-number">13.9.6</span> Perceber uma mensagem de erro críptica</a></li>
+  </ul></li>
+  <li><a href="#conclusão" id="toc-conclusão" class="nav-link" data-scroll-target="#conclusão"><span class="header-section-number">13.10</span> Conclusão</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/balima78/rap_pt/edit/main/targets.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/balima78/rap_pt/issues" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./part2_intro.html">Parte 2: Write IT Down</a></li><li class="breadcrumb-item"><a href="./targets.html"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Automatização com targets</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./part2_intro.html">Parte 2: Write IT Down</a></li><li class="breadcrumb-item"><a href="./targets.html"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Automatização com <code>{targets}</code></span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Automatização com targets</span></h1>
+<h1 class="title"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Automatização com <code>{targets}</code></span></h1>
 </div>
 
 
@@ -324,8 +408,1030 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
+<p>Finalmente estamos prontos para construir um pipeline. Para isto, vamos utilizar o pacote <code>{targets}</code> <span class="citation" data-cites="landau2021">(<a href="references.html#ref-landau2021" role="doc-biblioref">Landau 2021</a>)</span> que é uma “ferramenta para construir automatização”.</p>
+<p>Se voltarmos ao iceberg da reproducibilidade, veremos que já estamos bem no fundo.</p>
+<p>Sem uma ferramenta para construir automatização, um pipeline não é mais do que um conjunto de <em>scripts</em> que são executados uns atrás dos outros, ou talvez apenas um script muito longo que consegue fazer as operações com sucesso.</p>
+<p>No entanto há vários problemas nesta abordagem, pelo que vamos ver como podemos construir uma automatização.</p>
+<section id="introdução" class="level2" data-number="13.1">
+<h2 data-number="13.1" class="anchored" data-anchor-id="introdução"><span class="header-section-number">13.1</span> Introdução</h2>
+<p>Os <em>workflows</em> que têm por base vários <em>scripts</em> podem ser muito problemáticos. Primeiro os <em>scripts</em> podem e vão ser executados fora de ordem. Podemos mitigar alguns dos problemas que isto pode criar, usando funções puras, mas ainda assim temos de garantir que não executamos os nossos <em>scripts</em> fora de ordem. Mas o que é que isto significa? Bem, suponhamos que alteramos uma função e que agora só queremos voltar a executar as partes do <em>workflow</em> afetadas por esta mudança.Para isto temos de saber de memória quais são as partes dos <em>scripts</em> que são afetadas e quais não. O que pode ser bem complicado, principalmente com pipelines grandes. Pelo que iremos executar apenas algumas partes, esperando que não precisemos de voltar a executar tudo de novo.</p>
+<p>Outro problema é que os pipelines em <em>scripts</em> são difíceis de ler e de compreender. Para mitigarmos isto podemos escrever muitos comentários mas temos o problema de também fazer a manutenção desses comentários. Quando o código e os comentários deixam de estar sincronizados começam (ou melhor, continuam) os problemas.</p>
+<p>Executar diferentes partes do pipeline em paralelo também é muito complicado se o nosso pipeline está definido em <em>scripts</em>. Teremos de partir o <em>script</em> em partes independentes (garantindo que de facto são independentes) e executá-las em paralelo, talvez usando diferentes sessões de R para cada novo <em>script</em>. As boas notícias é que temos usado progamação funcional pelo que o nosso pipeline é um conjunto de funções puras, o que simplifica a execução do pipeline em paralelo.</p>
+<p>Mas já devemos suspeitar que os engenheiros de <em>software</em> também se depararam com problemas semelhantes no desenvolvimento de <em>software</em>, e também devemos saber que eles encontraram uma forma de contornar este problema. Que entrem as ferramentas de construção de automatização.</p>
+<p>Quando construímos uma ferramenta para construir automatização, estamos a escrever uma receita que define como o código fonte deve ser ‘cozinhado’ num <em>software</em> (ou, no nosso caso, num report, numa tabela de dados ou num qualquer produto de dados).</p>
+<p>Uma ferramenta de automatização deve rastrear:</p>
+<ul>
+<li>qualquer alteração em qualquer parte do código. Apenas os <em>outputs</em> que são afetados pelas alterações que fizemos devem ser re-executados (bem como as suas dependências);</li>
+<li>qualquer alteração em qualquer dos ficheiros rastreados. Por exemplo, se um ficheiro de dados é atualizado periodicamente, podemos rastrear este ficheiro e a ferramenta de construção de automatização apenas executa as partes do pipeline que são afetadas por esta atualização de dados;</li>
+<li>quais as partes que podem ser executadas em paralelo com segurança (com a opção de executar o pipeline em multiplos <em>cores</em> CPU).</li>
+</ul>
+<p>Tal como muitas outras ferramentas que já vimos neste livro, as ferramentas de construção de automatização permitem-nos não depender da nossa memória. Escrevemos a receita uma vez e podemos voltar a preocupar-nos apenas com o código do nosso projecto. Não nos devemos preocupar com o próprio pipeline, nem pensar na melhor maneira de o executar. Deixemos o computador preocupar-se com isso, de certeza que é melhor do que nós nessas tarefas.</p>
+</section>
+<section id="inicialização-rápida-com-o-targets" class="level2" data-number="13.2">
+<h2 data-number="13.2" class="anchored" data-anchor-id="inicialização-rápida-com-o-targets"><span class="header-section-number">13.2</span> Inicialização rápida com o <code>{targets}</code></h2>
+<p>Antes de mais: para sabermos tudo sobre o pacote <code>{targets}</code> devemos ler o excelente <a href="https://books.ropensci.org/targets/">manual do <code>{targets}</code></a><a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>. Está tudo lá. O que iremos ver aqui é apenas uma rápida introdução a alguns dos pontos principais que precisamos conhecer para começar.</p>
+<p>Vamos criar uma nova pasta chamada <code>targets_intro/</code>, e começar uma nova sessão do R. Para já podemos ignorar o <code>{renv}</code>. Mais à frente poderemos ver como o <code>{renv}</code> trabalha com o <code>{targets}</code> para produzir um pipeline que é quase completamente reprodutível. Na nova sessão e dentro da pasta <code>targets_intro/</code> vamos executar o comando:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>targets<span class="sc">::</span><span class="fu">tar_script</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Com isto criaremos um ficheiro template <code>_targets.R</code> nesta directoria. É neste ficheiro que vamos definir o nosso pipeline. Podemos abri-lo e ver que é definido basicamente em três partes:</p>
+<ul>
+<li>primeiro são definidos os pacotes a usar e as funções de ajuda;</li>
+<li>depois vêm as opções específicas do pipeline;</li>
+<li>e por fim o próprio pipeline, definido como um conjunto de <em>targets</em>.</li>
+</ul>
+<p>Vejamos cada uma destas parte individualmente.</p>
+<section id="a-anatomia-do-_targets.r" class="level3" data-number="13.2.1">
+<h3 data-number="13.2.1" class="anchored" data-anchor-id="a-anatomia-do-_targets.r"><span class="header-section-number">13.2.1</span> A anatomia do <code>_targets.R</code></h3>
+<p>Na primeira parte do pipeline definimos os pacotes que vamos usar, bem como as funções de ajuda que queremos carregar. No template, a primeira linha tem <code>library(targets)</code> seguido pela definição duma função. Há duas coisas que importa sublinhar.</p>
+<p>Se o nosso pipeline precisa do pacote <code>{dplyr}</code> (por exemplo), podemos escrever <code>library(dplyr)</code> logo depois de <code>library(targets)</code>. No entanto, é melhor carregarmos os pacotes com a função <code>tar_option_set(packages = "dplyr")</code>. Isto porque se executamos o pipeline em paralelo, temos de garantir que os pacotes estão disponíveis para todos os <em>workers</em> (geralmente, um <em>worker</em> por cada <em>core</em> CPU). Se carregarmos os pacotes no início do ficheiro <code>_targets.R</code>, os pacotes apenas estarão disponíveis na sessão original que executa o comando <code>library(...)</code>, mas não para as sessões dos <em>workers</em> chamados para a execução em paralelo.</p>
+<p>A ideia é que no início do nosso <em>script</em> apenas lemos o pacote <code>{targets}</code> e ventualmente outros que sejam necessários para executar o próprio pipeline (como veremos mais à frente). Mas os pacotes que são necessários para executarmos funções que são usadas dentro do nosso pipeline devem ser carregados com <code>tar_option_set(packages = "...")</code>. Dito de outra forma: no início do <em>script</em> devemos ter pacote para a infaestrutura do pipeline (<code>{targets}</code> e mais algum), mas em <code>{tar_option_set()}</code> pacotes para as funções executadas dentro do pipeline.</p>
+<p>Na segunda parte é onde definimos algumas das opções globais para o pipeline. Como já referimos, é aqui que definimos os pacotes usados dentro do pipeline. Não vamos listar aqui todas as opções porque apenas estariamos a repetir o que está na <a href="https://docs.ropensci.org/targets/reference/tar_option_set.html">documentação</a><a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>. Nesta segunda parte também podemos definir algumas funções que podem ser necessárias para executarmos o nosso pipeline. Por exemplo, podemos definir funções para ler e limpar dados. Se criarmos um <em>package</em> para o nosso projecto, podemos usá-lo e não precisariamos de outras funções. No entanto, às vezes não precisamos de criar um <em>package</em> e apenas fazemos algumas funções que nos ajudam na nossa análise, neste caso podemos defini-las directamente no início do nosso ficheiro <code>_targets.R</code> ou então num ficheiro em separado dentro duma pasta <code>functions/</code> na mesma directoria do <code>_targets.R</code>. A escolha é de cada um, mas a segunda opção é mais recomendável. No <em>script</em> de exemplo, definimos a seguinte função:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>summarize_data <span class="ot">&lt;-</span> <span class="cf">function</span>(dataset) {</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">colMeans</span>(dataset)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Finalmente, temos o próprio pipeline:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">list</span>(</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tar_target</span>(data,</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>             <span class="fu">data.frame</span>(<span class="at">x =</span> <span class="fu">sample.int</span>(<span class="dv">100</span>),</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>                        <span class="at">y =</span> <span class="fu">sample.int</span>(<span class="dv">100</span>))),</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tar_target</span>(data_summary,</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>             <span class="fu">summarize_data</span>(data)) <span class="co"># Call your custom functions.</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>O pipeline mais não é que uma lista de <em>targets</em>. Definimos um <em>target</em> com a função <code>tar_target()</code> que tem pelo menos dois <em>inputs</em>: o primeiro é o nome do <em>target</em> (sem aspas) e o segundo é a função que gera o <em>target</em>. Logo um <em>target</em> definido como <code>tar_target(y, f(x))</code> pode ser lido como <code>y &lt;- f(x)</code>. O <em>target</em> seguinte pode usar como <em>input</em> o <em>output</em> dum <em>target</em> anterior, pelo que podemos ter qualquer coisa como <code>tar_target(z, f(y))</code> (tal como no <em>template</em> de exemplo).</p>
+</section>
+</section>
+<section id="um-pipeline-é-composto-por-funções-puras" class="level2" data-number="13.3">
+<h2 data-number="13.3" class="anchored" data-anchor-id="um-pipeline-é-composto-por-funções-puras"><span class="header-section-number">13.3</span> Um pipeline é composto por funções puras</h2>
+<p>Podemos executar este pipeline, com o comando:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>targets<span class="sc">::</span><span class="fu">tar_make</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>• start target data</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>• built target data [<span class="fl">0.82</span> seconds]</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>• start target data_summary</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>• built target data_summary [<span class="fl">0.02</span> seconds]</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>• end pipeline [<span class="fl">1.71</span> seconds]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>O pipeline finalizou e agora? Este pipeline fez algumas estatisticas sumárias mas para onde foram? Se fizermos <code>data_summary</code> para tentarmos ver algum resultado temos um erro:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>data_summary</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>Error<span class="sc">:</span> object <span class="st">'data_summary'</span> not found</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>O que aconteceu?</p>
+<p>Temos de nos lembrar que queremos que o nosso pipeline seja uma sequência de funções puras. Isto é, o sucesso da execução do nosso pipeline não deve depender de nada que esteja no ambiente global (para além de ler os pacotes da primeira parte do <em>script</em> e das opções definidas em <code>tar_option_set()</code>) e não deve alterar nada fora do seu próprio âmbito. Ou seja, o pipeline não deve alterar nada do ambiente global. É exactamente assim que um pipeline definido com <code>{targets}</code> funciona. Um pipeline definido usando o <code>{targets}</code> será puro e o seu <em>output</em> não garavará nada no ambiente global. Em termos estritos um pipeline não é exactamente puro. Vejamos a pasta que contém o <em>script</em> <code>_targets.R</code>. Temos agora a pasta <code>_targets/</code>. Se virmos dentro desta nova pasta e dentro da pasta <code>objects/</code>, temos dois objectos, <code>data</code> e <code>data_summary</code>. Estes são os <em>outputs</em> do pipeline.</p>
+<p>Cada <em>target</em> definido dentro do nosso pipeline é gravado no formato <code>.rds</code>. Este é um formato específico do R que podemos usar para guardar qualquer tipo de objecto. Não importa o quê: um <em>dataframe</em>, um modelo, um <em>ggplot</em>, qualquer objecto que possamos ter em R pode ser gravado em disco com a função <code>saveRDS()</code> e posteriormente ser lido noutra sessão com <code>readRDS()</code>. O <code>{targets}</code> usa estas duas funções para guardar os resultados dos <em>targets</em> do nosso pipeline e também para aceder a eles a partir da pasta <code>_targets/</code> em vez de os voltar a computar. Devemos ter sempre presente que se usarmos o Git para versionar o nosso código (tal como fazemos aqui) devemos adicionar a pasta <code>_targets/</code> ao ficheiro <code>.gitignore</code>.</p>
+<p>Como o nosso pipeline é puro nenhum resultado dos <em>targets</em> é gravado no ambiente global, pelo que se quisermos aceder aos seus <em>outputs</em> temos de usar as funções <code>tar_read()</code> ou <code>tar_load()</code>. A diferença é que <code>tar_read()</code> apenas lê o <em>target</em> e imprime-o na consola, enquanto que <code>tar_load()</code> lê o <em>target</em> e carrega-o no ambiente global. No nosso exemplo, para extrairmos o object <code>data_summary</code> usamos <code>tar_load(data_summary)</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tar_load</span>(data_summary)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>e agora quando escrevemos <code>data_summary</code>, temos:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>data_summary</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>   x    y</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fl">50.5</span> <span class="fl">50.5</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Podemos também carregar todos os <em>targets</em> duma vez com <code>tar_load_everything()</code>, para não termos de carregar os <em>targets</em> um a um.</p>
+<p>Antes de continuarmos a ver mais características do <code>{targets}</code> devemos ter presente que um pipeline é composto por funções puras. Logo funções que tenham efeitos colaterais (como as que lêm dados ou imprimem alguma coisa no ecrã) são mais difíceis de manipular. Por exemplo, para fazermos um gráfico com o R base temos de fazer uma série de chamadas de funções com efeitos colaterais. Se abrirmos uma consola e escrevermos <code>plot(mtcars)</code>, vamos ver um gráfico. Mas a função <code>plot()</code> não cria qualquer <em>output</em>. Apenas imprime uma imagem no nosso ecrã, o que é um efeito colateral. Podemos verificar isto se tentarmos guardar <code>plot()</code> numa variável:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="fu">plot</span>(mtcars)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>ao fazermos isto vemos o gráfico mas quando executamos a variável <code>a</code>, o gráfico não aparece:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>a</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="cn">NULL</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>E porque <code>plot()</code> não é uma função pura se a tentarmos usar num pipeline <code>{targets}</code> teremos como resultado <code>NULL</code>, quando tentarmos ler o <em>target</em> que deveria ter o gráfico:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">list</span>(</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tar_target</span>(data,</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>             <span class="fu">data.frame</span>(<span class="at">x =</span> <span class="fu">sample.int</span>(<span class="dv">100</span>),</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>                        <span class="at">y =</span> <span class="fu">sample.int</span>(<span class="dv">100</span>))),</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tar_target</span>(data_summary,</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>             <span class="fu">summarize_data</span>(data)), <span class="co"># Call your custom functions.</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tar_target</span>(</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>    data_plot,</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">plot</span>(data)</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Apenas adicionamos um novo <em>target</em> com <code>tar_target()</code> para fazermos um gráfico. Se voltarmos a fazer <code>tar_make()</code> e depois <code>tar_load(data_plot)</code> para carregarmos o novo <em>target</em>, ao escrevermos <code>data_plot</code> apenas é impresso <code>NULL</code> e não vemos nenhum gráfico.</p>
+<p>Podemos dar a volta a este problema usando o <code>ggplot()</code>. Isto porque o output do <code>ggplot()</code> é um objecto do tipo <code>ggplot</code>. Podemos fazer qualquer coisa como <code>a &lt;- ggplot() + ect..</code> e depois escrevemos <code>a</code> para ver o gráfico. Se fizermos <code>str(a)</code> podemos ver a lista que tem a estrutura do gráfico.</p>
+<p>Outra forma de contornar o problema é gravar o gráfico em disco. Para isto temos de escrever uma nova função, por exemplo:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>save_plot <span class="ot">&lt;-</span> <span class="cf">function</span>(filename, ...){</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">png</span>(<span class="at">filename =</span> filename)</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>(...)</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dev.off</span>()</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Se definirmos esta função no inicio do <em>script</em> do ficheiro <code>_targets.R</code>, podemos usar esta função em vez de <code>plot()</code> no último <em>target</em>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>summarize_data <span class="ot">&lt;-</span> <span class="cf">function</span>(dataset) {</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">colMeans</span>(dataset)</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>save_plot <span class="ot">&lt;-</span> <span class="cf">function</span>(filename, ...){</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">png</span>(<span class="at">filename =</span> filename)</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>(...)</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dev.off</span>()</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>  filename</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Set target-specific options such as packages.</span></span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a><span class="fu">tar_option_set</span>(<span class="at">packages =</span> <span class="st">"dplyr"</span>)</span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a><span class="co"># End this file with a list of target objects.</span></span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a><span class="fu">list</span>(</span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tar_target</span>(data,</span>
+<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a>             <span class="fu">data.frame</span>(<span class="at">x =</span> <span class="fu">sample.int</span>(<span class="dv">100</span>),</span>
+<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a>                        <span class="at">y =</span> <span class="fu">sample.int</span>(<span class="dv">100</span>))),</span>
+<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tar_target</span>(data_summary,</span>
+<span id="cb16-23"><a href="#cb16-23" aria-hidden="true" tabindex="-1"></a>             <span class="fu">summarize_data</span>(data)), <span class="co"># Call your custom functions.</span></span>
+<span id="cb16-24"><a href="#cb16-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-25"><a href="#cb16-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tar_target</span>(</span>
+<span id="cb16-26"><a href="#cb16-26" aria-hidden="true" tabindex="-1"></a>    data_plot,</span>
+<span id="cb16-27"><a href="#cb16-27" aria-hidden="true" tabindex="-1"></a>    <span class="fu">save_plot</span>(</span>
+<span id="cb16-28"><a href="#cb16-28" aria-hidden="true" tabindex="-1"></a>      <span class="at">filename =</span> <span class="st">"my_plot.png"</span>,</span>
+<span id="cb16-29"><a href="#cb16-29" aria-hidden="true" tabindex="-1"></a>      data),</span>
+<span id="cb16-30"><a href="#cb16-30" aria-hidden="true" tabindex="-1"></a>    <span class="at">format =</span> <span class="st">"file"</span>)</span>
+<span id="cb16-31"><a href="#cb16-31" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Depois de executarmos este pipeline veremos um ficheiro chamado <code>my_plot.png</code> na pasta do pipeline. Se escrevermos <code>tar_load(data_plot)</code> e depois <code>data_plot</code> veremos o argumento <code>filename</code> de <code>save_plot()</code>. Isto porque o target tem de devolver alguma coisa e no caso de funções que gravam ficheiros em disco é recomendável devolver o caminho onde o ficheiro foi gravado. Assim se quisermos usar o ficheiro noutro <em>target</em>, podemos escrever <code>tar_target(x, f(data_plot))</code>. Assim, uma vez que o target <code>data_plot</code> devolve um caminho, podemos escrever <code>f()</code> de forma a qua saiba como usar o caminho. Se escrevessemos <code>tar_target(x, f("path/to/my_plot.png"))</code>, então o <code>{targets}</code> não tinha como saber que o <em>target</em> <code>x</code> depende do <em>target</em> <code>data_plot</code>. Não existiria uma dependência entre <em>targets</em>.</p>
+<p>Por fim, no último <em>target</em> tivemos de usar a opção <code>format = file</code> que será aprofundada mais à frente.</p>
+<p>Vale a pena realçar que o pacote <code>{ggplot2}</code> tem uma função que permite gravar objectos <code>ggplot</code> no disco <code>ggplot2::ggsave()</code>. Assim poderiamos ter definido dois <em>targets</em>, um para fazer o objecto <code>ggplot</code> e outro para gerar a imagem <code>.png</code> desse objecto.</p>
+</section>
+<section id="tratar-ficheiros" class="level2" data-number="13.4">
+<h2 data-number="13.4" class="anchored" data-anchor-id="tratar-ficheiros"><span class="header-section-number">13.4</span> Tratar ficheiros</h2>
+<p>Nesta secção, vamos ver como o <code>{targets}</code> lida com ficheiros. Primeiro vamos executar as seguintes linhas de código na pasta que tem o <em>script</em> <code>_targets.R</code> que temos estado a usar:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(mtcars)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(mtcars,</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>          <span class="st">"mtcars.csv"</span>,</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>          <span class="at">row.names =</span> F)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Acabamos de criar o ficheiro <code>mtcars.csv</code> na nossa pasta. Vamos agora usá-lo no nosso pipeline.</p>
+<p>Escrevemos o seguinte pipeline:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">list</span>(</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tar_target</span>(</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>    data_mtcars,</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">read.csv</span>(<span class="st">"mtcars.csv"</span>)</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tar_target</span>(</span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>    summary_mtcars,</span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summary</span>(data_mtcars)</span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tar_target</span>(</span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>    plot_mtcars,</span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">save_plot</span>(</span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>      <span class="at">filename =</span> <span class="st">"mtcars_plot.png"</span>,</span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a>      data_mtcars),</span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">format =</span> <span class="st">"file"</span>)</span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Podemos correr o pipeline e no fim teremos um gráfico. O problema é que o ficheiro <code>mtcars.csv</code> não está a ter registo de alterações. Se fizermos uma alteração ao ficheiro, como por exemplo:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(<span class="fu">head</span>(mtcars), <span class="st">"mtcars.csv"</span>, <span class="at">row.names =</span> F)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Ao voltarmos a executar o pipeline, as nossas alterações aos dados foram ignoradas:</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>✔ skip target data_mtcars</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>✔ skip target plot_mtcars</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>✔ skip target summary_mtcars</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>✔ skip pipeline [<span class="fl">0.1</span> seconds]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Como podemos ver, o <code>{targets}</code> não está a registar as alerações no ficheiro <code>mtcars.csv</code>. Assim, o pipeline está u<em>p-to-date</em> para o <code>{targets}</code> pois para ele não houve alterações.</p>
+<p>Vamos voltar a alterar o nosso ficheiro:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(mtcars, <span class="st">"mtcars.csv"</span>, <span class="at">row.names =</span> F)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Agora alteramos o primeiro <em>target</em> para que as alterações do ficheiro sejam rastreadas. Lembremo-nos que os <em>targets</em> têm de ser funções puras que devolvem alguma coisa. Logo vamos alterar o primeiro <em>target</em> para que devolva o caminho para o ficheiro, usado a opção <code>format = "file"</code> em <code>tar_target()</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>path_data <span class="ot">&lt;-</span> <span class="cf">function</span>(path){</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  path</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a><span class="fu">list</span>(</span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tar_target</span>(</span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>    path_data_mtcars,</span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">path_data</span>(<span class="st">"mtcars.csv"</span>),</span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">format =</span> <span class="st">"file"</span></span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tar_target</span>(</span>
+<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a>    data_mtcars,</span>
+<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">read.csv</span>(path_data_mtcars)</span>
+<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tar_target</span>(</span>
+<span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a>    summary_mtcars,</span>
+<span id="cb22-17"><a href="#cb22-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summary</span>(data_mtcars)</span>
+<span id="cb22-18"><a href="#cb22-18" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb22-19"><a href="#cb22-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tar_target</span>(</span>
+<span id="cb22-20"><a href="#cb22-20" aria-hidden="true" tabindex="-1"></a>    plot_mtcars,</span>
+<span id="cb22-21"><a href="#cb22-21" aria-hidden="true" tabindex="-1"></a>    <span class="fu">save_plot</span>(<span class="at">filename =</span> <span class="st">"mtcars_plot.png"</span>,</span>
+<span id="cb22-22"><a href="#cb22-22" aria-hidden="true" tabindex="-1"></a>              data_mtcars),</span>
+<span id="cb22-23"><a href="#cb22-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">format =</span> <span class="st">"file"</span>)</span>
+<span id="cb22-24"><a href="#cb22-24" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>O primeiro target poderá ser simplesmente escrito como:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tar_target</span>(</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  path_data_mtcars,</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"mtcars.csv"</span>,</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">format =</span> <span class="st">"file"</span></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Agora temos o target chamado <code>path_data_mtcars</code> que apenas devolve o caminho para os dados. Mas como usámos a opção <code>format = "file"</code>, o <code>{targets}</code> já sabe que deve rastrear esse ficheiro. Ou seja, qualquer alteração ao ficheiro será reconhecida e qualquer <em>target</em> que dependa desse <em>input</em> será marcado como estando <em>out-of-date</em>. Os restantes <em>targets</em> permanecem iguais.</p>
+<p>Executemos o pipeline com <code>tar_make()</code>. Agora, vamos alterar o ficheiro outra vez:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(<span class="fu">head</span>(mtcars),</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>          <span class="st">"mtcars.csv"</span>,</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>          <span class="at">row.names =</span> F)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Se voltarmos a executar o pipeline com <code>tar_make()</code> podemos ve que o <code>{targets}</code> reconhece que há alterações e executa o pipeline tendo em conta essas alterações.</p>
+</section>
+<section id="o-gráfico-de-dependências" class="level2" data-number="13.5">
+<h2 data-number="13.5" class="anchored" data-anchor-id="o-gráfico-de-dependências"><span class="header-section-number">13.5</span> O gráfico de dependências</h2>
+<p>Como podemos ver o <code>{targets}</code> faz o rastreamento das alterações aos ficheiros e também às funções que usamos. Qualquer alteração no código de alguma dessas funções fará com que o <code>{targets}</code> identifique quais os <em>targets</em> que estão <em>out-of-date</em> e quais os que devem ser recalculados junto com os que dependam destes. Podemos visualizar isto com a função <code>tar_visnetwork()</code>. Com isto abrimos um gráfico de rede interactivo no nosso <em>browser</em>:</p>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="IMG/targets_visnetwork.png" width="402" height="300" class="figure-img"></p>
+<figcaption>Esta imagem é aberta no nosso web-browser.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Aqui podemos ver que todos os <em>targets</em> estão <em>up-to-date</em>. Se fizermos uma alteração aos dados de <em>input</em>, é este o resultado:</p>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="IMG/targets_visnetwork_outdated.png" width="399" height="300" class="figure-img"></p>
+<figcaption>Como os dados de input mudaram, temos de voltar a executar o pipeline.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Como todos os target dependem dos dados de <em>input</em>, temos de volatr a executar todo o pipeline. Vamos voltar a executar tudo com <code>tar_make()</code>, antes de continuarmos.</p>
+<p>Podemos agora adicionar outro <em>target</em> ao nosso pipeline, um que não dependa dos dados de <em>input</em>. O <em>script</em> deverá ficar assim:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">list</span>(</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tar_target</span>(</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>    path_data_mtcars,</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"mtcars.csv"</span>,</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">format =</span> <span class="st">"file"</span></span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tar_target</span>(</span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>    data_iris,</span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">data</span>(<span class="st">"iris"</span>)</span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tar_target</span>(</span>
+<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a>    summary_iris,</span>
+<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summary</span>(data_iris)</span>
+<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tar_target</span>(</span>
+<span id="cb25-16"><a href="#cb25-16" aria-hidden="true" tabindex="-1"></a>    data_mtcars,</span>
+<span id="cb25-17"><a href="#cb25-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">read.csv</span>(path_data_mtcars)</span>
+<span id="cb25-18"><a href="#cb25-18" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb25-19"><a href="#cb25-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tar_target</span>(</span>
+<span id="cb25-20"><a href="#cb25-20" aria-hidden="true" tabindex="-1"></a>    summary_mtcars,</span>
+<span id="cb25-21"><a href="#cb25-21" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summary</span>(data_mtcars)</span>
+<span id="cb25-22"><a href="#cb25-22" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb25-23"><a href="#cb25-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tar_target</span>(</span>
+<span id="cb25-24"><a href="#cb25-24" aria-hidden="true" tabindex="-1"></a>    plot_mtcars,</span>
+<span id="cb25-25"><a href="#cb25-25" aria-hidden="true" tabindex="-1"></a>    <span class="fu">save_plot</span>(</span>
+<span id="cb25-26"><a href="#cb25-26" aria-hidden="true" tabindex="-1"></a>      <span class="at">filename =</span> <span class="st">"mtcars_plot.png"</span>,</span>
+<span id="cb25-27"><a href="#cb25-27" aria-hidden="true" tabindex="-1"></a>      data_mtcars),</span>
+<span id="cb25-28"><a href="#cb25-28" aria-hidden="true" tabindex="-1"></a>    <span class="at">format =</span> <span class="st">"file"</span>)</span>
+<span id="cb25-29"><a href="#cb25-29" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Antes de voltarmos a executar o pipeline, vejamos o <em>workflow</em> com <code>tar_visnetwork()</code>:</p>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="IMG/targets_visnetwork_iris.png" width="593" height="300" class="figure-img"></p>
+<figcaption>Vemos claramente que o pipeline tem duas partes completamente independentes.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Podemos ver que há duas partes independentes, bem como duas funções que não estão a ser usadas, <code>path_data()</code> e <code>summ()</code> que poderíamos remover. Depois podemos alterar de novo os dados de <em>input</em> e se corrermos o pipeline com <code>tar_make()</code> seremos bem sucedidos.</p>
+<p>Vamos adicionar o último <em>target</em>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tar_target</span>(</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  list_summaries,</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">list</span>(</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"summary_iris"</span> <span class="ot">=</span> summary_iris,</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"summary_mtcars"</span> <span class="ot">=</span> summary_mtcars</span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>),</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>este <em>target</em> cria uma lista com dois sumários que calculamos, e ao chamarmos <code>tar_visnetwork()</code>:</p>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="IMG/targets_visnetwork_list_summaries.png" width="677" height="300" class="figure-img"></p>
+<figcaption>Os dois workflows separados acabam num único output.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Finalmente, voltamos a executar o pipeline uma última vez para obtermos o output final.</p>
+</section>
+<section id="executar-o-pipeline-em-paralelo" class="level2" data-number="13.6">
+<h2 data-number="13.6" class="anchored" data-anchor-id="executar-o-pipeline-em-paralelo"><span class="header-section-number">13.6</span> Executar o pipeline em paralelo</h2>
+<p>Com o <code>{targets}</code> podemos executar partes independentes do noso pipeline em paralelo. No exemplo anterior é óbvio quais as partes que são independentes mas quando o pipeline cresce em complexidade pode ser bem difícil encontrar as partes que são independentes.</p>
+<p>Vamos então executar o exemplo anterior em paralelo. Mas primeiro vamos criar uma função que demora algum tempo a executar. A função <code>summary()</code> é tão rápida que não vale a pena executarmos duas chamadas desta função em paralelo (na verdade até demoraria mais, como veremos no fim). Vamos então definir a nova função <code>slow_summary()</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>slow_summary <span class="ot">&lt;-</span> <span class="cf">function</span>(...){</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">Sys.sleep</span>(<span class="dv">30</span>)</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summary</span>(...)</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>e vamos substituir <code>summary()</code> por <code>slow_summary()</code>, no nosso pipeline:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">list</span>(</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tar_target</span>(</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>    path_data_mtcars,</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"mtcars.csv"</span>,</span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">format =</span> <span class="st">"file"</span></span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tar_target</span>(</span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>    data_iris,</span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">data</span>(<span class="st">"iris"</span>)</span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tar_target</span>(</span>
+<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a>    summary_iris,</span>
+<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">slow_summary</span>(data_iris)</span>
+<span id="cb28-14"><a href="#cb28-14" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb28-15"><a href="#cb28-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tar_target</span>(</span>
+<span id="cb28-16"><a href="#cb28-16" aria-hidden="true" tabindex="-1"></a>    data_mtcars,</span>
+<span id="cb28-17"><a href="#cb28-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">read.csv</span>(path_data_mtcars)</span>
+<span id="cb28-18"><a href="#cb28-18" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb28-19"><a href="#cb28-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tar_target</span>(</span>
+<span id="cb28-20"><a href="#cb28-20" aria-hidden="true" tabindex="-1"></a>    summary_mtcars,</span>
+<span id="cb28-21"><a href="#cb28-21" aria-hidden="true" tabindex="-1"></a>    <span class="fu">slow_summary</span>(data_mtcars)</span>
+<span id="cb28-22"><a href="#cb28-22" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb28-23"><a href="#cb28-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tar_target</span>(</span>
+<span id="cb28-24"><a href="#cb28-24" aria-hidden="true" tabindex="-1"></a>    list_summaries,</span>
+<span id="cb28-25"><a href="#cb28-25" aria-hidden="true" tabindex="-1"></a>    <span class="fu">list</span>(</span>
+<span id="cb28-26"><a href="#cb28-26" aria-hidden="true" tabindex="-1"></a>      <span class="st">"summary_iris"</span> <span class="ot">=</span> summary_iris,</span>
+<span id="cb28-27"><a href="#cb28-27" aria-hidden="true" tabindex="-1"></a>      <span class="st">"summary_mtcars"</span> <span class="ot">=</span> summary_mtcars</span>
+<span id="cb28-28"><a href="#cb28-28" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb28-29"><a href="#cb28-29" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb28-30"><a href="#cb28-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tar_target</span>(</span>
+<span id="cb28-31"><a href="#cb28-31" aria-hidden="true" tabindex="-1"></a>    plot_mtcars,</span>
+<span id="cb28-32"><a href="#cb28-32" aria-hidden="true" tabindex="-1"></a>    <span class="fu">save_plot</span>(<span class="at">filename =</span> <span class="st">"mtcars_plot.png"</span>,</span>
+<span id="cb28-33"><a href="#cb28-33" aria-hidden="true" tabindex="-1"></a>              data_mtcars),</span>
+<span id="cb28-34"><a href="#cb28-34" aria-hidden="true" tabindex="-1"></a>    <span class="at">format =</span> <span class="st">"file"</span>)</span>
+<span id="cb28-35"><a href="#cb28-35" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>este é o aspecto do pipeline, antes de ser executado:</p>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="IMG/targets_visnetwork_slow_summary.png" width="677" height="300" class="figure-img"></p>
+<figcaption>É usada slow_summary() em vez de summary().</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>podemos também reparar que removemos as funções não utilizadas <code>path_data()</code> e <code>summ()</code></p>
+<p>A execução deste pipeline sequencialmente demorará cerca de 1 minuto, uma vez que cada chamada de <code>slow_summary()</code> demora 30 segundos. Para voltarmos a executar o pipeline, fazemos <code>tar_destroy()</code> (e apagamos todos os <em>targets</em> criados) e depois <code>tar_make()</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>targets<span class="sc">::</span><span class="fu">tar_make</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>• start target path_data_mtcars</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>• built target path_data_mtcars [<span class="fl">0.18</span> seconds]</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>• start target data_iris</span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>• built target data_iris [<span class="dv">0</span> seconds]</span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>• start target data_mtcars</span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>• built target data_mtcars [<span class="dv">0</span> seconds]</span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>• start target summary_iris</span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>• built target summary_iris [<span class="fl">30.26</span> seconds]</span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a>• start target plot_mtcars</span>
+<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a>• built target plot_mtcars [<span class="fl">0.16</span> seconds]</span>
+<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a>• start target summary_mtcars</span>
+<span id="cb30-12"><a href="#cb30-12" aria-hidden="true" tabindex="-1"></a>• built target summary_mtcars [<span class="fl">30.29</span> seconds]</span>
+<span id="cb30-13"><a href="#cb30-13" aria-hidden="true" tabindex="-1"></a>• start target list_summaries</span>
+<span id="cb30-14"><a href="#cb30-14" aria-hidden="true" tabindex="-1"></a>• built target list_summaries [<span class="dv">0</span> seconds]</span>
+<span id="cb30-15"><a href="#cb30-15" aria-hidden="true" tabindex="-1"></a>• end pipeline [<span class="fl">1.019</span> minutes]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Uma vez que a computação de <code>summary_iris</code> é completamente independente de <code>summary_mtcars</code>, estas computações podem ser feitas em paralelo por dois <em>cores</em> CPU em paralelo. Para isto precisamos de dois novos pacotes, <code>{future}</code> e <code>{future.callr}</code> no início do nosso <em>script</em>. Vamos també precisar de chamar <code>plan(callr)</code> antes do início do pipeline. Vejamos o <code>_targets.R</code> completo:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(targets)</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(future)</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(future.callr)</span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plan</span>(callr)</span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Sometimes you gotta take your time</span></span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>slow_summary <span class="ot">&lt;-</span> <span class="cf">function</span>(...) {</span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">Sys.sleep</span>(<span class="dv">30</span>)</span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summary</span>(...)</span>
+<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Save plot to disk</span></span>
+<span id="cb31-13"><a href="#cb31-13" aria-hidden="true" tabindex="-1"></a>save_plot <span class="ot">&lt;-</span> <span class="cf">function</span>(filename, ...){</span>
+<span id="cb31-14"><a href="#cb31-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">png</span>(<span class="at">filename =</span> filename)</span>
+<span id="cb31-15"><a href="#cb31-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>(...)</span>
+<span id="cb31-16"><a href="#cb31-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dev.off</span>()</span>
+<span id="cb31-17"><a href="#cb31-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-18"><a href="#cb31-18" aria-hidden="true" tabindex="-1"></a>  filename</span>
+<span id="cb31-19"><a href="#cb31-19" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb31-20"><a href="#cb31-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-21"><a href="#cb31-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Set target-specific options such as packages.</span></span>
+<span id="cb31-22"><a href="#cb31-22" aria-hidden="true" tabindex="-1"></a><span class="fu">tar_option_set</span>(<span class="at">packages =</span> <span class="st">"dplyr"</span>)</span>
+<span id="cb31-23"><a href="#cb31-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-24"><a href="#cb31-24" aria-hidden="true" tabindex="-1"></a><span class="fu">list</span>(</span>
+<span id="cb31-25"><a href="#cb31-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tar_target</span>(</span>
+<span id="cb31-26"><a href="#cb31-26" aria-hidden="true" tabindex="-1"></a>    path_data_mtcars,</span>
+<span id="cb31-27"><a href="#cb31-27" aria-hidden="true" tabindex="-1"></a>    <span class="st">"mtcars.csv"</span>,</span>
+<span id="cb31-28"><a href="#cb31-28" aria-hidden="true" tabindex="-1"></a>    <span class="at">format =</span> <span class="st">"file"</span></span>
+<span id="cb31-29"><a href="#cb31-29" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb31-30"><a href="#cb31-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tar_target</span>(</span>
+<span id="cb31-31"><a href="#cb31-31" aria-hidden="true" tabindex="-1"></a>    data_iris,</span>
+<span id="cb31-32"><a href="#cb31-32" aria-hidden="true" tabindex="-1"></a>    <span class="fu">data</span>(<span class="st">"iris"</span>)</span>
+<span id="cb31-33"><a href="#cb31-33" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb31-34"><a href="#cb31-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tar_target</span>(</span>
+<span id="cb31-35"><a href="#cb31-35" aria-hidden="true" tabindex="-1"></a>    summary_iris,</span>
+<span id="cb31-36"><a href="#cb31-36" aria-hidden="true" tabindex="-1"></a>    <span class="fu">slow_summary</span>(data_iris)</span>
+<span id="cb31-37"><a href="#cb31-37" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb31-38"><a href="#cb31-38" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tar_target</span>(</span>
+<span id="cb31-39"><a href="#cb31-39" aria-hidden="true" tabindex="-1"></a>    data_mtcars,</span>
+<span id="cb31-40"><a href="#cb31-40" aria-hidden="true" tabindex="-1"></a>    <span class="fu">read.csv</span>(path_data_mtcars)</span>
+<span id="cb31-41"><a href="#cb31-41" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb31-42"><a href="#cb31-42" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tar_target</span>(</span>
+<span id="cb31-43"><a href="#cb31-43" aria-hidden="true" tabindex="-1"></a>    summary_mtcars,</span>
+<span id="cb31-44"><a href="#cb31-44" aria-hidden="true" tabindex="-1"></a>    <span class="fu">slow_summary</span>(data_mtcars)</span>
+<span id="cb31-45"><a href="#cb31-45" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb31-46"><a href="#cb31-46" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tar_target</span>(</span>
+<span id="cb31-47"><a href="#cb31-47" aria-hidden="true" tabindex="-1"></a>    list_summaries,</span>
+<span id="cb31-48"><a href="#cb31-48" aria-hidden="true" tabindex="-1"></a>    <span class="fu">list</span>(</span>
+<span id="cb31-49"><a href="#cb31-49" aria-hidden="true" tabindex="-1"></a>      <span class="st">"summary_iris"</span> <span class="ot">=</span> summary_iris,</span>
+<span id="cb31-50"><a href="#cb31-50" aria-hidden="true" tabindex="-1"></a>      <span class="st">"summary_mtcars"</span> <span class="ot">=</span> summary_mtcars</span>
+<span id="cb31-51"><a href="#cb31-51" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb31-52"><a href="#cb31-52" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb31-53"><a href="#cb31-53" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tar_target</span>(</span>
+<span id="cb31-54"><a href="#cb31-54" aria-hidden="true" tabindex="-1"></a>    plot_mtcars,</span>
+<span id="cb31-55"><a href="#cb31-55" aria-hidden="true" tabindex="-1"></a>    <span class="fu">save_plot</span>(</span>
+<span id="cb31-56"><a href="#cb31-56" aria-hidden="true" tabindex="-1"></a>      <span class="at">filename =</span> <span class="st">"mtcars_plot.png"</span>,</span>
+<span id="cb31-57"><a href="#cb31-57" aria-hidden="true" tabindex="-1"></a>      data_mtcars),</span>
+<span id="cb31-58"><a href="#cb31-58" aria-hidden="true" tabindex="-1"></a>    <span class="at">format =</span> <span class="st">"file"</span>)</span>
+<span id="cb31-59"><a href="#cb31-59" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>POdemos então executar este pipeline em paralelo usando <code>tar_make_future()</code> (ou sequencialmente com <code>tar_make()</code>). Para construirmos o pipeline do zero, fazemos <code>tar_destroy()</code> e depois <code>tar_make_future()</code>:</p>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Set workers = 2 to use 2 cpu cores</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>targets<span class="sc">::</span><span class="fu">tar_make_future</span>(<span class="at">workers =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>• start target path_data_mtcars</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>• start target data_iris</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>• built target path_data_mtcars [<span class="fl">0.2</span> seconds]</span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>• start target data_mtcars</span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>• built target data_iris [<span class="fl">0.22</span> seconds]</span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>• start target summary_iris</span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>• built target data_mtcars [<span class="fl">0.2</span> seconds]</span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a>• start target plot_mtcars</span>
+<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a>• built target plot_mtcars [<span class="fl">0.35</span> seconds]</span>
+<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a>• start target summary_mtcars</span>
+<span id="cb33-11"><a href="#cb33-11" aria-hidden="true" tabindex="-1"></a>• built target summary_iris [<span class="fl">30.5</span> seconds]</span>
+<span id="cb33-12"><a href="#cb33-12" aria-hidden="true" tabindex="-1"></a>• built target summary_mtcars [<span class="fl">30.52</span> seconds]</span>
+<span id="cb33-13"><a href="#cb33-13" aria-hidden="true" tabindex="-1"></a>• start target list_summaries</span>
+<span id="cb33-14"><a href="#cb33-14" aria-hidden="true" tabindex="-1"></a>• built target list_summaries [<span class="fl">0.21</span> seconds]</span>
+<span id="cb33-15"><a href="#cb33-15" aria-hidden="true" tabindex="-1"></a>• end pipeline [<span class="fl">38.72</span> seconds]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Como podemos ver, foi mais rápido mas não demorou metado do tempo. A razão de ser mais rápido mas não 2x mais rápido deve-se ao facto de haver alguma sobrecarga quando se corre código em paralelo. Novas sessões do R têm de ser espalhadas pelos <em>targets</em>, os dados precisam de ser transferidos e os pacotes precisão de ser carregados nessas novas sessões. Por isso é que só vale a pena paralelizar código que demora algum tempo a ser executado. Se reduzirmos o número de segundos da função <code>slow_summary(...)</code> (por exemplo para 10), executar o código em paralelo pode ser mais lento do que executar o código sequencialmente, devido a essa sobrecarga. Mas se tivermos várias computações que demoram algum tempo, vale a pena defenirmos o <em>setup</em> inicial para a computação paralela. Ou seja, para executarmos o nosso pipeline em paralelo, as sessões extra de <em>workers</em> que são geradas pelo <code>{targets}</code> precisam de saber que pacotes devem usar e é também por isto que é importante carregarmos os pacotes que o pipeline precisa de usar:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tar_option_set</span>(<span class="at">packages =</span> <span class="st">"dplyr"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="o-targets-e-o-rmarkdown-ou-o-quarto" class="level2" data-number="13.7">
+<h2 data-number="13.7" class="anchored" data-anchor-id="o-targets-e-o-rmarkdown-ou-o-quarto"><span class="header-section-number">13.7</span> O <code>{targets}</code> e o RMarkdown (ou o Quarto)</h2>
+<p>Também é possível compilar documentos usando o RMarkdown (ou Quarto) com o <code>{targets}</code>. Para isto definimos um pipeline com os <em>outputs</em> que precisamos no documento e depois definimos o documento como um <em>target</em> a ser também computado. Por exemplo se queremos mostrar uma tabela no documento, definimos um pipeline que tem um <em>target</em> que constrói os dados para a tabela. Fazemos o mesmo para um gráfico ou um modelo estatístico. No ficheiro <code>.Rmd</code> (ou <code>.Qmd</code>), usamos <code>targets::tar_read()</code> para carregarmos os vários objectos que precisamos.</p>
+<p>Vejamos o seguinte ficheiro <code>_targets.R</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(targets)</span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a><span class="fu">tar_option_set</span>(<span class="at">packages =</span> <span class="fu">c</span>(<span class="st">"dplyr"</span>, <span class="st">"ggplot2"</span>))</span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a><span class="fu">list</span>(</span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tar_target</span>(</span>
+<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a>    path_data_mtcars,</span>
+<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"mtcars.csv"</span>,</span>
+<span id="cb35-9"><a href="#cb35-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">format =</span> <span class="st">"file"</span></span>
+<span id="cb35-10"><a href="#cb35-10" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb35-11"><a href="#cb35-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tar_target</span>(</span>
+<span id="cb35-12"><a href="#cb35-12" aria-hidden="true" tabindex="-1"></a>    data_mtcars,</span>
+<span id="cb35-13"><a href="#cb35-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">read.csv</span>(path_data_mtcars)</span>
+<span id="cb35-14"><a href="#cb35-14" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb35-15"><a href="#cb35-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tar_target</span>(</span>
+<span id="cb35-16"><a href="#cb35-16" aria-hidden="true" tabindex="-1"></a>    summary_mtcars,</span>
+<span id="cb35-17"><a href="#cb35-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summary</span>(data_mtcars)</span>
+<span id="cb35-18"><a href="#cb35-18" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb35-19"><a href="#cb35-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tar_target</span>(</span>
+<span id="cb35-20"><a href="#cb35-20" aria-hidden="true" tabindex="-1"></a>    clean_mtcars,</span>
+<span id="cb35-21"><a href="#cb35-21" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(data_mtcars,</span>
+<span id="cb35-22"><a href="#cb35-22" aria-hidden="true" tabindex="-1"></a>           <span class="at">am =</span> <span class="fu">as.character</span>(am))</span>
+<span id="cb35-23"><a href="#cb35-23" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb35-24"><a href="#cb35-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tar_target</span>(</span>
+<span id="cb35-25"><a href="#cb35-25" aria-hidden="true" tabindex="-1"></a>    plot_mtcars,</span>
+<span id="cb35-26"><a href="#cb35-26" aria-hidden="true" tabindex="-1"></a>    {<span class="fu">ggplot</span>(clean_mtcars) <span class="sc">+</span></span>
+<span id="cb35-27"><a href="#cb35-27" aria-hidden="true" tabindex="-1"></a>       <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">y =</span> mpg,</span>
+<span id="cb35-28"><a href="#cb35-28" aria-hidden="true" tabindex="-1"></a>                      <span class="at">x =</span> hp,</span>
+<span id="cb35-29"><a href="#cb35-29" aria-hidden="true" tabindex="-1"></a>                      <span class="at">shape =</span> am))}</span>
+<span id="cb35-30"><a href="#cb35-30" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb35-31"><a href="#cb35-31" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Este pipeline lê o ficheiro <code>.csv</code> anterior e cria um resumo dos dados e um gráfico. Mas não queremos apenas que esses objectos sejam guardados como ficheiros <code>.rds</code>, queremos usá-los para fazer o nosso documento (seja em formato <code>.Rmd</code> ou <code>.Qmd</code>). Para isto precisamos de outro pacote, <code>{tarchtypes}</code>. Este pacote têm muitas funções que nos permitem definir novos tipos de <em>targets</em> (a essas funções chamamos de fábrica de <em>targets</em>). A nova fábrica de <em>targets</em> que precisamos é <code>tarchetypes::tar_render()</code>. Como o nome indica, esta função faz a renderização dum ficheiro <code>.Rmd</code>. Podemos então escrever um ficheiro <code>.Rmd</code> (como em baixo) e guardá-lo junto ao nosso pipeline:</p>
+<div class="sourceCode" id="cb36"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>title: "mtcars is the best data set"</span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>author: "mtcars enjoyer"</span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>date: today</span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a>## Load the summary</span>
+<span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-9"><a href="#cb36-9" aria-hidden="true" tabindex="-1"></a>```{r}</span>
+<span id="cb36-10"><a href="#cb36-10" aria-hidden="true" tabindex="-1"></a>tar_read(summary_mtcars)</span>
+<span id="cb36-11"><a href="#cb36-11" aria-hidden="true" tabindex="-1"></a>```</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>NO nosso ficheiro <code>_targets.R</code>, carregamos o <code>{tarchetypes}</code> no início do ficheiro e adicionamos um novo <em>target</em> no final:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(targets)</span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tarchetypes)</span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a><span class="fu">tar_option_set</span>(<span class="at">packages =</span> <span class="fu">c</span>(<span class="st">"dplyr"</span>, <span class="st">"ggplot2"</span>))</span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a><span class="fu">list</span>(</span>
+<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tar_target</span>(</span>
+<span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a>    path_data_mtcars,</span>
+<span id="cb37-9"><a href="#cb37-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">"mtcars.csv"</span>,</span>
+<span id="cb37-10"><a href="#cb37-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">format =</span> <span class="st">"file"</span></span>
+<span id="cb37-11"><a href="#cb37-11" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb37-12"><a href="#cb37-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tar_target</span>(</span>
+<span id="cb37-13"><a href="#cb37-13" aria-hidden="true" tabindex="-1"></a>    data_mtcars,</span>
+<span id="cb37-14"><a href="#cb37-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">read.csv</span>(path_data_mtcars)</span>
+<span id="cb37-15"><a href="#cb37-15" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb37-16"><a href="#cb37-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tar_target</span>(</span>
+<span id="cb37-17"><a href="#cb37-17" aria-hidden="true" tabindex="-1"></a>    summary_mtcars,</span>
+<span id="cb37-18"><a href="#cb37-18" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summary</span>(data_mtcars)</span>
+<span id="cb37-19"><a href="#cb37-19" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb37-20"><a href="#cb37-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tar_target</span>(</span>
+<span id="cb37-21"><a href="#cb37-21" aria-hidden="true" tabindex="-1"></a>    clean_mtcars,</span>
+<span id="cb37-22"><a href="#cb37-22" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(data_mtcars,</span>
+<span id="cb37-23"><a href="#cb37-23" aria-hidden="true" tabindex="-1"></a>           <span class="at">am =</span> <span class="fu">as.character</span>(am))</span>
+<span id="cb37-24"><a href="#cb37-24" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb37-25"><a href="#cb37-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tar_target</span>(</span>
+<span id="cb37-26"><a href="#cb37-26" aria-hidden="true" tabindex="-1"></a>    plot_mtcars,</span>
+<span id="cb37-27"><a href="#cb37-27" aria-hidden="true" tabindex="-1"></a>    {<span class="fu">ggplot</span>(clean_mtcars) <span class="sc">+</span></span>
+<span id="cb37-28"><a href="#cb37-28" aria-hidden="true" tabindex="-1"></a>       <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">y =</span> mpg,</span>
+<span id="cb37-29"><a href="#cb37-29" aria-hidden="true" tabindex="-1"></a>                      <span class="at">x =</span> hp,</span>
+<span id="cb37-30"><a href="#cb37-30" aria-hidden="true" tabindex="-1"></a>                      <span class="at">shape =</span> am))}</span>
+<span id="cb37-31"><a href="#cb37-31" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb37-32"><a href="#cb37-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tar_render</span>(</span>
+<span id="cb37-33"><a href="#cb37-33" aria-hidden="true" tabindex="-1"></a>    my_doc,</span>
+<span id="cb37-34"><a href="#cb37-34" aria-hidden="true" tabindex="-1"></a>    <span class="st">"my_document.Rmd"</span></span>
+<span id="cb37-35"><a href="#cb37-35" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb37-36"><a href="#cb37-36" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Ao executarmos o nosso pipeline com <code>tar_make()</code> estamos a compilar o ficheiro <code>.Rmd</code> num ficheiro <code>.html</code> que podemos abrir no nosso <em>browser</em>. Mesmo que a nossa intenção seja compilar o documento noutro formado, é avisado fazer a compilação para <code>.html</code>, no desenvolvimento. Assim podemos abrir o ficheiro <code>.html</code> no <em>browser</em> e continuar a trabalhar no ficheiro fonte, sempre que executamos o pipeline com alterações ao documento, apenas temos de refrescar o <em>browser</em> para vermos essas alterações. Se a compilação for, por exemplo, para um documento Word, temos de fechar e voltar a abrir o documento se quisermos ver as alterações, o que pode ser irritante. A outra razão prende-se com o facto do <em>output</em> de ficheiro .html ser um formato de apenas-texto e como tal pode ser rastreado por um sistema de controlo de versões. No entanto, devemos ter presente que os ficheiros <code>.html</code> podem ser demasiado grandes e nesse caso não nos interessa rastreá-los, apenas queremos rastrear a sua fonte (os ficheiros <code>.Rmd</code>).</p>
+<p>Se abrirmos o ficheiro de <em>output</em>, devemos ver algo como isto:</p>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="IMG/mtcars_rmd_1.png" class="img-fluid figure-img" width="709"></p>
+<figcaption>Este é o output do nosso pipeline. O nosso primeiro data product!</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>No final terá um aspecto mais bonito. Não vale a pena perdermos tempo em fazer coisas bonitas, logo no início. Idealmente, tentamos executar o nosso pipeline com exemplos simples e vamos adicionando funcionalidades. Devemos também procurar receber <em>feddback</em> do conteúdo o mais cedo possível. Seria um desperdício gastarmos tempo em dar bom aspecto a uma coisa que não é o esperado. Vamos adicionar também o <code>ggplot</code> dos dados ao documento.</p>
+<p>Basta acrescentarmos:</p>
+<div class="sourceCode" id="cb38"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>```{r}</span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>tar_read(plot_mtcars)</span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>```</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>no final do ficheiro <code>.Rmd</code>. Ao voltarmos a executar o pipeline, vamos adicionar o gráfico ao documento. Antes de continuarmos, vamos só relembrar, de novo, a utilidade do <code>{targets}</code> alterando os dados subjacentes. Executemos o código:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(<span class="fu">head</span>(mtcars),</span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>          <span class="st">"mtcars.csv"</span>,</span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>          <span class="at">row.names =</span> F)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>e voltemos a executar o pipeline. Como alteramos os dados e todos os <em>targets</em> dependem dos dados, o documento é reconstruido por inteiro. Ou seja, no caso de precisarmos de construir um reporte semanal, diário, ou até hora a hora, usando o <code>{targets}</code> o reporte atualizado pode ser construido automaticamente, e os <em>targets</em> que não são impactados pelo <em>update</em> não precisam de ser refeitos. Vamos voltar aos dados iniciais, executando:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(mtcars,</span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>          <span class="st">"mtcars.csv"</span>,</span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>          <span class="at">row.names =</span> F)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>e voltamos a refazer o documento, executando o pipeline.</p>
+<p>Agora que verificamos que o pipeline está a funcionar bem, podemos trabalhar no próprio documento, transformando o <em>output</em> numa tabela com bom aspecto com <code>{flextable}</code>. Mas temos um problema: o <em>output</em> de <code>summary()</code> não é um <code>data.frame</code> mas sim um <code>table</code> e o <code>flextable::flextable()</code> espera como <em>input</em> um <code>data.frame</code>. Assim, se chamarmos <code>flextable::flextable()</code> com o <em>output</em> de <code>summary()</code> vamos ter uma mensagem de erro. No entanto, podemos substituir <code>summary()</code> por uma que devolva um <code>data.frame</code>, como é o caso de <code>skimr::skim()</code>; voltemos ao nosso pipeline e toquemos <code>summary()</code> por <code>skim()</code> (depois de adicionarmos os pacotes <code>{skimr}</code> e <code>{flextable}</code>):</p>
+<div class="sourceCode" id="cb41"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>library(targets)</span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>library(tarchetypes)</span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>tar_option_set(packages = c(</span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>                 "dplyr",</span>
+<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a>                 "flextable",</span>
+<span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a>                 "ggplot2",</span>
+<span id="cb41-8"><a href="#cb41-8" aria-hidden="true" tabindex="-1"></a>                 "skimr"</span>
+<span id="cb41-9"><a href="#cb41-9" aria-hidden="true" tabindex="-1"></a>                 )</span>
+<span id="cb41-10"><a href="#cb41-10" aria-hidden="true" tabindex="-1"></a>               )</span>
+<span id="cb41-11"><a href="#cb41-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-12"><a href="#cb41-12" aria-hidden="true" tabindex="-1"></a>list(</span>
+<span id="cb41-13"><a href="#cb41-13" aria-hidden="true" tabindex="-1"></a>  tar_target(</span>
+<span id="cb41-14"><a href="#cb41-14" aria-hidden="true" tabindex="-1"></a>    path_data_mtcars,</span>
+<span id="cb41-15"><a href="#cb41-15" aria-hidden="true" tabindex="-1"></a>    "mtcars.csv",</span>
+<span id="cb41-16"><a href="#cb41-16" aria-hidden="true" tabindex="-1"></a>    format = "file"</span>
+<span id="cb41-17"><a href="#cb41-17" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb41-18"><a href="#cb41-18" aria-hidden="true" tabindex="-1"></a>  tar_target(</span>
+<span id="cb41-19"><a href="#cb41-19" aria-hidden="true" tabindex="-1"></a>    data_mtcars,</span>
+<span id="cb41-20"><a href="#cb41-20" aria-hidden="true" tabindex="-1"></a>    read.csv(path_data_mtcars)</span>
+<span id="cb41-21"><a href="#cb41-21" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb41-22"><a href="#cb41-22" aria-hidden="true" tabindex="-1"></a>  tar_target(</span>
+<span id="cb41-23"><a href="#cb41-23" aria-hidden="true" tabindex="-1"></a>    summary_mtcars,</span>
+<span id="cb41-24"><a href="#cb41-24" aria-hidden="true" tabindex="-1"></a>    skim(data_mtcars)</span>
+<span id="cb41-25"><a href="#cb41-25" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb41-26"><a href="#cb41-26" aria-hidden="true" tabindex="-1"></a>  tar_target(</span>
+<span id="cb41-27"><a href="#cb41-27" aria-hidden="true" tabindex="-1"></a>    clean_mtcars,</span>
+<span id="cb41-28"><a href="#cb41-28" aria-hidden="true" tabindex="-1"></a>    mutate(data_mtcars,</span>
+<span id="cb41-29"><a href="#cb41-29" aria-hidden="true" tabindex="-1"></a>           am = as.character(am))</span>
+<span id="cb41-30"><a href="#cb41-30" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb41-31"><a href="#cb41-31" aria-hidden="true" tabindex="-1"></a>  tar_target(</span>
+<span id="cb41-32"><a href="#cb41-32" aria-hidden="true" tabindex="-1"></a>    plot_mtcars,</span>
+<span id="cb41-33"><a href="#cb41-33" aria-hidden="true" tabindex="-1"></a>    {ggplot(clean_mtcars) +</span>
+<span id="cb41-34"><a href="#cb41-34" aria-hidden="true" tabindex="-1"></a>       geom_point(aes(y = mpg,</span>
+<span id="cb41-35"><a href="#cb41-35" aria-hidden="true" tabindex="-1"></a>                      x = hp,</span>
+<span id="cb41-36"><a href="#cb41-36" aria-hidden="true" tabindex="-1"></a>                      shape = am))}</span>
+<span id="cb41-37"><a href="#cb41-37" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb41-38"><a href="#cb41-38" aria-hidden="true" tabindex="-1"></a>  tar_render(</span>
+<span id="cb41-39"><a href="#cb41-39" aria-hidden="true" tabindex="-1"></a>    my_doc,</span>
+<span id="cb41-40"><a href="#cb41-40" aria-hidden="true" tabindex="-1"></a>    "my_document.Rmd"</span>
+<span id="cb41-41"><a href="#cb41-41" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb41-42"><a href="#cb41-42" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>No ficheiro <code>.Rmd</code> podemos então usar o <em>output</em> de <code>tar_read(summary_mtcars)</code> com <code>flextable()</code></p>
+<div class="sourceCode" id="cb42"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>## Load the summary</span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>```{r}</span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a>tar_read(summary_mtcars) %&gt;%</span>
+<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a>  flextable()</span>
+<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a>```</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Se executarmos o pipeline e voltarmos a ver o <em>output</em>, veremos uma bela tabela com muitas estatísticas sumárias. Uma vez que o <em>output</em> de <code>skim()</code> é um <code>data.frame</code>, podemos manter apenas as estatísticas que nos interessam com <code>dplyr::select()</code> para as colunas que precisamos:</p>
+<div class="sourceCode" id="cb43"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>## Load the summary</span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>``{r}</span>
+<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a>tar_read(summary_mtcars) %&gt;%</span>
+<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a>  select(Variable = skim_variable,</span>
+<span id="cb43-6"><a href="#cb43-6" aria-hidden="true" tabindex="-1"></a>         Mean = numeric.mean,</span>
+<span id="cb43-7"><a href="#cb43-7" aria-hidden="true" tabindex="-1"></a>         SD = numeric.sd,</span>
+<span id="cb43-8"><a href="#cb43-8" aria-hidden="true" tabindex="-1"></a>         Histogram = numeric.hist) %&gt;%</span>
+<span id="cb43-9"><a href="#cb43-9" aria-hidden="true" tabindex="-1"></a>  flextable()</span>
+<span id="cb43-10"><a href="#cb43-10" aria-hidden="true" tabindex="-1"></a>``</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>se quisermos esconder o código R no <em>output</em> do documento, apenas temos de usar <code>knitr::opts_chunk$set(echo = F)</code> no ficheiro <code>.Rmd</code>, ou se quisermos esconder o código para <em>chunks</em> individualmente, usamos <code>echo = FALSE</code> no cabeçalho dos <em>chunks</em>. O ficheiro final <code>.Rmd</code> será:</p>
+<div class="sourceCode" id="cb44"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>title: "mtcars is the best data set"</span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>author: "mtcars enjoyer"</span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>date: today</span>
+<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-7"><a href="#cb44-7" aria-hidden="true" tabindex="-1"></a>```{r, include = FALSE}</span>
+<span id="cb44-8"><a href="#cb44-8" aria-hidden="true" tabindex="-1"></a># Hides all source code</span>
+<span id="cb44-9"><a href="#cb44-9" aria-hidden="true" tabindex="-1"></a>knitr::opts_chunk$set(echo = F)</span>
+<span id="cb44-10"><a href="#cb44-10" aria-hidden="true" tabindex="-1"></a>```</span>
+<span id="cb44-11"><a href="#cb44-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-12"><a href="#cb44-12" aria-hidden="true" tabindex="-1"></a>## Load the summary statistics</span>
+<span id="cb44-13"><a href="#cb44-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-14"><a href="#cb44-14" aria-hidden="true" tabindex="-1"></a>I really like to see the distribution of the</span>
+<span id="cb44-15"><a href="#cb44-15" aria-hidden="true" tabindex="-1"></a>variables as a cell of a table:</span>
+<span id="cb44-16"><a href="#cb44-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-17"><a href="#cb44-17" aria-hidden="true" tabindex="-1"></a>```{r}</span>
+<span id="cb44-18"><a href="#cb44-18" aria-hidden="true" tabindex="-1"></a>tar_read(summary_mtcars) %&gt;%</span>
+<span id="cb44-19"><a href="#cb44-19" aria-hidden="true" tabindex="-1"></a>  select(Variable = skim_variable,</span>
+<span id="cb44-20"><a href="#cb44-20" aria-hidden="true" tabindex="-1"></a>         Mean = numeric.mean,</span>
+<span id="cb44-21"><a href="#cb44-21" aria-hidden="true" tabindex="-1"></a>         SD = numeric.sd,</span>
+<span id="cb44-22"><a href="#cb44-22" aria-hidden="true" tabindex="-1"></a>         Histogram = numeric.hist) %&gt;%</span>
+<span id="cb44-23"><a href="#cb44-23" aria-hidden="true" tabindex="-1"></a>  flextable() %&gt;%</span>
+<span id="cb44-24"><a href="#cb44-24" aria-hidden="true" tabindex="-1"></a>  set_caption("Summary statistics for mtcars")</span>
+<span id="cb44-25"><a href="#cb44-25" aria-hidden="true" tabindex="-1"></a>```</span>
+<span id="cb44-26"><a href="#cb44-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-27"><a href="#cb44-27" aria-hidden="true" tabindex="-1"></a>## Graphics</span>
+<span id="cb44-28"><a href="#cb44-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-29"><a href="#cb44-29" aria-hidden="true" tabindex="-1"></a>The plot below is really nice, just look at it:</span>
+<span id="cb44-30"><a href="#cb44-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-31"><a href="#cb44-31" aria-hidden="true" tabindex="-1"></a>```{r, fig.cap = "Scatterplot of `mpg` and `hp` by type of transmission"}</span>
+<span id="cb44-32"><a href="#cb44-32" aria-hidden="true" tabindex="-1"></a>tar_read(plot_mtcars) +</span>
+<span id="cb44-33"><a href="#cb44-33" aria-hidden="true" tabindex="-1"></a>  theme_minimal() +</span>
+<span id="cb44-34"><a href="#cb44-34" aria-hidden="true" tabindex="-1"></a>  theme(legend.position = "bottom")</span>
+<span id="cb44-35"><a href="#cb44-35" aria-hidden="true" tabindex="-1"></a>```</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Como podemos ver, ao usarmos <code>tar_read()</code>, temos o objecto como se tivesse sido gerado no próprio ficheiro <code>.Rmd</code>, e podemos ir adicionando-lhe coisas (como mudar o tema do <code>ggplot</code>). Quando estivermos satisfeitos com o conteúdo, podemos adicionar <code>output: word_document</code> ao cabeçalho <code>yaml</code> para gerarmos um documento Word.</p>
+<p>Por usarmos o <code>{targets}</code> para compilar documentos RMarkdown e porque a computação dos objectos é tratada pelo <code>{targets}</code>, a compilação do documento é muito rápida. Apenas precisa de carregar targets que já foram computados. Isto também significa que beneficiamos doutra vantagem do {targets}, apenas os <code>{targets}</code> <em>out-of-date</em> são re-computados e essa computação pode ser feita em paralelo. Sem o <code>{targets}</code> na compilação dum RMarkdown serão sempre recomputados todos os objectos e sempre sequencialmente.</p>
+</section>
+<section id="rescrever-o-nosso-projecto-como-um-pipeline" class="level2" data-number="13.8">
+<h2 data-number="13.8" class="anchored" data-anchor-id="rescrever-o-nosso-projecto-como-um-pipeline"><span class="header-section-number">13.8</span> Rescrever o nosso projecto como um pipeline</h2>
+<p>Podemos voltar agora tornar o nosso pequeno projecto num pipeline reprodutível. Voltemos para a pasta do nosso projecto e em particular para o <em>branch</em> <code>fusen</code>. Foi neste branch que usamos o <code>{fusen}</code> para transformarmos o nosso <code>.Rmd</code> num pacote. Este pacote tem funções para atualizarmos os dados. Mas lembremo-nos que escrevemos a análise noutro <code>.Rmd</code> que não inflacionámos, <code>analyse_data.Rmd</code>. Vamos então escrever o pipeline <code>{targets}</code> que irá usar o pacote inflacionado e computar todos os <em>targets</em> para a análise. O primeiro passo é criar um novo <em>branch</em> a partir do branch <code>rmd</code>, pois isto facilitar-nos-á o trabalho:</p>
+<div class="sourceCode" id="cb45"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="co">#switch to the rmd branch</span></span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a><span class="ex">owner@localhost</span> ➤ git checkout rmd</span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a><span class="co">#create and switch to the new branch called pipeline</span></span>
+<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a><span class="ex">owner@localhost</span> ➤ git checkout <span class="at">-b</span> pipeline </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Começemos por apagar o ficheiro <code>save_data.Rmd</code> que já não precisamos pois já temos tudo disponível a partir do pacote que desenvolvemos.</p>
+<div class="sourceCode" id="cb46"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="ex">owner@localhost</span> ➤ rm save_data.Rmd</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Vamos iniciar uma nova sessão do R e instalar o nosso pacote <code>{housing}</code>. Para garantirmos que todos temos acesso à mesma versão, podemos executar:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>remotes<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">"rap4all/housing@fusen"</span>,</span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>                        <span class="at">ref =</span> <span class="st">"1c86095"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Assim podemos instalar o pacote a partir do repositório Github, e mais especificamente do <em>branch</em> <code>{fusen}</code> no commit <code>1c86095</code> (podemos ter de instalar o pacote <code>{remotes}</code>, primeiro). Com o pacote instalado podemos começar a construir o pipeline. Na mesma sessão do R, chamamos <code>tar_script()</code> para termos um template no ficheiro <code>_targets.R</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>targets<span class="sc">::</span><span class="fu">tar_script</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Devemos ter três ficheiros: <code>README.md</code>, <code>_targets.R</code> e <code>analyse_data.Rmd</code>. Vamos alterar o ficheiro <code>analyse_data.Rmd</code> para que leia <em>targets</em> que foram pré-computados em vez de fazer a computação dentro do ficheiro <code>analyse_data.Rmd</code> quando é compilado.</p>
+<p>Primeiro, precisamos de carregar os dados. Os nossos conjuntos de dados fazem parte do nosso pacote pelo que apenas precisamos de usar <code>data(commune_level_data)</code> e <code>data(country_level_data)</code>. Mas, como já referimos, o <code>{targets}</code> apenas gosta de funções puras e <code>data()</code> não é pura! Vejamos o que acontece quando fazemos <code>data('mtcars')</code>. No RStudio isto é mais fácil de ver: iniciamos uma nova sessão, chamamos <code>data(mtcars)</code> e podemos ver no painel <code>Enviroment</code>:</p>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="IMG/mtcars_promise.png" class="img-fluid figure-img" width="300"></p>
+<figcaption>O que está descrito como ‘mtcars’ ainda não é um ‘data.frame’</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Neste ponto, <code>mtcars</code> é apenas uma <code>Promise</code>. Só se interagirmos com ele é que a <code>Promise</code> passa a ser um <code>data.frame</code>. Ou seja, <code>data()</code> devolve uma promessa, mas podemos guardá-la numa variável. Experimentemos:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">data</span>(mtcars)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Vejamos que <code>x</code> contém a <em>string</em> “mtcars” da classe <em>character</em>. Então, data() devolve uma promessa que guarda no ambiente global (isto é um efeito-lateral) mas devolve uma <em>string</em>. Como o <code>{targets}</code> precisa de funções puras, se escrevermos:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tar_target</span>(</span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>  target_mtcars,</span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data</span>(mtcars)</span>
+<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>o <em>target</em> <code>target_mtcars</code> será igaul à <em>string</em> <code>"mtcars"</code>. Relembremos que um <em>target</em> tem de devolver alguma coisa e funções com efeitos-laterais nem sempre devolvem alguma coisa, ou pelo menos não a coisa que queremos. Como vimos com <code>plot()</code> que não devolve um objecto, também aqui temos o mesmo problema.</p>
+<p>Para resolvermos este problema, precisamos duma função pura que devolve um <code>data.frame</code>. Isto significa que precisamos de carregar os dados, que resultam ser uma promessa (carregados num ambiente directamente), e depois temos e evaluar essa promessa. A função que faz isto:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>read_data <span class="ot">&lt;-</span> <span class="cf">function</span>(data_name, package_name){</span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a>  temp <span class="ot">&lt;-</span> <span class="fu">new.env</span>(<span class="at">parent =</span> <span class="fu">emptyenv</span>())</span>
+<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-5"><a href="#cb51-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data</span>(<span class="at">list =</span> data_name,</span>
+<span id="cb51-6"><a href="#cb51-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">package =</span> package_name,</span>
+<span id="cb51-7"><a href="#cb51-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">envir =</span> temp)</span>
+<span id="cb51-8"><a href="#cb51-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-9"><a href="#cb51-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">get</span>(data_name, <span class="at">envir =</span> temp)</span>
+<span id="cb51-10"><a href="#cb51-10" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Esta função tem como argumentos <code>data_name</code> e <code>package_name</code>, ambos <em>strings</em>.</p>
+<p>Usamos <code>data()</code> com três argumentos: <code>list =</code>, <code>package =</code> e <code>envir =</code>. Precisamos do primeiro argumento (<code>list =</code>) porque queremos passar <code>data_name</code> como uma <em>string</em>. Se fizéssemos qualquer coisa como <code>data(data_name)</code>, esperando que <code>data_name</code> fosse substituído pelo valor do seu <em>input</em> teríamos um erro. Isto porque <code>data()</code> iria procurar por um conjunto de dados que se chamasse literalmente <code>data_name</code> em vez de substituir pelo seu <em>input</em>. O segundo argumento, <code>package =</code> serve para definirmos em que pacote é que devemos procurar o conjunto de dados, e neste caso daremos como <em>input</em> o nosso pacote<code>{housing}</code>. Por fim temos o argumento <code>envir =</code>. Este argumento serve para dizer a <code>data()</code> onde deve carregar o conjunto de dados. Por defeito, <code>data()</code> carrega os dados no ambiente global. Mas nós queremos uma função pura que só deve devolver um objecto de dados e não pode carregar nada no ambiente global. É aqui que entra o ambiente temporário criado na primeira linha do corpo da função. Então a função carrega o objecto de dados no ambiente temporário (que é diferente do ambiente global) e quando terminamos podemos livrar-nos desse ambiente deixando limpo o ambiente global.</p>
+<p>Por fim usamos <code>get()</code>, para tornarmos a promessa num conjunto de dados. Se apenas fizéssemos <code>data(list = data_name...)</code> o noso <em>target</em> teria simplesmente uma <em>string</em> do tipo <em>character</em>. A função <code>get()</code> procura um objecto pelo nome e devolve-o. Ou seja, na linha <code>get(data_name)</code>, o nome do conjunto de dados que dermos a <code>data_name</code> como <em>input</em> e que está no ambiente temporário que definimos é devolvido como um conjunto de dados. Desta forma não há qualquer interação com o ambiente global, pelo que a função é pura: devolve sempre o mesmo <em>output</em> para o mesmo <em>input</em>, e não polui, de qualquer maneira, o ambiente global. Depois desta função ser executada o ambiente temporário é descartado.</p>
+<p>Isto parece complicado mas é apenas uma consequência do <code>{targets}</code> precisar de funções puras que devolvem alguma coisa para funcionar bem. Infelizmente nem todas as funçõs do R são puras pelo que precisamos deste tipo de artimanhas. No entanto, este trabalho não é em vão. Ao nos forçar a usar funções puras, o <code>{targets}</code> contribui para a qualidade geral e para a segurança do nosso pipeline. Quando o nosso pipeline acabar de executar o ambinte global permanecerá limpo. Ter objectos a poluir o nosso ambiente global pode causar interações em próximas execuções do pipeline:</p>
+<p>Vamos então continuar o nosso pipeline:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(targets)</span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tarchetypes)</span>
+<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a><span class="fu">tar_option_set</span>(<span class="at">packages =</span> <span class="st">"housing"</span>)</span>
+<span id="cb52-5"><a href="#cb52-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-6"><a href="#cb52-6" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">"functions/read_data.R"</span>)</span>
+<span id="cb52-7"><a href="#cb52-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-8"><a href="#cb52-8" aria-hidden="true" tabindex="-1"></a><span class="fu">list</span>(</span>
+<span id="cb52-9"><a href="#cb52-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tar_target</span>(</span>
+<span id="cb52-10"><a href="#cb52-10" aria-hidden="true" tabindex="-1"></a>    commune_level_data,</span>
+<span id="cb52-11"><a href="#cb52-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">read_data</span>(<span class="st">"commune_level_data"</span>,</span>
+<span id="cb52-12"><a href="#cb52-12" aria-hidden="true" tabindex="-1"></a>              <span class="st">"housing"</span>)</span>
+<span id="cb52-13"><a href="#cb52-13" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb52-14"><a href="#cb52-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-15"><a href="#cb52-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tar_target</span>(</span>
+<span id="cb52-16"><a href="#cb52-16" aria-hidden="true" tabindex="-1"></a>    country_level_data,</span>
+<span id="cb52-17"><a href="#cb52-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">read_data</span>(<span class="st">"country_level_data"</span>,</span>
+<span id="cb52-18"><a href="#cb52-18" aria-hidden="true" tabindex="-1"></a>              <span class="st">"housing"</span>)</span>
+<span id="cb52-19"><a href="#cb52-19" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb52-20"><a href="#cb52-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-21"><a href="#cb52-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tar_target</span>(</span>
+<span id="cb52-22"><a href="#cb52-22" aria-hidden="true" tabindex="-1"></a>    commune_data,</span>
+<span id="cb52-23"><a href="#cb52-23" aria-hidden="true" tabindex="-1"></a>    <span class="fu">get_laspeyeres</span>(commune_level_data)</span>
+<span id="cb52-24"><a href="#cb52-24" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb52-25"><a href="#cb52-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-26"><a href="#cb52-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tar_target</span>(</span>
+<span id="cb52-27"><a href="#cb52-27" aria-hidden="true" tabindex="-1"></a>    country_data,</span>
+<span id="cb52-28"><a href="#cb52-28" aria-hidden="true" tabindex="-1"></a>    <span class="fu">get_laspeyeres</span>(country_level_data)</span>
+<span id="cb52-29"><a href="#cb52-29" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb52-30"><a href="#cb52-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-31"><a href="#cb52-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tar_target</span>(</span>
+<span id="cb52-32"><a href="#cb52-32" aria-hidden="true" tabindex="-1"></a>    communes,</span>
+<span id="cb52-33"><a href="#cb52-33" aria-hidden="true" tabindex="-1"></a>    <span class="fu">c</span>(<span class="st">"Luxembourg"</span>,</span>
+<span id="cb52-34"><a href="#cb52-34" aria-hidden="true" tabindex="-1"></a>      <span class="st">"Esch-sur-Alzette"</span>,</span>
+<span id="cb52-35"><a href="#cb52-35" aria-hidden="true" tabindex="-1"></a>      <span class="st">"Mamer"</span>,</span>
+<span id="cb52-36"><a href="#cb52-36" aria-hidden="true" tabindex="-1"></a>      <span class="st">"Schengen"</span>,</span>
+<span id="cb52-37"><a href="#cb52-37" aria-hidden="true" tabindex="-1"></a>      <span class="st">"Wincrange"</span>)</span>
+<span id="cb52-38"><a href="#cb52-38" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb52-39"><a href="#cb52-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-40"><a href="#cb52-40" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tar_render</span>(</span>
+<span id="cb52-41"><a href="#cb52-41" aria-hidden="true" tabindex="-1"></a>    analyse_data,</span>
+<span id="cb52-42"><a href="#cb52-42" aria-hidden="true" tabindex="-1"></a>    <span class="st">"analyse_data.Rmd"</span></span>
+<span id="cb52-43"><a href="#cb52-43" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb52-44"><a href="#cb52-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-45"><a href="#cb52-45" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>E vejamos agora como está o ficheiro <code>analyse_data.Rmd</code>:</p>
+<div class="sourceCode" id="cb53"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a>title: "Nominal house prices data in Luxembourg"</span>
+<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a>author: "Bruno Rodrigues"</span>
+<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a>date: "`r Sys.Date()`"</span>
+<span id="cb53-5"><a href="#cb53-5" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb53-6"><a href="#cb53-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-7"><a href="#cb53-7" aria-hidden="true" tabindex="-1"></a>Let’s load the datasets (the Laspeyeres price index is already computed):</span>
+<span id="cb53-8"><a href="#cb53-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-9"><a href="#cb53-9" aria-hidden="true" tabindex="-1"></a>```{r}</span>
+<span id="cb53-10"><a href="#cb53-10" aria-hidden="true" tabindex="-1"></a>tar_load(commune_data)</span>
+<span id="cb53-11"><a href="#cb53-11" aria-hidden="true" tabindex="-1"></a>tar_load(country_data)</span>
+<span id="cb53-12"><a href="#cb53-12" aria-hidden="true" tabindex="-1"></a>```</span>
+<span id="cb53-13"><a href="#cb53-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-14"><a href="#cb53-14" aria-hidden="true" tabindex="-1"></a>We are going to create a plot for 5 communes and compare the</span>
+<span id="cb53-15"><a href="#cb53-15" aria-hidden="true" tabindex="-1"></a>price evolution in the communes to the national price evolution. </span>
+<span id="cb53-16"><a href="#cb53-16" aria-hidden="true" tabindex="-1"></a>Let’s first load the communes:</span>
+<span id="cb53-17"><a href="#cb53-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-18"><a href="#cb53-18" aria-hidden="true" tabindex="-1"></a>```{r}</span>
+<span id="cb53-19"><a href="#cb53-19" aria-hidden="true" tabindex="-1"></a>tar_load(communes)</span>
+<span id="cb53-20"><a href="#cb53-20" aria-hidden="true" tabindex="-1"></a>```</span>
+<span id="cb53-21"><a href="#cb53-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-22"><a href="#cb53-22" aria-hidden="true" tabindex="-1"></a>```{r, results = "asis"}</span>
+<span id="cb53-23"><a href="#cb53-23" aria-hidden="true" tabindex="-1"></a>res &lt;- lapply(communes, function(x){</span>
+<span id="cb53-24"><a href="#cb53-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-25"><a href="#cb53-25" aria-hidden="true" tabindex="-1"></a>  knitr::knit_child(text = c(</span>
+<span id="cb53-26"><a href="#cb53-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-27"><a href="#cb53-27" aria-hidden="true" tabindex="-1"></a>    '\n',</span>
+<span id="cb53-28"><a href="#cb53-28" aria-hidden="true" tabindex="-1"></a>    '## Plot for commune: `r x`',</span>
+<span id="cb53-29"><a href="#cb53-29" aria-hidden="true" tabindex="-1"></a>    '\n',</span>
+<span id="cb53-30"><a href="#cb53-30" aria-hidden="true" tabindex="-1"></a>    '```{r, echo = F}',</span>
+<span id="cb53-31"><a href="#cb53-31" aria-hidden="true" tabindex="-1"></a>    'print(make_plot(country_data, commune_data, x))',</span>
+<span id="cb53-32"><a href="#cb53-32" aria-hidden="true" tabindex="-1"></a>    '```'</span>
+<span id="cb53-33"><a href="#cb53-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-34"><a href="#cb53-34" aria-hidden="true" tabindex="-1"></a>     ),</span>
+<span id="cb53-35"><a href="#cb53-35" aria-hidden="true" tabindex="-1"></a>     envir = environment(),</span>
+<span id="cb53-36"><a href="#cb53-36" aria-hidden="true" tabindex="-1"></a>     quiet = TRUE)</span>
+<span id="cb53-37"><a href="#cb53-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-38"><a href="#cb53-38" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb53-39"><a href="#cb53-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-40"><a href="#cb53-40" aria-hidden="true" tabindex="-1"></a>cat(unlist(res), sep = "\n")</span>
+<span id="cb53-41"><a href="#cb53-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-42"><a href="#cb53-42" aria-hidden="true" tabindex="-1"></a>```</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Como podemos ver os dados são carregados com <code>tar_load()</code> que carrega os dois conjuntos de dados previamente computados. A parte final do documento é semelhante ao que tinhamos antes de tornarmos a nossa análise num pacote e depois num pipeline. Usamos um documento ‘filho’ para gerarmos tantas secções quantas as necessárias (<em>Don’t Repeat Yourself!</em>). Podemos alterar o noso pipeline, removendo elementos do objecto <code>communes</code> e voltando a executar todo o pipeline com <code>tar_make()</code>.</p>
+<p>Finalizada esta introdução ao <code>{targets}</code>: transformando a nossa análise num pipeline; precisamos agora garantir que os seus <em>outputs</em> são reprodutíveis. O primeiro passo é usarmos o <code>{renv}</code>, mas como já discutimos, isto não é suficiente, mas é essencial que o façamos. Vamos então inicializar o <code>{renv}</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>renv<span class="sc">::</span><span class="fu">init</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Este comando cria um ficheiro <code>renv.lock</code> com a listagem de todas as dependências do pipeline. Também o nosso pacote do Github fica listado:</p>
+<div class="sourceCode" id="cb55"><pre class="sourceCode json code-with-copy"><code class="sourceCode json"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="er">"housing":</span> <span class="fu">{</span></span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"Package"</span><span class="fu">:</span> <span class="st">"housing"</span><span class="fu">,</span></span>
+<span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"Version"</span><span class="fu">:</span> <span class="st">"0.1"</span><span class="fu">,</span></span>
+<span id="cb55-4"><a href="#cb55-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"Source"</span><span class="fu">:</span> <span class="st">"GitHub"</span><span class="fu">,</span></span>
+<span id="cb55-5"><a href="#cb55-5" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"RemoteType"</span><span class="fu">:</span> <span class="st">"github"</span><span class="fu">,</span></span>
+<span id="cb55-6"><a href="#cb55-6" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"RemoteHost"</span><span class="fu">:</span> <span class="st">"api.github.com"</span><span class="fu">,</span></span>
+<span id="cb55-7"><a href="#cb55-7" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"RemoteRepo"</span><span class="fu">:</span> <span class="st">"housing"</span><span class="fu">,</span></span>
+<span id="cb55-8"><a href="#cb55-8" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"RemoteUsername"</span><span class="fu">:</span> <span class="st">"rap4all"</span><span class="fu">,</span></span>
+<span id="cb55-9"><a href="#cb55-9" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"RemoteRef"</span><span class="fu">:</span> <span class="st">"fusen"</span><span class="fu">,</span></span>
+<span id="cb55-10"><a href="#cb55-10" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"RemoteSha"</span><span class="fu">:</span> <span class="st">"1c860959310b80e67c41f7bbdc3e84cef00df18e"</span><span class="fu">,</span></span>
+<span id="cb55-11"><a href="#cb55-11" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"Hash"</span><span class="fu">:</span> <span class="st">"859672476501daeea9b719b9218165f1"</span><span class="fu">,</span></span>
+<span id="cb55-12"><a href="#cb55-12" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"Requirements"</span><span class="fu">:</span> <span class="ot">[</span></span>
+<span id="cb55-13"><a href="#cb55-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">"dplyr"</span><span class="ot">,</span></span>
+<span id="cb55-14"><a href="#cb55-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">"ggplot2"</span><span class="ot">,</span></span>
+<span id="cb55-15"><a href="#cb55-15" aria-hidden="true" tabindex="-1"></a>    <span class="st">"janitor"</span><span class="ot">,</span></span>
+<span id="cb55-16"><a href="#cb55-16" aria-hidden="true" tabindex="-1"></a>    <span class="st">"purrr"</span><span class="ot">,</span></span>
+<span id="cb55-17"><a href="#cb55-17" aria-hidden="true" tabindex="-1"></a>    <span class="st">"readxl"</span><span class="ot">,</span></span>
+<span id="cb55-18"><a href="#cb55-18" aria-hidden="true" tabindex="-1"></a>    <span class="st">"rlang"</span><span class="ot">,</span></span>
+<span id="cb55-19"><a href="#cb55-19" aria-hidden="true" tabindex="-1"></a>    <span class="st">"rvest"</span><span class="ot">,</span></span>
+<span id="cb55-20"><a href="#cb55-20" aria-hidden="true" tabindex="-1"></a>    <span class="st">"stringr"</span><span class="ot">,</span></span>
+<span id="cb55-21"><a href="#cb55-21" aria-hidden="true" tabindex="-1"></a>    <span class="st">"tidyr"</span></span>
+<span id="cb55-22"><a href="#cb55-22" aria-hidden="true" tabindex="-1"></a>  <span class="ot">]</span></span>
+<span id="cb55-23"><a href="#cb55-23" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span><span class="er">,</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Se repararmos nos campos <code>RemoteSha</code> e <code>RemoteRef</code> reconhecemos o <em>hash</em> do <em>commit</em> e o repositório que usamos para instalar o pacote:</p>
+<div class="sourceCode" id="cb56"><pre class="sourceCode json code-with-copy"><code class="sourceCode json"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="er">"RemoteRef":</span> <span class="er">"fusen",</span></span>
+<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a><span class="er">"RemoteSha":</span> <span class="er">"1c860959310b80e67c41f7bbdc3e84cef00df18e",</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Isto significa que se mais alguém quiser re-executar o nosso projecto, usando <code>renv::restore()</code>, instala a versão correcta do pacote. Para concluirmos, devemos editar o ficheiro <code>Readme.md</code> e adicionar instruções sobre como re-executar o projecto. O ficheiro <code>Readme.md</code> poderá ficar assim:</p>
+<div class="sourceCode" id="cb57"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a># How to run</span>
+<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-3"><a href="#cb57-3" aria-hidden="true" tabindex="-1"></a>- Clone the repository: `git clone git@github.com:rap4all/housing.git`</span>
+<span id="cb57-4"><a href="#cb57-4" aria-hidden="true" tabindex="-1"></a>- Switch to the `pipeline` branch: `git checkout pipeline`</span>
+<span id="cb57-5"><a href="#cb57-5" aria-hidden="true" tabindex="-1"></a>- Start an R session in the folder and run `renv::restore()` </span>
+<span id="cb57-6"><a href="#cb57-6" aria-hidden="true" tabindex="-1"></a>   to install the project’s dependencies.</span>
+<span id="cb57-7"><a href="#cb57-7" aria-hidden="true" tabindex="-1"></a>- Run the pipeline with `targets::tar_make()`.</span>
+<span id="cb57-8"><a href="#cb57-8" aria-hidden="true" tabindex="-1"></a>- Checkout `analyse_data.html` for the output.</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="mais-algumas-pequenas-dicas" class="level2" data-number="13.9">
+<h2 data-number="13.9" class="anchored" data-anchor-id="mais-algumas-pequenas-dicas"><span class="header-section-number">13.9</span> Mais algumas pequenas dicas</h2>
+<p>Nesta secção poderemos ver algumas funções muito úteis que estão incluídas no pacote <code>{targets}</code> e que devemos conhecer.</p>
+<section id="carregar-todos-os-targets-duma-vez" class="level3" data-number="13.9.1">
+<h3 data-number="13.9.1" class="anchored" data-anchor-id="carregar-todos-os-targets-duma-vez"><span class="header-section-number">13.9.1</span> Carregar todos os <em>targets</em> duma vez</h3>
+<p>É possível carregar todos os <em>targets</em> em <em>cache</em> com a função <code>tar_load_everything()</code>. Mas se o nosso pipeline tiver muitos <em>targets</em>, isto pode ser demorado.</p>
+</section>
+<section id="adicionar-meta-informação-ao-pipeline" class="level3" data-number="13.9.2">
+<h3 data-number="13.9.2" class="anchored" data-anchor-id="adicionar-meta-informação-ao-pipeline"><span class="header-section-number">13.9.2</span> Adicionar meta informação ao pipeline</h3>
+<p>A função <code>tar_meta()</code> devolve um <em>dataframe</em> com alguma informação sobre o pipeline. Isto pode se bem útil, depois de executarmos o pipeline, para identificação de alguns avisos e erros. Vejamos o aspecto deste <em>dataframe</em>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a>targets<span class="sc">::</span><span class="fu">tar_meta</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="sourceCode" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="co"># A tibble: 11 × 18</span></span>
+<span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a>   name       type  data  command depend [...]</span>
+<span id="cb59-3"><a href="#cb59-3" aria-hidden="true" tabindex="-1"></a>   <span class="sc">&lt;</span>chr<span class="sc">&gt;</span>      <span class="er">&lt;</span>chr<span class="sc">&gt;</span> <span class="er">&lt;</span>chr<span class="sc">&gt;</span> <span class="er">&lt;</span>chr<span class="sc">&gt;</span>   <span class="er">&lt;</span>chr<span class="sc">&gt;</span>  [...]</span>
+<span id="cb59-4"><a href="#cb59-4" aria-hidden="true" tabindex="-1"></a> <span class="dv">1</span> analyse_d… stem  c251… <span class="dv">995812</span>… <span class="dv">3233</span>e… [...]</span>
+<span id="cb59-5"><a href="#cb59-5" aria-hidden="true" tabindex="-1"></a> <span class="dv">2</span> commune_d… stem  <span class="dv">024</span>d… <span class="dv">85</span>c2ab… ec7f2… [...]</span>
+<span id="cb59-6"><a href="#cb59-6" aria-hidden="true" tabindex="-1"></a> <span class="dv">3</span> commune_l… stem  fb07… f48470… ce0d8… [...]</span>
+<span id="cb59-7"><a href="#cb59-7" aria-hidden="true" tabindex="-1"></a> <span class="dv">4</span> commune_l… stem  fb07… <span class="dv">2549</span>df… <span class="fl">15e48</span>… [...]</span>
+<span id="cb59-8"><a href="#cb59-8" aria-hidden="true" tabindex="-1"></a> <span class="dv">5</span> communes   stem  b097… be3c56… a3dad… [...]</span>
+<span id="cb59-9"><a href="#cb59-9" aria-hidden="true" tabindex="-1"></a> <span class="dv">6</span> country_d… stem  ae21… <span class="dv">9</span>dc7a6… <span class="dv">1</span>d321… [...]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Há meas colunas além destas que estamos a ver, as de maior interesse são as colunas <code>warnings</code> e <code>error</code>. No exemplo seguinte temos um aviso depois de alterarmos o código para <code>read_data()</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a>targets<span class="sc">::</span><span class="fu">tar_make</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="sourceCode" id="cb61"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a>• start target commune_level_data</span>
+<span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a>• built target commune_level_data [<span class="fl">0.61</span> seconds]</span>
+<span id="cb61-3"><a href="#cb61-3" aria-hidden="true" tabindex="-1"></a>• start target country_level_data</span>
+<span id="cb61-4"><a href="#cb61-4" aria-hidden="true" tabindex="-1"></a>• built target country_level_data [<span class="fl">0.02</span> seconds]</span>
+<span id="cb61-5"><a href="#cb61-5" aria-hidden="true" tabindex="-1"></a>✔ skip target communes</span>
+<span id="cb61-6"><a href="#cb61-6" aria-hidden="true" tabindex="-1"></a>✔ skip target commune_data</span>
+<span id="cb61-7"><a href="#cb61-7" aria-hidden="true" tabindex="-1"></a>✔ skip target country_data</span>
+<span id="cb61-8"><a href="#cb61-8" aria-hidden="true" tabindex="-1"></a>✔ skip target analyse_data</span>
+<span id="cb61-9"><a href="#cb61-9" aria-hidden="true" tabindex="-1"></a>• end pipeline [<span class="fl">0.75</span> seconds]</span>
+<span id="cb61-10"><a href="#cb61-10" aria-hidden="true" tabindex="-1"></a>Warning messages<span class="sc">:</span></span>
+<span id="cb61-11"><a href="#cb61-11" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span><span class="sc">:</span> this is a warning </span>
+<span id="cb61-12"><a href="#cb61-12" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span><span class="sc">:</span> this is a warning </span>
+<span id="cb61-13"><a href="#cb61-13" aria-hidden="true" tabindex="-1"></a><span class="dv">3</span><span class="sc">:</span> <span class="dv">2</span> targets produced warnings. Run <span class="fu">tar_meta</span>(<span class="at">fields =</span> warnings, </span>
+<span id="cb61-14"><a href="#cb61-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">complete_only =</span> <span class="cn">TRUE</span>) <span class="cf">for</span> the messages. </span>
+<span id="cb61-15"><a href="#cb61-15" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Porque temos avisos, o pipeline dá a mensagem para executarmos <code>tar_meta(fields = warnings, complete_only = TRUE)</code>, assim:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tar_meta</span>(<span class="at">fields =</span> warnings, <span class="at">complete_only =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Com este código temos um <em>dataframe</em> com o nome do <em>target</em> que produz o aviso e o próprio aviso.</p>
+<div class="sourceCode" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="co"># A tibble: 2 × 2</span></span>
+<span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a>  name               warnings</span>
+<span id="cb63-3"><a href="#cb63-3" aria-hidden="true" tabindex="-1"></a>  <span class="sc">&lt;</span>chr<span class="sc">&gt;</span>              <span class="er">&lt;</span>chr<span class="sc">&gt;</span></span>
+<span id="cb63-4"><a href="#cb63-4" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> commune_level_data this is a warning</span>
+<span id="cb63-5"><a href="#cb63-5" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span> country_level_data this is a warning</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>E assim podemos ver melhor o que se passa.</p>
+</section>
+<section id="tornar-um-target-ou-todo-o-pipeline-outdated" class="level3" data-number="13.9.3">
+<h3 data-number="13.9.3" class="anchored" data-anchor-id="tornar-um-target-ou-todo-o-pipeline-outdated"><span class="header-section-number">13.9.3</span> Tornar um <em>target</em> ou todo o pipeline <em>outdated</em></h3>
+<p>Com <code>tar_invalidate()</code> podemos tornar um <em>target</em> <em>outdated</em>, para que quando voltarmos a executar o pipeline este volta a ser computado (juntamente com todos os <em>targets</em> que dele dependam). Isto pode ser útil para garantirmos que tudo está a correr correctamente. Também é possível dinamitar todo o pipeline e voltar a executar tudo do zero com a função <code>tar_destroy()</code>.</p>
+</section>
+<section id="visualizações-costumizadas" class="level3" data-number="13.9.4">
+<h3 data-number="13.9.4" class="anchored" data-anchor-id="visualizações-costumizadas"><span class="header-section-number">13.9.4</span> Visualizações costumizadas</h3>
+<p>Com o comando <code>visNetwork::visNetworkEditor(tar_visnetwork())</code>, é iniciada uma aplicação Shiny que nos permite costumizar a rede do nosso pipeline. Podemos brincar com as opções e ver que efeito têm na nossa rede. Também é possível gerar código R que pode ser copiado para um <em>script</em> garantindo que geramos sempre o mesmo aspecto.</p>
+</section>
+<section id="usar-targets-dum-pipeline-noutro-projecto" class="level3" data-number="13.9.5">
+<h3 data-number="13.9.5" class="anchored" data-anchor-id="usar-targets-dum-pipeline-noutro-projecto"><span class="header-section-number">13.9.5</span> Usar <em>targets</em> dum pipeline noutro projecto</h3>
+<p>Se precisarmos de carregar algum <em>target</em> noutro projecto (como por exemplo para referenciar um estudo antigo), podemos usar o pacote <code>{withr}</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a>withr<span class="sc">::</span><span class="fu">with_dir</span>(</span>
+<span id="cb64-2"><a href="#cb64-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"path/to/root/of/project"</span>,</span>
+<span id="cb64-3"><a href="#cb64-3" aria-hidden="true" tabindex="-1"></a>  targets<span class="sc">::</span><span class="fu">tar_load</span>(target_name))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="perceber-uma-mensagem-de-erro-críptica" class="level3" data-number="13.9.6">
+<h3 data-number="13.9.6" class="anchored" data-anchor-id="perceber-uma-mensagem-de-erro-críptica"><span class="header-section-number">13.9.6</span> Perceber uma mensagem de erro críptica</h3>
+<p>Ás vezes ao executarmos um pipeline temos a mensagem de erro:</p>
+<div class="sourceCode" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a>Error<span class="sc">:</span></span>
+<span id="cb65-2"><a href="#cb65-2" aria-hidden="true" tabindex="-1"></a><span class="sc">!</span> Error running targets<span class="sc">::</span><span class="fu">tar_make</span>()</span>
+<span id="cb65-3"><a href="#cb65-3" aria-hidden="true" tabindex="-1"></a>  Target errors<span class="sc">:</span> targets<span class="sc">::</span><span class="fu">tar_meta</span>(<span class="at">fields =</span> error, <span class="at">complete_only =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb65-4"><a href="#cb65-4" aria-hidden="true" tabindex="-1"></a>  Tips<span class="sc">:</span> https<span class="sc">:</span><span class="er">//</span>books.ropensci.org<span class="sc">/</span>targets<span class="sc">/</span> debugging.html</span>
+<span id="cb65-5"><a href="#cb65-5" aria-hidden="true" tabindex="-1"></a>  Last error<span class="sc">:</span> argument <span class="dv">9</span> is empty</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>O importante é a última linha: “Last error: argument 9 is empty”. Não é claro qual o <em>target</em> que dá o erro: isto porque o erro não é devido a um <em>target</em> mas sim ao próprio pipeline. Lembremo-nos que o pipeline é apenas uma lista de <em>targets</em>. Se o último <em>target</em> acaba com uma vírgula (<code>,</code>) a <code>list()</code> está à espera de mais um elemento. Como não há mais nenhum, então dá erro. É como se escrevessemos <code>list(1, 2, )</code>.</p>
+</section>
+</section>
+<section id="conclusão" class="level2" data-number="13.10">
+<h2 data-number="13.10" class="anchored" data-anchor-id="conclusão"><span class="header-section-number">13.10</span> Conclusão</h2>
+<p>Aqui podemos ver porque precisamos de adicionar a automatização à nossa caixa de ferramentas. O pacote <code>{targets}</code> é fantástico porque trata de coisas muito enfadonhas por nós. Com o <code>{tatgets}</code> não nos precisamos de preocupar em saber quais são os objectos que precisam de ser re-computados quando precisamos de alterar o nosso código. Não precisamos de reescrever o nosso código para o executarmos em paralelo. E com o <code>{renv}</code>, outros utilizadores podem correr o nosso pipeline e reproduzir os nosso resultados.</p>
+<p>No próximo capítulo mergulhamos mais fundo no <em>iceberg</em> da reprodutibilidade.</p>
 
 
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
+<div id="ref-landau2021" class="csl-entry" role="listitem">
+Landau, William Michael. 2021. <span>“The Targets r Package: A Dynamic Make-Like Function-Oriented Pipeline Toolkit for Reproducibility and High-Performance Computing.”</span> <em>Journal of Open Source Software</em> 6 (57): 2959.
+</div>
+</div>
+</section>
+<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn1"><p>https://is.gd/VS6vSs<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>https://is.gd/lm4QoO<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
 
 <p><a href="https://bioestatisticas.wixsite.com/bioestatisticas"><img src="IMG/logoOB.jpg" class="img-fluid"></a></p></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -898,4 +2004,4 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 
 
 
-<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions"><ul><li><a href="https://github.com/balima78/rap_pt/edit/main/targets.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/balima78/rap_pt/issues" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/balima78/rap_pt/edit/main/targets.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/balima78/rap_pt/issues" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>

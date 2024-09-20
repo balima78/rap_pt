@@ -20,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -72,8 +106,12 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 <script data-goatcounter="https://brodriguesco-raps-with-r.goatcounter.com/count" async="" src="//gc.zgo.at/count.js"></script>
+
 <noscript>
+
     </noscript></head><body class="nav-sidebar floating"><img src="https://brodriguesco-raps-with-r.goatcounter.com/count?p=/test-noscript">
+
+
 
 
 
@@ -89,7 +127,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./part1_intro.html">Parte 1: Don’t Repeat Yourself</a></li><li class="breadcrumb-item"><a href="./github.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Colaboração com desenvolvimento Trunk-based</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./part1_intro.html">Parte 1: Don’t Repeat Yourself</a></li><li class="breadcrumb-item"><a href="./github.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Colaboração com desenvolvimento <em>Trunk-based</em></span></a></li></ol></nav>
         <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -200,7 +238,7 @@ ul.task-list li input[type="checkbox"] {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./github.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Colaboração com desenvolvimento Trunk-based</span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Colaboração com desenvolvimento <em>Trunk-based</em></span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -259,7 +297,7 @@ ul.task-list li input[type="checkbox"] {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./targets.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Automatização com targets</span></span></a>
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Automatização com <code>{targets}</code></span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -300,14 +338,29 @@ ul.task-list li input[type="checkbox"] {
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#colaborar-como-equipa" id="toc-colaborar-como-equipa" class="nav-link active" data-scroll-target="#colaborar-como-equipa"><span class="header-section-number">5.1</span> Colaborar como equipa</a>
+  <ul class="collapse">
+  <li><a href="#tbd-básico" id="toc-tbd-básico" class="nav-link" data-scroll-target="#tbd-básico"><span class="header-section-number">5.1.1</span> TBD básico</a></li>
+  <li><a href="#tratando-conflitos" id="toc-tratando-conflitos" class="nav-link" data-scroll-target="#tratando-conflitos"><span class="header-section-number">5.1.2</span> Tratando conflitos</a></li>
+  <li><a href="#culpar-a-pessoa-certa" id="toc-culpar-a-pessoa-certa" class="nav-link" data-scroll-target="#culpar-a-pessoa-certa"><span class="header-section-number">5.1.3</span> Culpar a pessoa certa</a></li>
+  <li><a href="#tbd-simplificado" id="toc-tbd-simplificado" class="nav-link" data-scroll-target="#tbd-simplificado"><span class="header-section-number">5.1.4</span> TBD simplificado</a></li>
+  <li><a href="#conclusão" id="toc-conclusão" class="nav-link" data-scroll-target="#conclusão"><span class="header-section-number">5.1.5</span> Conclusão</a></li>
+  </ul></li>
+  <li><a href="#contribuir-com-repositórios-públicos" id="toc-contribuir-com-repositórios-públicos" class="nav-link" data-scroll-target="#contribuir-com-repositórios-públicos"><span class="header-section-number">5.2</span> Contribuir com repositórios públicos</a></li>
+  <li><a href="#leitura-recomendada" id="toc-leitura-recomendada" class="nav-link" data-scroll-target="#leitura-recomendada"><span class="header-section-number">5.3</span> Leitura recomendada</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/balima78/rap_pt/edit/main/github.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/balima78/rap_pt/issues" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./part1_intro.html">Parte 1: Don’t Repeat Yourself</a></li><li class="breadcrumb-item"><a href="./github.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Colaboração com desenvolvimento Trunk-based</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./part1_intro.html">Parte 1: Don’t Repeat Yourself</a></li><li class="breadcrumb-item"><a href="./github.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Colaboração com desenvolvimento <em>Trunk-based</em></span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span id="sec-chapter-github" class="quarto-section-identifier"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Colaboração com desenvolvimento Trunk-based</span></span></h1>
+<h1 class="title"><span id="sec-chapter-github" class="quarto-section-identifier"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Colaboração com desenvolvimento <em>Trunk-based</em></span></span></h1>
 </div>
 
 
@@ -324,8 +377,523 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
+<p>Como já referimos, há duas formas de colaboração com Git (e Github): como equipa, ou como desenvolvedor externo (ou seja, não sendo parte da equipa de desenvolvimento dum dado projecto). Os colaboradores externos apenas podem colaborar em repositórios públicos, e os donos do projecto podem aceitar ou não as emendas.</p>
+<p>Vamos ver estas duas formas de colaboração. Primeiro focar-nos-emos na colaboração dentro duma equipa.</p>
+<section id="colaborar-como-equipa" class="level2" data-number="5.1">
+<h2 data-number="5.1" class="anchored" data-anchor-id="colaborar-como-equipa"><span class="header-section-number">5.1</span> Colaborar como equipa</h2>
+<section id="tbd-básico" class="level3" data-number="5.1.1">
+<h3 data-number="5.1.1" class="anchored" data-anchor-id="tbd-básico"><span class="header-section-number">5.1.1</span> TBD básico</h3>
+<p>Lembremo-nos do <em>issue</em> que abrimos para o Bruno. O Bruno resolverá o <em>issue</em> adicionando um ficheiro README. Isto vai dar-nos a oportunidade de introduzir o desenvolvimento <em>trunk-based</em> (TBD). A ideia do desenvolvimento <em>trunk-based</em> é simples; os membros da equipa devem trabalhar em <em>branches</em> separados para adicionar funcionalidades ou corrigir <em>bugs</em>, e depois <em>mergir</em> o seu <em>branch</em> ao tronco (<em>“trunk”</em> que no nosso caso é o <em>branch</em> <em>master</em>) para adicionar as suas alterações ao código base principal. Este processo deve ser rápido, idealmente diário, ou assim que o novo código estiver pronto. Quando há muito trabalho que se acumula num <em>branch</em> durante vários dias ou semanas, o processo de <em>mergir</em> com o <em>branch master</em> pode ser doloroso. Se trabalharmos com <em>branches</em> de curta duração, quando surgirem conflitos, estes podem ser resolvidos rapidamente. Com isto facilitamos também a revisão do código, uma vez que assim o revisor apenas precisa de rever pequenas porções de código de cada vez. Se, ao contrário, com <em>branches</em> de longa duração com alterações em muito código para <em>mergir</em>, na revisão de todas as alterações e na resolução de conflitos que possam surgir, teremos muito mais trabalho. Para evitarmos este problema, o melhor é <em>mergir</em> diariamente ou sempre que adicionarmos uma parte de código, e muito importante, este código não pode quebrar todo o projecto (mais à frente usaremos testes unitários como garantia).</p>
+<p>Resumindo, para evitarmos demasiado trabalho ao <em>mergir branches</em> que se afastaram demasiado do <em>trunk</em>, criaremos <em>branches</em>, adicionaremos o nosso código e <em>mergimos</em> com o <em>trunk</em> assim que possível. O mais cedo possível pode significar várias coisas, mas normalmente significa assim que uma funcionalidade foi adicionada, um <em>bug</em> foi corrigido, ou assim que adicionámos algum código que não quebra todo o projeto, mesmo que a funcionalidade que queríamos adicionar ainda não esteja concluída. A ideia é que se o <em>merge</em> falhar, deve falhar o mais cedo possível. As falhas precoces são mais fáceis de resolver.</p>
+<p>O nosso objetivo deve ser fornecer um projeto funcional para qualquer pessoa que clone o <em>branch master</em> em qualquer momento e ainda oferecer uma maneira simples de instalar uma versão pontual do projeto).</p>
+<p>Então, de volta ao nosso problema. Primeiro, o Bruno precisa clonar o repositório:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">bruno@computer</span> ➤ git clone git@github.com:rap4all/housing.git</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Para adicionar uma funcionalidade, o Bruno precisa de criar um novo <em>branch</em> com o comando <code>git checkout</code> com a <em>flag</em> <code>-b</code>:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">bruno@computer</span> ➤ git checkout <span class="at">-b</span> <span class="st">"add_readme"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>O projecto muda automaticamente para o novo <em>branch</em>:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">Switched</span> to a new branch <span class="st">'add_readme'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Podemos executar <code>git status</code> para verificarmos:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">bruno@computer</span> ➤ git status</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">On</span> branch add_readme</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="ex">nothing</span> to commit, working tree clean</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>O Bruno adiciona um novo ficheiro <code>README.md</code> com o seguinte texto:</p>
+<pre><code># Housing data for Luxembourg
+
+These scripts for the R programming language download nominal
+housing prices from the *Observatoire de l'Habitat* and
+tidy them up into a flat data frame.
+
+- save_data.R: downloads, cleans, and creates data frames from the data
+- analysis.R: creates plots of the data</code></pre>
+<p>Vamos gravar e voltar a executar <code>git status</code>, para vermos o que aconteceu:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">bruno@computer</span> ➤ git status</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>O Git diz ao Bruno que o ficheiro <code>README.md</code> não está a ser rastreado:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">On</span> branch add_readme</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="ex">Untracked</span> files:</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">(</span><span class="ex">use</span> <span class="st">"git add &lt;file&gt;..."</span> to include in what will be committed<span class="kw">)</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>        <span class="ex">README.md</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="ex">nothing</span> added to commit but untracked files present <span class="er">(</span><span class="ex">use</span> <span class="st">"git add"</span> to track<span class="kw">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>O Bruno vai então rastrear e fazer o <em>push</em> das alterações. Além disso, o Bruno vai usar um truque, quando fizer o <em>push</em>: como o Bruno está a trabalhar para resolver num <em>issue</em>, seria optimo se também o fechasse quando fizer o <em>push</em>. O que é possível referenciando o número do <em>issue</em> na mensagem de <em>commit</em>:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">bruno@computer</span> ➤ git add .</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="ex">bruno@computer</span> ➤ git commit <span class="at">-m</span> <span class="st">"fixed #1"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><code>#1</code> é relativo ao número do <em>issue</em> (é o primeiro <em>issue</em> aberto no repositório). Assim, referenciando este <em>issue</em> com o seu número na mensagem de <em>commit</em> e fazendo o <em>push</em>, o <em>issue</em> fica fechado, automaticamente:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">bruno@computer</span> ➤ git push origin add_readme</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Como podemos ver, o Bruno faz o <em>push</em> do <em>branch</em> <em>add_readme</em> (aberto para resolver o <em>issue</em>) e não do <em>master</em>. Se tentasse fazer o <em>push</em> do <em>master</em> seria impressa uma mensagem a dizer que o <em>master</em> está <em>up-to-date</em>. Vejamos o <em>output</em> depois do <em>push</em> do <em>add_readme</em>:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">Enumerating</span> objects: 4, done.</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="ex">Counting</span> objects: 100% <span class="er">(</span><span class="ex">4/4</span><span class="kw">)</span><span class="ex">,</span> done.</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="ex">Delta</span> compression using up to 12 threads</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="ex">Compressing</span> objects: 100% <span class="er">(</span><span class="ex">3/3</span><span class="kw">)</span><span class="ex">,</span> done.</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="ex">Writing</span> objects: 100% <span class="er">(</span><span class="ex">3/3</span><span class="kw">)</span><span class="ex">,</span> 501 bytes <span class="kw">|</span> <span class="ex">501.00</span> KiB/s, done.</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="ex">Total</span> 3 <span class="er">(</span><span class="ex">delta</span> 0<span class="kw">)</span><span class="ex">,</span> reused 0 <span class="er">(</span><span class="ex">delta</span> 0<span class="kw">)</span><span class="ex">,</span> pack-reused 0</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="ex">remote:</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="ex">remote:</span> Create a pull request for <span class="st">'add_readme'</span> on GitHub by visiting:</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="ex">remote:</span>     https://github.com/rap4all/housing/ pull/new/add_readme</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="ex">remote:</span></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="ex">To</span> github.com:rap4all/housing.git</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a> <span class="ex">*</span> [new branch]      add_readme <span class="at">-</span><span class="op">&gt;</span> add_readme</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>O Git diz-nos que o Bruno deve criar um <em>pull request</em>. Mas o que é isto? Bem, se quisermos <em>mergir</em> o nosso <em>branch</em> para o <em>trunk</em>, devemos fazê-lo através de um <em>pull request</em>. Vejanos o que o Bruno vê no Github:</p>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="IMG/github_add_readme_recent_push.png" class="img-fluid figure-img" width="756"></p>
+<figcaption>O Bruno vê que o <em>branch</em> ‘add_readme’ foi recentemente <em>updated</em>.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>O Bruno pode agora decidir continuar a trabalhar neste branch ou, uma vez que o objetivo deste branch era apenas adicionar o ficheiro <code>README.md</code>, decidir fazer um <em>pull request</em>.</p>
+<p>Ao clicar no botão <em>“Compare &amp; pull request”</em>, o Bruno vê agora isto:</p>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="IMG/github_pull_request.png" class="img-fluid figure-img" width="293"></p>
+<figcaption>Neste ecra podemos ver facilmente as alterações.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>O Bruno pode deixar um comentário, ver o que mudou (neste caso, foi adicionado um único ficheiro) e, mais importante, adicionar um revisor, se necessário:</p>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="IMG/github_add_reviewer.png" class="img-fluid figure-img" width="1050"></p>
+<figcaption>Deixemos o chefe decidir se isto está bem.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Isto é o que o Bruno vê agora:</p>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="IMG/github_reviewer_requested.png" class="img-fluid figure-img" width="491"></p>
+<figcaption>O Github diz-nos que o <em>branch</em> pode ser <em>mergido</em> em segurança.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>O Bruno pediu a revisão, mas o Github diz-nos que o branch pode ser <em>mergido</em>. Isto porque adicionámos um ficheiro e não tocámos em mais nada, e mais ninguém trabalhou no projeto enquanto o Bruno estava a trabalhar. Portanto, não há riscos de surgirem conflitos.</p>
+<p>Vejamos o que o dono do projecto vê agora. O dono do projeto deveria ter recebido uma notificação para revisar o <em>pull request</em>:</p>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="IMG/github_reviewer_notified.png" class="img-fluid figure-img" width="1814"></p>
+<figcaption>O dono foi notificado para rever o <em>pull request</em>.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Ao clicar na notificação, o dono do projecto é levado para o ecrã:</p>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="IMG/github_review.png" class="img-fluid figure-img" width="400"></p>
+<figcaption>É tempo de rever o <em>pull request</em>.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Aqui, o revisor pode verificar o <em>commit</em>, os ficheiros que foram alterados e ver se existem conflitos entre este código e o código base no <em>branch master</em> (ou <em>trunk</em>). O Github também nos diz duas coisas interessantes: o dono pode adicionar uma regra que diz que qualquer <em>pull request</em> deve ser aprovado, e também que a integração contínua não foi configurada (veremos o que isso significa na segunda parte deste livro).</p>
+<p>Vamos adicionar uma regra que força cada <em>pull request</em> a ser aprovado. Ao clicar em <em>“Add rule”</em>, aparece o seguinte ecrã:</p>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="IMG/github_rules.png" class="img-fluid figure-img" width="300"></p>
+<figcaption>Escolhe como proteger o <em>branch maste</em>.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Clicando na primeira opção, outras opções aparecem:</p>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="IMG/github_rules_2.png" class="img-fluid figure-img" width="300"></p>
+<figcaption>São agora requeridas revisões.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Ao escolher estas opções, o dono está a forçar o desenvolvimento <em>trunk-based</em> (bem, os colaboradores ainda têm de submeter <em>pull request</em> frequentemente, caso contrário, podemos deparar-nos com situações em que o <em>merge</em> pode ser muito difícil).</p>
+<p>Vamos selecionar uma última opção: se descermos, podemos selcionar a opção <em>“Do not allow bypassing the above settings”</em>. Com isto garantimos que nem mesmo os administradores (os donos do projecto) podem contornar estas regras.</p>
+<p>Voltemos ao <em>pull request</em>. Podemos ver que agora é requerida uma revisão:</p>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="IMG/github_review_required.png" width="350" height="400" class="figure-img"></p>
+<figcaption>Altura de rever.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>E o dono tem de ver os ficheiros que foram alterados:</p>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="IMG/github_add_your_review.png" class="img-fluid figure-img" width="300"></p>
+<figcaption>Verifica o código e adiciona comentários, se forem necessários.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>É possível adicionar comentários a linhas, individualmente:</p>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="IMG/github_review_comments.png" class="img-fluid figure-img" width="300"></p>
+<figcaption>É possível adicionar comentários a linhas.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Ao clicarmos no sinal mais, aparece uma caixa onde podemos deixar um comentário. Neste caso está tudo bem pelo que o dono apenas tem de clicar no butão <em>“Viewed”</em>:</p>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="IMG/github_file_viewed.png" class="img-fluid figure-img" width="300"></p>
+<figcaption>Bom trabalho!</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Ao clicarmos em <em>“Review changes”</em>, podemos adicionar um comentário geral, aprovar o <em>pull request</em>, ou pedir alterações que devem ser efectuadas antes do <em>merge</em>. Vamos aprovar:</p>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="IMG/github_approve.png" class="img-fluid figure-img" width="300"></p>
+<figcaption>Sem razões de queixa.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Ao submeter a revisão, o revisor volta para o <em>issue</em>:</p>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="IMG/github_changes_approved.png" class="img-fluid figure-img" width="300"></p>
+<figcaption>Está feito! Podemos fazer o <em>merge</em> do <em>pull request</em>.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>O revisor pode fazer o <em>merge</em> do <em>pull request</em> clicando no butão <em>“Merge pull request”</em>. O Github até sugere que apeguemos o <em>branch</em> que já cumpriu o seu propósito:</p>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="IMG/github_pull_request_done.png" class="img-fluid figure-img" width="300"></p>
+<figcaption>Livremo-nos deste <em>branch</em>.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Vamos apagá-lo (podemos sempre restaurá-lo).</p>
+</section>
+<section id="tratando-conflitos" class="level3" data-number="5.1.2">
+<h3 data-number="5.1.2" class="anchored" data-anchor-id="tratando-conflitos"><span class="header-section-number">5.1.2</span> Tratando conflitos</h3>
+<p>Com referimos no capítulo anterior, o Git facilita o tratamento de conflitos. Sejamos claros; mesmo com o Git, às vezes pode ser complicado resolver conflitos. Mas devemos saber que se é complicado resolver conflitos com o Git, então é provavelmente impossível fazê-lo de outra forma qualquer, e que inevitavelmente teria de haver de alguém a corrigir os ficheiros manualmente. O que facilita a resolução de conflitos com o Git é o facto do Git nos dizer onde podemos encontrar os conflitos por linha. Por exemplo, se um colaborador alterar as primeiras 10 linhas dum ficheiro e outro alterar as 10 seguintes, então não haverá qualquer tipo de conflito e o Git pode fazer o <em>merge</em> automático de ambas as colaborações num único ficheiro. Outras ferramentas como o Dropbox, falhariam numa situação destas, uma vez que apenas conseguem lidar com conflitos por ficheiro. O mesmo ficcheiro foi alteardo por duas pessoas diferentes? Independentemente de onde aconteceram essas mudanças, temos um conflito para tratar, e pior nem sequer sabemos onde é que esses conflitos estão no ficheiro. Teriamos de verificar as duas cópias do ficheiro manualmente. o Git no caso em que as mesmas linhas são alteradas, destaca-as claramente, para que as possamos encontrar rapidamente e resolver os problemas.</p>
+<p>Veremos tudo isto nas secções seguintes.</p>
+<p>Mas como é que acontecem os conflitos. Imaginemos a seguinte situção. Tanto o Bruno como o dono do projecto criam os seus <em>branches</em> e editam o mesmo ficheiro. Talvez tenham falado por telefone e decidido acrescentar uma funcionalidade ou corrigir um <em>bug</em>. Talvez tenham decidido que não valia a pena abrir um <em>issue</em> e atribuir a tarefa a uma pessoa. A questão foi discutida pelo telefone e decidiram que o Bruo deveria fazê-lo. Ou seria o dono do projecto que ficou de fazê-lo? Já nenhum deles se lembra. De qualquer forma ambos decidem fazer a alteração no mesmo ficheiro pelo que surge um conflito.</p>
+<p>Primeiro o Bruno precisa de voltar para o <em>branch master</em> no seu computador:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="ex">bruno@computer</span> ➤ git checkout master</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="ex">Switched</span> to branch <span class="st">'master'</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="ex">Your</span> branch is behind <span class="st">'origin/master'</span> by 2 commits, and can be fast-forwarded.</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">(</span><span class="ex">use</span> <span class="st">"git pull"</span> to update your local branch<span class="kw">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>O Git diz-nos que devemos atualizar o código no nosso computador executando <code>git pull</code>. Usamos o <code>git push</code> para subir código para o Github, e usamos o <code>Git pull</code> para baixarmos código do Github. Vamos executar e ver o que acontece:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="ex">bruno@computer</span> ➤ git pull</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="ex">Updating</span> b7f82ee..c774ebf</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="ex">Fast-forward</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a> <span class="ex">README.md</span> <span class="kw">|</span> <span class="ex">7</span> +++++++</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a> <span class="ex">1</span> file changed, 7 insertions<span class="er">(</span><span class="ex">+</span><span class="kw">)</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a> <span class="ex">create</span> mode 100644 README.md</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Foram atualizados ficheiros no computador do Bruno. O dono do projecto (que se chama <code>owner</code>) pode fazer o mesmo e verá o mesmo. Agora o Bruno cria um novo <em>branch</em> para trabalhar na nova funcionalidade:</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="ex">bruno@computer</span> ➤ git checkout <span class="at">-b</span> add_cool_feature</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>E o dono do projecto também cria um novo <em>branch</em>:</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="ex">owner@localhost</span> ➤ git checkout <span class="at">-b</span> add_sweet_feature</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Agora ambos editam o mesmo ficheiro, <code>analysis.R</code>. O Bruno adicionou esta função:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>make_plot <span class="ot">&lt;-</span> <span class="cf">function</span>(country_level_data,</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>                      commune_level_data,</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>                      commune){</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>  filtered_data <span class="ot">&lt;-</span> commune_level_data <span class="sc">%&gt;%</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(locality <span class="sc">==</span> commune)</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>  data_to_plot <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(</span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>    country_level_data,</span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>    filtered_data</span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(data_to_plot) <span class="sc">+</span></span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y =</span> pl_m2,</span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>                  <span class="at">x =</span> year,</span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a>                  <span class="at">group =</span> locality,</span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a>                  <span class="at">colour =</span> locality))</span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Desta forma o Bruno pode apagar o código repetido e criar gráficos assim:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>lux_plot <span class="ot">&lt;-</span> <span class="fu">make_plot</span>(country_level_data,</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>                      commune_level_data,</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>                      communes[<span class="dv">1</span>])</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Esch sur Alzette</span></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>esch_plot <span class="ot">&lt;-</span> <span class="fu">make_plot</span>(country_level_data,</span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>                       commune_level_data,</span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>                       communes[<span class="dv">2</span>])</span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a><span class="co"># and so on...</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>O resultado final é o mesmo, mas usando esta função, o código é mais curto e mais claro. Além disso se alguém quizer alterar o tema do gráfico apenas o tem de fazer num sítio e não para cada comunidade. Mas o que é que o dono do projecto alterou? O dono começou por eliminar a linha que carrega o <em>package</em> <code>{purrr}</code>, uma vez que nenhuma função do <em>package</em> estava a ser usada no script, e também alterou <code>%&gt;%</code> para <code>|&gt;</code>. Parece que foi esquecido mais do que apenas saber quem deveria fazer as alterações… De qualquer forma, ambos sobem as suas alterações dos seus respectivos <em>branches</em>. Aqui é a parte do Bruno:</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="ex">bruno@computer</span> ➤ git add .</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="ex">bruno@computer</span> ➤ git commit <span class="at">-m</span> <span class="st">"make_plot() for plotting"</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="ex">bruno@computer</span> ➤ git push origin add_cool_feature</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="ex">Enumerating</span> objects: 5, done.</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="ex">Counting</span> objects: 100% <span class="er">(</span><span class="ex">5/5</span><span class="kw">)</span><span class="ex">,</span> done.</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="ex">Delta</span> compression using up to 12 threads</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="ex">Compressing</span> objects: 100% <span class="er">(</span><span class="ex">3/3</span><span class="kw">)</span><span class="ex">,</span> done.</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a><span class="ex">Writing</span> objects: 100% <span class="er">(</span><span class="ex">3/3</span><span class="kw">)</span><span class="ex">,</span> 647 bytes <span class="kw">|</span> <span class="ex">647.00</span> KiB/s, done.</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a><span class="ex">Total</span> 3 <span class="er">(</span><span class="ex">delta</span> 1<span class="kw">)</span><span class="ex">,</span> reused 0 <span class="er">(</span><span class="ex">delta</span> 0<span class="kw">)</span><span class="ex">,</span> pack-reused 0</span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a><span class="ex">remote:</span> Resolving deltas: 100% <span class="er">(</span><span class="ex">1/1</span><span class="kw">)</span><span class="ex">,</span> completed with 1 local object.</span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a><span class="ex">remote:</span></span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a><span class="ex">remote:</span> Create a pull request for <span class="st">'add_cool_feature'</span> on GitHub by visiting:</span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a><span class="ex">remote:</span>      https://github.com/rap4all/housing/pull/new/add_cool_feature</span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a><span class="ex">remote:</span></span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a><span class="ex">To</span> github.com:rap4all/housing.git</span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a> <span class="ex">*</span> [new branch]      add_cool_feature <span class="at">-</span><span class="op">&gt;</span> add_cool_feature</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>e esta é a parte do dono:</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="ex">owner@localhost</span> ➤ git add .</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="ex">owner@localhost</span> ➤ git commit <span class="at">-m</span> <span class="st">"cleanup"</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="ex">owner@localhost</span> ➤ git push origin add_sweet_feature</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="ex">Enumerating</span> objects: 5, done.</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="ex">Counting</span> objects: 100% <span class="er">(</span><span class="ex">5/5</span><span class="kw">)</span><span class="ex">,</span> done.</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="ex">Delta</span> compression using up to 4 threads</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="ex">Compressing</span> objects: 100% <span class="er">(</span><span class="ex">3/3</span><span class="kw">)</span><span class="ex">,</span> done.</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a><span class="ex">Writing</span> objects: 100% <span class="er">(</span><span class="ex">3/3</span><span class="kw">)</span><span class="ex">,</span> 449 bytes <span class="kw">|</span> <span class="ex">449.00</span> KiB/s, done.</span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a><span class="ex">Total</span> 3 <span class="er">(</span><span class="ex">delta</span> 1<span class="kw">)</span><span class="ex">,</span> reused 0 <span class="er">(</span><span class="ex">delta</span> 0<span class="kw">)</span></span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a><span class="ex">remote:</span> Resolving deltas: 100% <span class="er">(</span><span class="ex">1/1</span><span class="kw">)</span><span class="ex">,</span> completed with 1 local object.</span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a><span class="ex">remote:</span></span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a><span class="ex">remote:</span> Create a pull request for <span class="st">'add_sweet_feature'</span> on GitHub by visiting:</span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a><span class="ex">remote:</span>      https://github.com/rap4all/housing/pull/new/add_sweet_feature</span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a><span class="ex">remote:</span></span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a><span class="ex">To</span> github.com:rap4all/housing.git</span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a> <span class="ex">*</span> [new branch]      add_sweet_feature <span class="at">-</span><span class="op">&gt;</span> add_sweet_feature</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Vejamos o que aconteceu: dois desenvolvedores alteraram o mesmo ficheiro, <code>analysis.R</code>, em dois <em>branches</em> diferentes. Ambos os branches precisam de ser <em>mergidos</em> no <em>trunk</em>.</p>
+<p>Logo o Bruno faz um <em>pull request</em>:</p>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="IMG/github_new_pull_request.png" class="img-fluid figure-img" width="300"></p>
+<figcaption>O Bruno abre um <em>pull request</em> depois de terminar as alterações.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Primeiro seleciona o <em>branch</em> com a funcionalidade (1), depois clica em <em>“Contribute”</em> (2) e em <em>“Open pull request”</em> (3). O Bruno passa para o ecrã:</p>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="IMG/github_new_pull_request_2.png" class="img-fluid figure-img" width="300"></p>
+<figcaption>sem conflitos, para já…”</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Agora o Bruno pode clicar em <em>“Create pull request”</em> mas como são requeridas revisões não está disponível o <em>merge</em> automático.</p>
+<p>Vejamos o que acontece do lado do dono do projecto. Antes de mais, há uma notificação de que está pendente uma revisão:</p>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="IMG/github_new_pull_request_review_pending.png" class="img-fluid figure-img" width="300"></p>
+<figcaption>Nova revisão pendente.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Ao clicar na notificação, o dono do projecto pode rever o <em>pull request</em> e decidir o que fazer com ele. Neste ponto, o dono ainda não abriu um <em>pull request</em> para a alteração que fez. E pode ser que seja uma coisa boa, pois pode ver que as alterações do Bruno entram em conflito com as alterações que ele fez.</p>
+<p>Como podemos avançar? Simples. o dono do projecto pode decidir aprovar o <em>pull request</em> e fazer o <em>merge</em> das alterações do Bruno no <em>branch master</em> (ou <em>trunk</em>). E em vez de abrir um <em>pull request</em> para fazer o <em>merge</em> das suas próprias alterações no <em>trunk</em>, o causaria um conflito, pode fazer <em>merge</em> das alterações do <em>trunk</em> para o seu <em>branch</em> (em que fez as suas alterações). Isto também criará um conflito, mas agora o dono pode lidar com ele mais facilmente na sua máquina e depois só tem de fazer o <em>push</em> dum novo <em>commit</em> com ambas as alterações integradas. A imagem seguinte descreve este <em>workflow</em>:</p>
+<figure class="figure">
+<img src="IMG/github_conflict_tbd.png" alt="Conflict solving with trunk-based development." class="figure-img">
+<figcaption>
+Conflict solving with trunk-based development.
+</figcaption>
+</figure>
+<p>Primeiro passo, o dono revê e aprova o <em>pull request</em> do Bruno:</p>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="IMG/github_pull_request_approved.png" class="img-fluid figure-img" width="300"></p>
+<figcaption>Primeiro, aprovemos as alteraçõs.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>É feito o <em>merge</em> do <em>pull request</em> e o <em>branch</em> é apagado. Não faz sentido que o dono do projecto faça um <em>pull request</em> com as suas alterações pois criariam um conflito que teria de resolver. Assim o dono do projecto volta para o seu computador e faz um update do código no seu branch em que está a fazer alterações, ao fazer o <em>merge</em> do <em>master</em> no seu <em>branch</em>.</p>
+<p>O dono do projecto confirma que está a trabalhar no seu <em>branch</em> de alterações:</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="ex">owner@localhost</span> ➤ git status</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb25"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="ex">On</span> branch add_sweet_feature</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="ex">nothing</span> to commit, working tree clean</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Agora pode fazer o update com o código do <em>master</em>, executando <code>git pull</code>:</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="ex">owner@localhost</span> ➤ git pull origin master</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>O dono vê a seguinte mensagem.</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="ex">remote:</span> Enumerating objects: 6, done.</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="ex">remote:</span> Counting objects: 100% <span class="er">(</span><span class="ex">6/6</span><span class="kw">)</span><span class="ex">,</span> done.</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="ex">remote:</span> Compressing objects: 100% <span class="er">(</span><span class="ex">3/3</span><span class="kw">)</span><span class="ex">,</span> done.</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a><span class="ex">remote:</span> Total 4 <span class="er">(</span><span class="ex">delta</span> 1<span class="kw">)</span><span class="ex">,</span> reused 3 <span class="er">(</span><span class="ex">delta</span> 1<span class="kw">)</span><span class="ex">,</span> pack-reused 0</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a><span class="ex">Unpacking</span> objects: 100% <span class="er">(</span><span class="ex">4/4</span><span class="kw">)</span><span class="ex">,</span> 1.23 KiB <span class="kw">|</span> <span class="ex">418.00</span> KiB/s, done.</span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a><span class="ex">From</span> github.com:rap4all/housing</span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a> <span class="ex">*</span> branch            master     <span class="at">-</span><span class="op">&gt;</span> FETCH_HEAD</span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>   <span class="ex">c774ebf..a43c68f</span>  master     <span class="at">-</span><span class="op">&gt;</span> origin/master</span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a><span class="ex">Auto-merging</span> analysis.R</span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a><span class="ex">CONFLICT</span> <span class="er">(</span><span class="ex">content</span><span class="kw">)</span><span class="bu">:</span> Merge conflict in analysis.R</span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a><span class="ex">Automatic</span> merge failed<span class="kw">;</span> <span class="ex">fix</span> conflicts and then commit the result.</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>O Git detecta que há alguns conflitos e avisa que têm de ser resolvidos para depois se fazer o <em>commit</em>. Vamos abrir o ficheiro <code>analysis.R</code> e ver com está (<a href="https://gist.github.com/b-rodrigues/f713702268c99328ad16af56f7d32892">link</a><a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>). Primeiro, podemos ver que o Git lida com os conflitos linha a linha. Logo, cada linha alterada pelo dono que não está em conflito com as alterações do Bruno é automaticamente atualizada, refletindo as alterações do dono. Por exemplo, a linha que que carrega o <em>package</em> <code>{purrr}</code> foi apagada e todos os <code>%&gt;%</code> passaram a <code>|&gt;</code>. Estas alterações foram feitas sem problemas.</p>
+<p>Agora temos de perceber o que acontece quando são detectados conflitos em algumas linhas. Por exemplo, o primeiro conflito que vemos:</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&lt;</span><span class="er">&lt;&lt;&lt;&lt;&lt;&lt;</span> HEAD</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>filtered_data <span class="ot">&lt;-</span> commune_level_data <span class="sc">|&gt;</span></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(locality <span class="sc">==</span> communes[<span class="dv">1</span>])</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a><span class="sc">==</span><span class="er">=====</span></span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>  filtered_data <span class="ot">&lt;-</span> commune_level_data <span class="sc">%&gt;%</span></span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(locality <span class="sc">==</span> commune)</span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span><span class="er">&gt;&gt;&gt;&gt;&gt;&gt;</span> a43c68f5596563ffca33b3729451bffc762782c3</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Vemos o aspecto das linhas no computados do dono e o seu aspecto no <em>branch master</em> (ou <em>trunk</em>). As linhas entre <code>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</code> e <code>=======</code> são as que pertencem ao <em>branch</em> das alterações do dono. As linhas entre <code>=======</code> and <code>&gt;&gt;&gt;&gt;&gt;&gt;&gt; a43c68f5596563ffca33b3729451bffc762782c3</code> são as do <em>branch master</em>. A cadeia longa de caracteres que começa com <code>a43c68f</code> é o <em>hash</em> do <em>commit</em> de onde vêm aquelas linhas.</p>
+<p>Isto facilita muito as coisas; apenas precisamos de eliminar o código que não está atualizado fazer o <em>commit</em> e o <em>push</em> do ficheiro corrigido. Neste caso o dono do projecto apenas tem de eliminar <code>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</code> e <code>=======</code> e tudo o que está entre estas linhas, bem como as linhas com o <em>hash</em>. O dono do projecto agora apenas tem de fazer <em>commit</em>, <em>push</em> das alterações, abrir um <em>pull request</em>, pedir ao Bruno para rever as alterações e fazer o <em>merge</em> de tudo no <em>master</em>.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="IMG/github_conflict_solved.png" class="img-fluid figure-img" width="300"></p>
+<figcaption>O conflito foi resolvido com elegância.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Em (1) vemos o <em>commit</em> que lida com os conflitos, em (2) o dono pede a revisão do Bruno e em (3) vemos que o Bruno fez a revisão e aprovou. Finalmente, é feito o <em>merge</em> do <em>pull request</em> e o <em>branch</em> é apagado.</p>
+</section>
+<section id="culpar-a-pessoa-certa" class="level3" data-number="5.1.3">
+<h3 data-number="5.1.3" class="anchored" data-anchor-id="culpar-a-pessoa-certa"><span class="header-section-number">5.1.3</span> Culpar a pessoa certa</h3>
+<p>Se há muitas pessoas a colaborar num projecto, pode ser difícil sabermos quem alterou o quê e quando o fez. É aqui que o comando <code>git blame</code> é útil. Se quisermos saber quem alterou o ficheiro <code>analysis.R</code>, apenas temos de executar:</p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="ex">owner@localhost</span> ➤ git blame analysis.R</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>e veremos o histórico detalhado, linha a linha com o nome dos colaboradores e a data:</p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="ex">b7f82ee1</span> <span class="er">(</span><span class="ex">Bruno</span> 2023-02-05 18:03:37 +0100 24<span class="kw">)</span> <span class="co">#Let’s also compute it...</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="ex">b7f82ee1</span> <span class="er">(</span><span class="ex">Bruno</span> 2023-02-05 18:03:37 +0100 25<span class="kw">)</span> </span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="ex">55804ccb</span> <span class="er">(</span><span class="ex">Owner</span> 2023-02-11 22:33:20 +0000 26<span class="kw">)</span> <span class="ex">country_level_data</span> <span class="op">&lt;</span>- ...</span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a><span class="ex">55804ccb</span> <span class="er">(</span><span class="ex">Owner</span> 2023-02-11 22:33:20 +0000 27<span class="kw">)</span>   <span class="ex">mutate</span><span class="er">(</span><span class="ex">p0</span> = ifelse<span class="er">(</span><span class="ex">y...</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Podemos ver que o Bruno alterou as linhas 24 e 25 no dia 5 de fevereiro como parte do <em>commit</em> com o <em>hash</em> <code>b7f82ee1</code>, enquanto que o dono do repositório alterou as linhas 26 e 27 no dia 11 de fevereiro como parte do <em>commit</em> com o <em>hash</em> <code>55804ccb</code>.</p>
+<p>Podemos aproveitar o <code>git blame</code> para termos uma visão das alterações em cada ficheiro.</p>
+</section>
+<section id="tbd-simplificado" class="level3" data-number="5.1.4">
+<h3 data-number="5.1.4" class="anchored" data-anchor-id="tbd-simplificado"><span class="header-section-number">5.1.4</span> TBD simplificado</h3>
+<p>O workflow que foi aqui apresentado pode parecer um pouco rigido para equipas pequenas (menos de 4 ou 5 colaboradores). Podemos sempre adoptar uma versão simplificada do desenvolvimento <em>trunk-based</em> (TBD) em que os colaboradores não precisam de abrir <em>pull requests</em> para fazer o <em>merge</em> dos seus <em>branchs</em> com novas funcionalidades no <em>trunk</em>, e em que não precisamos de revisores. Nestes casos o Git força-nos a fazer <em>pull</em> das alterações caso já tenha havido alguém a <em>mergir</em> o seu <em>branch</em> antes de nós. Assim, ao fazermos o <em>pull</em> podem surgir conflitos e é responsabilidade nossa resolver esses eventuais conflitos, fazer o <em>commit</em> e depois o <em>push</em> com os conflitos resolvidos. Outro colaborador que queira fazer o <em>merge</em> do seu <em>branch</em> no <em>trunk</em> terá de fazer novo <em>pull</em> e garantir que resolve os conflitos (caso existam) antes de fazer esse <em>merge</em>. Se não surgirem conflitos (por exemplo, no caso de dois colaboradores estarem a trabalhar em ficheiros diferentes, ou linhas diferentes do mesmo ficheiro) então não é necessário resolve-los e ambos podem fazer <em>merge</em> dos respectivos <em>branches</em> no <em>master</em>.</p>
+</section>
+<section id="conclusão" class="level3" data-number="5.1.5">
+<h3 data-number="5.1.5" class="anchored" data-anchor-id="conclusão"><span class="header-section-number">5.1.5</span> Conclusão</h3>
+<p>Os principais conceitos do desenvolvimento <em>trunk-based</em> são:</p>
+<ul>
+<li>Cada colaborador abre o seu novo branch para desenvolver uma funcionalidade ou corrigir um <em>bug</em>, e trabalha sozinho no seu <em>branch</em>;</li>
+<li>No final do dia (ou após um determinado periodo de tempo previamente acordado), é necessário fazer o <em>merge</em> de todos os <em>branches</em>;</li>
+<li>Nesta altura é necessário resolver todos os conflitos;</li>
+<li>Se uma determinada funcionalidade pode demorar mais do que um dia então deve ser dividida em tarefas mais pequenas que possam ser <em>mergidas</em> diariamente. No início estas contribuições podem ser simples marcadores de posição que são gradualmente preenchidos com código até que seja possível implementar a funcionalidade. Esta estratégia é chamada de <em>branching by abstraction</em>;</li>
+<li>O branch <em>master</em> (ou <em>trunk</em>) contém sempre código funcional, de nível de produção;</li>
+<li>Para impor alguma disciplina, pode valer a pena obrigar a abrir <em>pull request</em> para fazer <em>merge</em> no <em>trunk</em> e também requerer a revisão.</li>
+</ul>
+</section>
+</section>
+<section id="contribuir-com-repositórios-públicos" class="level2" data-number="5.2">
+<h2 data-number="5.2" class="anchored" data-anchor-id="contribuir-com-repositórios-públicos"><span class="header-section-number">5.2</span> Contribuir com repositórios públicos</h2>
+<p>Nesta última secção, vamos ver como podemos contribuircom um projecto quando não fazemos parte da equipa desse projecto. Por exemplo, se formos utilizadores dum <em>package</em> R, encontrarmos um <em>bug</em> e quisermos propor uma solução. Ou se apenas detectamos um erro ortográfico num README desse <em>package</em> e quisermos propor uma correção. Seja qual for a situação, se o repositório for público qualquer pessoa pode sugerir uma rectificação. Vejamos como exemplo o repositório:</p>
+<figure class="figure">
+<img src="IMG/github_public_repo.png" alt="A public repository." class="figure-img">
+<figcaption>
+Um repositório público.
+</figcaption>
+</figure>
+<p>Este repositório tem código escrito por um individuo chamado “rap4all” e o Bruno usa este código diariamente. No entanto o Bruno detectou um erro ortográfico no README e quer propor uma correção.</p>
+<p>Primeiro o Bruno vai visitar o repositório (que é público e pode ser visto online) e cria um <em>fork</em>:</p>
+<figure class="figure">
+<img src="IMG/github_fork.png" alt="Bruno needs to create a fork of the repository." class="figure-img">
+<figcaption>
+O Bruno precisa de criar um fork do repositório.
+</figcaption>
+</figure>
+<p>O <em>fork</em> cria uma cópia do repositório na conta do Bruno:</p>
+<figure class="figure">
+<img src="IMG/github_create_fork.png" alt="Bruno goes ahead with forking." class="figure-img">
+<figcaption>
+O Bruno faz o fork.
+</figcaption>
+</figure>
+<p>O Bruno pode ver também o <em>fork</em> na sua conta:</p>
+<figure class="figure">
+<img src="IMG/github_my_fork.png" alt="Bruno's fork." class="figure-img">
+<figcaption>
+O fork do Bruno.
+</figcaption>
+</figure>
+<p>Agora o Bruno pode clonar o repositório e trabalhar nele, uma vez que está a trabalhar numa cópia do repositório que é dele. Tudo o que o Bruno fizer nesta cópia não vai afectar o repositório original:</p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="ex">bruno@computer</span> ➤ git clone git@github.com:b-rodrigues/my_cool_project.git </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<figure class="figure">
+<img src="IMG/github_typo_fixed.png" alt="Bruno fixed the typo in his fork." class="figure-img">
+<figcaption>
+O Bruno corrigiu o erro neste fork.
+</figcaption>
+</figure>
+<p>Como podemos ver, o <em>fork</em> do Bruno adianta o repositório original num <em>commit</em>. Ao clicar em <em>“Contribute”</em>, o Bruno pode abrir um <em>pull request</em> para propor a correção ao repositório original.</p>
+<p>Este <em>pull request</em> será aberto no repositório original:</p>
+<figure class="figure">
+<img src="IMG/github_pull_request_typo.png" alt="Bruno opens a pull request to contribute his fix upstream." class="figure-img">
+<figcaption>
+O Bruno abre um pull request para contribuir com a sua correção.
+</figcaption>
+</figure>
+<p>Mas o que é que o dono do repositório original, “rap4all”, vê? O <em>pull request</em> que o Bruno abriu aparece agora no menu <em>“Pull request”</em> do repositório original e o dono pode ver nqual é a contribuição, se quebra o código ou não, etc. Este <em>workflow</em> é essencialmente o mesmo apresentado em cima no desenvolvimento <em>trunk-based</em> com <em>pull requests</em> e revisões antes do <em>merge</em> (à excepção do <em>fork</em> do repositório).</p>
+<figure class="figure">
+<img src="IMG/github_merge_pull_request.png" alt="The owner of the original repository can now accept Bruno's fix." class="figure-img">
+<figcaption>
+O dono do repositório original pode aceitar a correção do Bruno.
+</figcaption>
+</figure>
+<p>Ao fazer o merge da correção, o dono pode agora beneficiar dum ficheiro README gramaticamente corrigido:</p>
+<figure class="figure">
+<img src="IMG/github_contribution_done.png" alt="The beauty of open source." class="figure-img">
+<figcaption>
+A beleza do open source.
+</figcaption>
+</figure>
+</section>
+<section id="leitura-recomendada" class="level2" data-number="5.3">
+<h2 data-number="5.3" class="anchored" data-anchor-id="leitura-recomendada"><span class="header-section-number">5.3</span> Leitura recomendada</h2>
+<p>Para sabermos tudo sobre o desenvolvimento <em>trunk-based</em>, devemos consultar o manual do Hammant (2020). Uma versão gratuita e online deste livro está disponível em <a href="https://trunkbaseddevelopment.com/">https://trunkbaseddevelopment.com/</a>.</p>
 
 
+</section>
+<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn1"><p>https://is.gd/ktWtjr<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
 
 <p><a href="https://bioestatisticas.wixsite.com/bioestatisticas"><img src="IMG/logoOB.jpg" class="img-fluid"></a></p></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -898,4 +1466,4 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 
 
 
-<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions"><ul><li><a href="https://github.com/balima78/rap_pt/edit/main/github.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/balima78/rap_pt/issues" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/balima78/rap_pt/edit/main/github.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/balima78/rap_pt/issues" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>

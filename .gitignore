@@ -3,3 +3,4 @@ _book/
 *.tex
 *.epub
 .Rproj.user
+_docs/

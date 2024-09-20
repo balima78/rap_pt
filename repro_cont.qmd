@@ -1,1 +1,525 @@
 # Pipelines de análise reprodutíveis com o Docker
+
+Se este livro finalizasse com o capítulo anterior, teria o título "Criação de pipelines de análise em R", uma vez que ainda não garantimos que o pipeline que construímos é reprodutível. No entanto já fizemos muito:
+
++ usamos programação funcional e literada;
++ documentamos, testamos e versionamos o código;
++ usamos o `{renv}` para registarmos as dependências do projeto;
++ o projeto foi reescrito como um pipeline `{targets}` e não pode ser mais fácil re-executá-lo.
+
+Mas ainda há muitas variáveis que não controlamos. Se voltarmos ao icebergue da reprodutibilidade, veremos que ainda podemos ir mais fundo. O código, tal como está, assenta em bibliotecas e paradigmas de programação mas precisamos de considerar outros aspectos.
+
+Como referimos na introdução do capítulo 10, o `{renv}` só repõe versões de pacotes. A versão do R usada na análise apenas é registada. Assim, para garantirmos que o pipeline reproduz sempre os mesmos resultados, temos de instalar a mesma versão R usada na construção do pipeline original. Mas a instalação da versão correcta do R pode ser difícil; depende do sistema operativo em que o queremos instalar, e de quão antiga é a versão. Instalar a versão 4 no Windows é simples, mas a isntalação do R2.15.0 (de março de 2012) numa distribuição Linux actual (ou mesmo num Windows) pode ser desafiante.
+
+Temos também o sistema operativo em que foi desenvolvido o nosso pipeline. Na prática, isto não costuma ser relevante, mas já houve casos em que o mesmo código produziu resultados diferentes em sistemas operativos diferentes, inclusivamente em versões diferentes do mesmo sistema operativo. Por exemplo, @neupane2019 discutem a sua tentativa de reproduzir um artigo de 2014. Os *scripts* e os dados originais estavam disponíveis, no entanto não conseguiram reproduzir os resultados, apesar de terem usado a mesma versão do Python que os autores originais de 2014 estavam a usar. O motivo era o sistema operativo: estavam a realizar o exercício de replicação num sistema operativo diferente, o que fazia com que os resultados fossem diferentes. Mas qual era o problema? O *script* original dependia da forma como o sistema operativo ordenava os ficheiros para análise. Se os ficheiros fossem ordenados de uma forma diferente, os resultados seriam diferentes. E a ordenação dos ficheiros depende do sistema operativo! A seguinte tabela, de @neupane2019, mostra como os resultados dependem do sistema operativo em que o *script* é executado:
+
+<figure>
+    <img src="IMG/neupane_table1.png"
+         alt="Different operating system yield different results."></img>
+    <figcaption>Sistemas operativos diferentes dão resultados diferentes.</figcaption>
+</figure>
+
+e esta tabela mostra como o Windows e o Ubuntu (Linux) ordenam os ficheiros:
+
+<figure>
+    <img src="IMG/neupane_table2.png"
+         alt="Different OS order files differently!"></img>
+    <figcaption>Os diferentes ordenam os ficheiros de forma diferente!</figcaption>
+</figure>
+
+Ou seja, os sistemas operativos podem ter impacto no nosso pipeline, e geralmente é um impacto não esperado.
+
+Finalmente, estamos num período de transição no que diz respeito à arquitetura de *hardware*. É muito provável que a Apple mude completamente para uma arquitetura ARM com os CPUs de silício da Apple (neste momento, o Mac Pro é o único computador fabricado pela Apple que não usa um CPU de silício da Apple e apenas porque foi lançado em 2019) e não seria surpreendente se outros fabricantes seguissem o exemplo e desenvolvessem os seus próprios cpus ARM. Isto significa que os projectos escritos hoje podem deixar de funcionar no futuro, devido a estas alterações de arquitetura. As bibliotecas compiladas para as arquitecturas actuais teriam de ser recompiladas para ARM, o que pode ser difícil.
+
+Como vimos no capítulo anterior, queremos que o nosso pipeline seja a composição de funções puras. Nada no ambiente global (para além das opções específicas de `{target}`) deve influenciar as execuções do pipeline. Mas, e o ambiente em que o R está a correr? O motor do R está a correr num tipo de ambiente. Foi o que vimos em cima: o sistema operativo (e todas as bibliotecas matemáticas que estão incluídas no sistema operativo em que o R se baseia para executar o código) e o *hardware* são variáveis que precisam de ser registadas e/ou congeladas tanto quanto possível.
+
+Vejamos a seguinte situação: quando executamos uma função pura `f()` de um argumento, pensamos em:
+
+```
+f(1)
+```
+
+mas na verdade estamos a fazer:
+
+```
+f(1, "windows 10 - build 22H2 - patch 10.0.19045.2075", 
+  "intel x86_64 cpu i9-13900F", 
+  "R version 4.2.2")
+```
+
+Isto é, `f()` apenas é uma função pura para a atual versão do R em que é executada. Mas tudo o resto tem de ser considerado. Lembremo-nos que, em termos técnicos, isto significa que a nossa função não é referencialmente transparente. É isto mesmo que acontece no artigo de @neupane2019 que descrevemos. Os autores dependem dum estado escondido (a ordem dos ficheiros) pra programarem os seus *scripts*; por outras palavras, o nosso pipeline não era referencialmente transparente.
+
+Para lidarmos com estas situações, vamos aprender a usar o Docker. O Docker vai essencialmente transformar o nosso pipeline referencialmente transparente, congelando as versões do R e do sistema operativo (bem como a arquitetura do CPU)
+
+## O que é o Docker?
+
+Em termos simples (e tecnicamente errados), o Docker facilita a execução duma máquina virtual (VM) Linux no nosso computador. Uma VM é um computador dentro dum computador: a ideia é ligarmos o computador, iniciarmos o Windows (ou o sistema operativo que utilizamos todos os dias), mas depois iniciarmos o Ubuntu (uma distribuição Linux muito popular) como se fosse qualquer outra aplicação instalada no nosso computador e utilizá-lo (quase) como fariamos normalmente. É isto que uma solução VM clássica como o Virtualbox nos oferece. Podemos iniciar e utilizar o Ubuntu de forma interactiva a partir do Windows. O que pode ser bastante útil para testes, por exemplo.
+
+A diferença entre o Docker e o Virtualbox (ou VMware) é que o primeiro reduz a VM ao seu essencial. Não há interface gráfica de utilizador, por exemplo, e não vamos (normalmente) usar uma VM Docker interativamente. Em vez disso, escrevemos num ficheiro de texto as especificações da VM que pretendemos. Este ficheiro de texto designamos de Dockerfile. Por exemplo, se queremos que a VM tenha por base o Ubuntu, então essa seria a primeira linha do Dockerfile. Depois queremos que a VM tenha o R instalado. Então essa seria a segunda linha. Precisamos de instalar pacotes R, então adicionamos essas linhas também. Talvez seja necessário adicionar algumas dependências do sistema? Adicione-mo-las. Por fim, adicionamos o código do pipeline que pretendemos tornar reprodutível.
+
+Quando terminarmos, teremos um ficheiro de texto, o Dockerfile, com uma receita completa para gerar uma VM Docker. Essa VM é designada como imagem (como dissemos anteriormente, tecnicamente não é uma VM verdadeira, mas não vamos discutir isso). Então temos um ficheiro de texto que nos ajuda a definir e a gerar uma imagem. Aqui, já podemos ver uma primeira vantagem de usarmos o Docker em relação a uma solução de VM mais tradicional como o Virtualbox: podemos escrever facilmente estes Dockerfiles e versioná-los. Podemos também começar a partir de outro Dockerfile de outro projeto e adaptá-lo ao nosso pipeline actual. E o mais importante, porque tudo está escrito, é reprodutível (mas mais sobre isso no final deste capítulo...).
+
+Ok, temos a imagem. Esta imagem terá por base alguma distribuição Linux, geralmente o Ubuntu. Temos uma versão específica do Ubuntu, e nós podemos adicionar uma versão específica do R. Podemos também baixar versões específicas de todos os pacotes necessários para o nosso pipeline. O resultado é um ambiente feito sob medida para o nosso pipeline. Podemos agora executar o pipeline com esta imagem Docker e obter sempre exatamente os mesmos resultados, sempre. Isso acontece porque, independentemente de como, onde ou quando executarmos o pipeline *dockerizado*, a mesma versão do R, com a mesma versão dos pacotes R, na mesma distribuição Linux, será usada para reproduzir os resultados do nosso pipeline. A propósito, quando executamos uma imagem do Docker, ou seja, quando executamos o nosso pipeline com a imagem definida, estamos a referirnos a um *container* do Docker.
+
+Ou seja, um ficheiro Docker define uma imagem Docker, a partir da qual podemos executar *containers*. As imagens seguintes são ilustrativas. Na primeira vemos o que acontece quando o mesmo pipeline é executado em duas versões diferentes do R e em dois sistemas operativos diferentes:
+
+<figure>
+    <img src="IMG/without_docker.png"
+         alt="Running a pipeline without Docker results (potentially) in different outputs."></img>
+    <figcaption>Executar um pipeline sem o Docker pode resultar (potencialmente) em outputs diferentes.</figcaption>
+</figure>
+
+Se repararmos nos *outputs*, veremos que são diferentes. 
+
+Agora, se executarmos o mesmo pipeline com o Docker:
+
+<figure>
+    <img src="IMG/with_docker.png"
+         alt="Running a pipeline with Docker results in the same outputs."></img>
+    <figcaption>Executar um pipeline com o Docker tem sempre o mesmo output.</figcaption>
+</figure>
+
+Outra forma de vermos uma imagem Docker: é uma *sandbox* imutável, onde as regras do jogo são sempre as mesmas. Não importa onde ou quando executamos essa *sandbox*, o pipeline sempre será executado nesse mesmo espaço bem definido. Como o pipeline é executado nas mesmas versões do R (e pacotes) e no mesmo sistema operativo definido na imagem do Docker, o nosso pipeline é agora verdadeiramente reprodutível.
+
+Mas porquê o Linux; porque é que não é possível criar imagens Docker com base em Windows ou macOS? Lembremo-nos da introdução, onde explicámos o que é reprodutibilidade:
+
+> O código aberto é um requisito fundamental para a reprodutibilidade.
+
+O código aberto não é apenas um requisito para a linguagem de programação que utilizamos para construirmos o pipeline, também se estende ao sistema operativo em que o pipeline é executado. Assim, a razão pela qual o Docker utiliza o Linux é porque pode utilizar distribuições Linux como o Ubuntu gratuitamente e sem restrições. Não há licenças que precisem ser compradas ou ativadas, e as distribuições Linux podem ser personalizadas para qualquer caso de uso imaginável. Assim, as distribuições Linux são a única opção disponível para o Docker para esta tarefa.
+
+## Uma iniciação ao Linux
+
+Até aqui, podíamos ter seguido o livro usando qualquer sistema operativo. A maior parte do código deste livro é código R, por isso não importa em que sistema operativo o estamos a executar. Mas já houve algum código que executámos na consola do Linux (por exemplo, usámos `ls` para listar ficheiros). Esses comandos também devem funcionar no macOS, mas no Windows usámos o terminal do Git Bash. Isto porque `ls` (e outros comandos semelhantes) não funcionam no *prompt* de comandos padrão do Windows (mas devem funcionar no Powershell). Em vez de usarmos o terminal (ou o Git Bash) para navegar no sistema de arquivos do nosso computador, podíamos continuar usando a interface de usuário do nosso sistema operacional. Por exemplo, no [Capítulo -@sec-packages], listamos o conteúdo da pasta `dev/` com o comando:
+
+```bash
+owner@localhost ➤ ls dev/
+```
+
+podíamos apenas ter aberto a pasta `dev/` no explorador de ficheiros do nosso sistema operativo. Mas para usarmos o Docker, precisamos de conhecer o Linux e um pouco do ecossistema e de conceitos Linux. Mas não é tão difícil como pode parecer.
+
+Linux não é o nome de um sistema operativo específico, mas sim do *kernel* de um sistema operativo. Um *kernel* é um componente importante de um sistema operativo. O Linux é gratuito e de código aberto, e está entre os projectos gratuitos e de código aberto mais bem sucedidos de sempre. Como a sua licença permite (e encoraja) a reutilização, qualquer pessoa pode usar este *kernel* e adicionar todos os outros componentes necessários para construir um sistema operativo completo e disponibilizar o produto final. É por isto que existem muitas distribuições Linux: uma distribuição Linux é um sistema operativo completo que usa o Linux como *kernel*. A distribuição Linux mais popular chama-se Ubuntu, e se procurarmos no Google qualquer coisa como *“easy linux os for beginners”* (sistema operativo Linux fácil para principiantes), a resposta que aparecerá no topo será provavelmente o Ubuntu, ou uma das outras variantes do Ubuntu (sim, porque o Ubuntu em si também é *open-source* e *software* livre, e é possível construir variantes usando o Ubuntu como base, como o Linux Mint).
+
+Para definirmos as nossas imagens Docker, usaremos o Ubuntu como base. O sistema operativo Ubuntu tem duas versões por ano, uma em abril e outra em outubro. Nos anos pares, a versão de abril é uma versão de suporte a longo prazo (LTS). As versões LTS recebem actualizações de segurança durante 5 anos, e as imagens Docker utilizam geralmente uma versão LTS como base. Neste momento (maio de 2023), a atual LTS é o Ubuntu 22.04 Jammy Jellyfish (os lançamentos do Ubuntu são nomeados com um número da forma YY.MM e depois um nome de código com base em algum animal).
+
+Podemos instalar o Ubuntu no nosso computador. Mas não é necessário, uma vez que podemos usar o Docker para *embarcar* os nossos projectos!
+
+Uma grande diferença entre o Ubuntu (e outras distribuições Linux) e o macOS e o Windows é a forma como instala o *software*. Resumindo, o *software* para distribuições Linux é distribuído como pacotes. Se quisermos instalar, por exemplo, o editor de texto Emacs, podemos executar o seguinte comando no terminal:
+
+```bash
+sudo apt-get install emacs-gtk
+```
+
+Vamos por partes: `sudo` faz com que os próximos comandos sejam executados como *root*. *root* é o jargão do Linux para a conta de administrador. Portanto, se digitarmos `sudo xyz`, o comando `xyz` será executado com privilégios de administrador. Depois temos o `apt-get install`. `apt-get` é o gestor de pacotes do Ubuntu, e `install` é o comando que instala o `emacs-gtk`. `emacs-gtk` é o nome do pacote Emacs. Como somos utilizadores do R, isto é-nos familiar: afinal, as extensões para o R também são instaladas usando um gestor de pacotes e um comando: `install.packages(“nome_do_pacote”)`. Tal como no R, onde os pacotes são descarregados do CRAN, o Ubuntu descarrega pacotes de um repositório que podemos consultar [aqui](https://packages.ubuntu.com/jammy/)^[https://packages.ubuntu.com/jammy/]. Claro que, como usar a linha de comandos pode ser intimidante para principiantes, também é possível instalar pacotes usando uma loja de *software*, assim como no macOS ou no Windows. Mas recordemos, o Docker só usa o que é absolutamente necessário para funcionar, por isso não existe uma interface de utilizador interactiva. Isto não se deve ao facto de os programadores do Docker não gostarem de interfaces de utilizador, mas sim porque o objetivo do Docker não é utilizar imagens Docker de forma interactiva, pelo que não há necessidade de uma interface de utilizador. Portanto, é necessário sabermos como instalar os pacotes do Ubuntu com a linha de comandos.
+
+Tal como para o R, é possível instalarmos *software* de diferentes fontes. Podemos adicionar diferentes repositórios e instalar *software* a partir daí. Não vamos fazê-lo aqui, mas só como um aparte, se estivermos a usar o Ubuntu no nosso computador como nosso sistema operativo diário, devemos realmente verificar o [r2u](https://github.com/eddelbuettel/r2u)^[https://github.com/eddelbuettel/r2u], um repositório do Ubuntu que vem com pacotes R pré-compilados que podem ser instalados, muito, muito rapidamente. Apesar de não o utilizarmos aqui (e veremos o porquê mais tarde neste capítulo), devemos definitivamente considerar o `r2u` como fornecedor de pacotes R binários se utilizarmos o Ubuntu como o nosso sistema operativo diário.
+
+Vamos supor que estamo a usar o Ubuntu na nossa máquina, e que usamos o R. Se quisermos instalar o pacote R `{dplyr}`, acontece algo interessante quando escrevemos:
+
+```{r, eval = F}
+install.packages("dplyr")
+```
+
+No Windows e no macOS, um binário compilado é baixado do CRAN e instalado no nosso computador. Um "binário" é o código fonte compilado dum pacote. Muitos pacotes R vêm com código o C++ ou Fortran e este código não pode ser usado como tal pelo R. Logo esses bits de código C++ e Fortran precisam de ser compilados para serem usados. Pensemos da seguinte forma: se o código fonte são os ingredientes, o binário compilado é refeição cozinhada. Imaginemos que cada vez que queremos comer Francesinha, ou a cozinhamos nós mesmos... ou a mandamos vir entregar em nossa casa. Provavelmente, optaremos pela entrega a domicílio (especialmente se for gratuita). Mas isto significa que houve alguém que teve de confeccionar a Francesinha para nós. O CRAN basicamente cozinha pacotes de código fonte em binários para o Windows e macOS, como podemos ver:
+
+<figure>
+    <img src="IMG/tidyverse_packages.png"
+         alt="Download links to pre-compiled tidyverse binaries."></img>
+    <figcaption>Links de Download links para binários pré-compilados do tidyverse.</figcaption>
+</figure>
+
+Nesta imagem, podemos ver links para binários compilados do pacote `{tidyverse}` para Windows e macOS, mas nenhum para qualquer distribuição Linux. Isto porque, como referimos na introdução, existem muitas, muitas, muitas distribuições Linux. Então, na melhor das hipóteses, o CRAN poderia oferecer binários para o Ubuntu, mas o Ubuntu não é a única distribuição Linux, e o Ubuntu tem dois lançamentos por ano, o que significa que cada pacote CRAN (que precisa de compilação) precisaria ser compilado duas vezes por ano. Isto é uma tarefa enorme, a menos que o CRAN decida oferecer apenas binários para as versões LTS. Mas isso ainda seria a cada dois anos.
+
+Então, o que acontece é que o fardo da compilação é empurrado para o utilizador. Sempre que escrevemos `install.packages(“nome_do_pacote”)`, e se este pacote requer compilação, o pacote é compilado na nossa máquina, o que não só leva algum tempo, mas também pode falhar. Isto porque, muitas vezes, os pacotes R que requerem compilação precisam de algumas dependências adicionais ao nível do sistema que precisam ser instaladas. Por exemplo, estas são as dependências do Ubuntu que precisam ser instaladas para que a instalação do pacote `{tidyverse}` seja bem-sucedida:
+
+```
+libicu-dev
+zlib1g-dev
+make
+libcurl4-openssl-dev
+libssl-dev
+libfontconfig1-dev
+libfreetype6-dev
+libfribidi-dev
+libharfbuzz-dev
+libjpeg-dev
+libpng-dev
+libtiff-dev
+pandoc
+libxml2-dev
+```
+
+É por isso que o `r2u` é tão útil: ao adicionarmos este repositório, o que estmos essencialmente a fazer é dizer ao R para não irmos buscar os pacotes ao CRAN, mas sim ao repositório `r2u`. E este repositório contém pacotes R compilados para o Ubuntu. Assim, as dependências necessárias ao nível do sistema são instaladas automaticamente e o pacote R não precisa de compilação. Logo, a instalação do pacote `{tidyverse}` demora menos de meio minuto numa máquina moderna.
+
+## Primeiros passos com o Docker
+
+Vamos começar por criar uma imagem Docker *“Hello World”*. Como referimos no início, para definirmos uma imagem Docker, precisamos de criar um Dockerfile com algumas instruções. Mas antes, é claro, precisamos instalar o Docker. Para instalarmos o Docker em qualquer sistema operativo (Windows, macOS ou Ubuntu ou outros Linuxes), podemos instalar o [Docker
+Desktop](https://docs.docker.com/desktop/)^[https://docs.docker.com/desktop/]. Se estivermos a correr o Ubuntu (ou outra distribuição Linux) e não quisermos a GUI, podemos instalar o [Docker
+engine](https://docs.docker.com/engine/install/ubuntu/#install-using-the-repository)^[https://docs.docker.com/engine/install/ubuntu/#install-using-the-repository] e depois seguirmos os [passos para
+Linux](https://docs.docker.com/engine/install/linux-postinstall/#manage-docker-as-a-non-root-user)^[https://docs.docker.com/engine/install/linux-postinstall/#manage-docker-as-a-non-root-user] de pós instalação.
+
+Em qualquer caso, independentemente do nosso sistema operativo, vamos utilizar a linha de comandos para interagir com o Docker. Quando terminarmos de instalar o Docker, criamos uma pasta em algum lugar do seu computador e dentro dessa pasta criamos um arquivo de texto vazio com o nome “Dockerfile”. Isso pode ser complicado no Windows, pois é preciso remover a extensão `.txt` que é adicionada por padrão. Poderá ser necessário ativar a opção “Extensões de nomes de ficheiros”, no painel `Ver` do explorador de ficheiros do Windows, para facilitar este processo. Em seguida, abrimos este ficheiro, com o nosso editor de texto preferido, e adicionamos as seguintes linhas:
+
+```
+FROM ubuntu:jammy
+
+RUN uname -a
+```
+
+Este Dockerfile muito simples faz duas coisas: começa por afirmar que é baseado no sistema operacional Ubuntu Jammy (versão 22.04), e executa o  `uname -a`. Este comando, que é executado dentro da linha de comandos do Ubunu, imprime a versão do *kernel* Linux daquela versão particular do Ubuntu. `FROM` e `RUN` são comandos do Docker; existem alguns outros que vamos descobrir um pouco mais tarde. Agora, o que fazemos com este Dockerfile? Lembremo-nos, um Dockerfile define uma imagem. Então, agora, precisamos construir essa imagem para executar um *container*. Abrimos um terminal/ *prompt* de comandos na pasta onde está o Dockerfile e digitamos:
+
+```bash
+owner@localhost ➤ docker build -t raps_hello .
+```
+
+O comando `docker build` cria uma imagem a partir do Dockerfile que está no caminho `.` (um simples `.` significa "na directoria de trabalho actual"). A opção `-t` atribui à imagem o nome `raps_hello`. Se tudo correr, bem deveremos ver o *output*:
+
+```bash
+Sending build context to Docker daemon  2.048kB
+Step 1/2 : FROM ubuntu:jammy
+ ---> 08d22c0ceb15
+Step 2/2 : RUN uname -a
+ ---> Running in 697194b9a519
+Linux 697194b9a519 6.2.6-1-default #1 SMP PREEMPT_DYNAMIC 
+     Mon Mar 13 18:57:27 UTC 2023 (fa1a4c6) x86_64 x86_64 x86_64 GNU/Linux
+Removing intermediate container 697194b9a519
+ ---> a0ea59f23d01
+Successfully built a0ea59f23d01
+Successfully tagged raps_hello:latest
+```
+
+Em `Step 2/2` veremos o *output* do comando `unamec -a`:
+
+```bash
+Linux 697194b9a519 6.2.6-1-default #1 SMP PREEMPT_DYNAMIC
+     Mon Mar 13 18:57:27 UTC 2023 (fa1a4c6) x86_64 x86_64 x86_64 GNU/Linux
+```
+
+Cada expressão `RUN` no Dockerfile é executada no momento de construção e é o que usaremos para instalar o R e os pacotes necessários. Assim, quando é construída, ficamos com uma imagem que contém todo o *software* que precisamos.  
+
+Agora, gostaríamos de poder usar essa imagem. Com uma imagem construída, podemos iniciar um ou vários *containers* que podemos utilizar para o que quisermos. Vamos criar um exemplo mais realista. Construimos uma imagem Docker que vem com o R pré-instalado. Para isto, precisamos voltar ao nosso Dockerfile e alterá-lo um pouco:
+
+```
+FROM ubuntu:jammy
+
+ENV TZ=Europe/Luxembourg
+
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
+RUN apt-get update && apt-get install -y r-base
+
+CMD ["R"]
+```
+
+Primeiro com o `ENV`, criamos uma variável chamada `TZ` e definimo-la para o fuso horário da `Europe/Luxembourg` (podemos alterar para outro fuso horário qualquer). De seguida, executamos um comando de aspecto bastante complexo que define o fuso horário para todo o sistema. Tivemos de fazer tudo isto porque, quando instalamos o R, é instalada uma dependência a nível do sistema, chamada `tzdata`. Esta ferramenta pede então ao utilizador que introduza o seu fuso horário de forma interactiva. Mas como não podemos interagir com a imagem enquanto está a ser construída, o processo de construção ficaria preso nesse *prompt*. Usando estes dois comandos, podemos definir o fuso horário correto e assim que o `tzdata` for instalado, essa ferramenta já não pede o fuso horário, e o processo de construção pode continuar. Este é um problema bastante comum quando se constroem imagens Docker baseadas no Ubuntu, por isso a correcção é facilmente encontrada com uma pesquisa no Google (mas fica já aqui, de graça).
+
+Depois temos comandos `RUN`. O primeiro usa o gestor de pacotes do Ubuntu para refrescar os repositórios (isto garante que os repositórios da nossa instalação local do Ubuntu estão sincronizados com os *updates* de *software* mais recentes dos repositórios centrais do Ubuntu). Depois usamos o gestor de pacotes do Ubuntu para instalar o `r-base`. O `r-base` é o pacote que instala o R. Finalizamos este ficheiro Docker com a execução de `CMD ["R"]`. Este é o comando que será executado quando iniciarmos o *container*. Devemos ter em conta que os comandos `RUN` são executados no momento da construção enquanto que `CMD` é executado no momento do arranque. Esta distinção será importante mais tarde.  
+
+Vamos construir a imagem (vai demorar algum tempo porque há muito *software* a ser instalado):
+
+```bash
+owner@localhost ➤ docker build -t raps_ubuntu_r .
+```
+
+Esta ordem constrói a imagem designada `raps_ubuntu_r`. Esta imagem tem por base o Ubunto 22.04 Jammy Jellyfish e vem com o R pré-instalado. Mas a versão o R instalada é disponibilizada pelos repositórios Ubuntu, que neste momento tem a versão 4.1.2, enquanto que a última versão do R é 4.2.3. OU seja, a versão disponível a partir dos repositórios do Ubuntu é anterior à versão mais actual. Mas não importa, trataremos disso mais tarde.
+
+Podemos agora iniciar o *container* com o comando:
+
+```bash
+owner@localhost ➤ docker run raps_ubuntu_r
+```
+
+E este é o *output* que temos:
+
+```r
+Fatal error: you must specify '--save', '--no-save' or '--vanilla'
+```
+
+Qual é o problema? Quando iniciamos o *container*, o comando especificado pelo CMD é executado e, em seguida, o *container* é encerrado. Assim, aqui, o *container* executou o comando R, que iniciou o interpretador R, mas depois saiu imediatamente. Ao sair do R, os utilizadores devem especificar se querem ou não guardar o espaço de trabalho. É isto que a mensagem acima nos está a dizer. Então, como é que podemos usar isto? Existe alguma forma de utilizarmos esta versão do R de forma interactiva?
+
+Sim, existe uma maneira de usarmos esta versão do R dentro da nossa imagem do Docker de forma interativa, mesmo que não seja o que pretendemos. O que queremos, em vez disso, é que o nosso pipeline seja executado quando executamos o *container*. Não queremos mexer no *container* de forma interactiva. Mas vejamos como podemos interagir com esta versão *dockerizada* do R. Primeiro, é preciso deixar o *container* rodar em segundo plano. Executamos o comando:
+
+```bash
+owner@localhost ➤ docker run -d -it --name ubuntu_r_1 raps_ubuntu_r
+```
+
+Isto inicia o *container* a que chamamos “ubuntu_r_1” a partir da imagem “raps_ubuntu_r” (recordemos que podemos executar muitos *containers* a partir de uma única definição de imagem). Graças à opção `-d`, o *container* corre em segundo plano, e a opção `-it` indica que queremos que uma *shell* interactiva esteja à nossa espera. Assim, o contentor corre em segundo plano, com uma *shell* interactiva à nossa espera, em vez de lançar (e depois parar imediatamente) o comando R. Agora podemos "ligar-nos" à *shell* interactiva e iniciar o R, com:
+
+```bash
+owner@localhost ➤ docker exec -it ubuntu_r_1 R
+```
+
+Deveremos estar a ver um *prompt* familiar:
+
+```r
+R version 4.1.2 (2021-11-01) -- "Bird Hippie"
+Copyright (C) 2021 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> 
+```
+
+Sejamos bem vindos a uma versão *dockerizada* do R. Tudo isto pode parecer muito complicado, principalmente se é a primeira vez que brincamos com o Docker. No entanto, não nos devemos preocupar muito, uma vez que:
+
++ não vamos usar *containers* Docker de forma interactiva, não é esse o nosso objectivo, mas pode ser útil ligar-nos a um *container* em execução para verificarmos se tudo está a correr como esperado;
++ vamos construir as nossas imagens a partir de imagens pré-construidas do [Rocker project](https://rocker-project.org/)^[https://rocker-project.org/] e estas imagens vêm já com muito software pré-instalado e com as configurações feitas.
+
+O que devemos retirar desta secção é que precisamos escrever um ficheiro Docker que nos permita construir uma imagem. Essa imagem pode então ser usada para executar um (ou vários) *containers*. Esses *containers*, depois de iniciados, executarão o nosso pipeline em um ambiente que está congelado, de modo que o *output* dessa execução permanecerá constante, para sempre.
+
+## O Rocker project
+
+O projeto Rocker oferece uma coleção muito grande de imagens Docker “R-ready” que podemos usar como ponto de partida para construir as nossas próprias imagens Docker. Antes de usarmos essas imagens, porém, ainda precisamos compreender um conceito muito importante do Docker. Vamos voltar à nossa imagem Docker “Hello World”:
+
+```
+FROM ubuntu:jammy
+
+RUN uname -a
+```
+
+A primeira linha, `FROM ubuntu:jammy` baixa uma imagem do Ubuntu Jammy, mas de onde? Todas estas imagens são descarregadas do Docker Hub, que podemos visitar [aqui](https://hub.docker.com/)^[https://hub.docker.com/]. Se criarmos uma conta, podemos até enviar as nossas próprias imagens para lá. Por exemplo, poderíamos colocar a imagem que construímos antes, que chamamos de `raps_ubuntu_r`, no Docker Hub. Então, se quiséssemos criar uma nova imagem Docker que se baseia em `raps_ubuntu_r`, poderíamos simplesmente digitar `FROM username:raps_ubuntu_r` (ou algo similar).
+
+Também é possível não usarmos o Docker Hub e partilharmos a imagem que construímos como um ficheiro, como veremos mais à frente.
+
+O projeto Rocker oferece muitas imagens diferentes, que estão descritas [aqui](https://rocker-project.org/images/)^[https://rocker-project.org/images/]. Vamos usar as imagens *versionadas*. Estas são imagens que carregam versões específicas do R. Desta forma, não importa quando a imagem é construída, a mesma versão do R será instalada ao ser construída a partir do código fonte. Vejamos por que é importante construir o R a partir do código. Quando construímos a imagem com o Dockerfile que escrevemos antes, o R é instalado a partir dos repositórios do Ubuntu. Para isso, usamos o gerenciador de pacotes do Ubuntu e o seguinte comando: `apt-get install -y r-base`. Neste momento, a versão do R que é instalada é a versão 4.1.3. Há dois problemas com a instalação do R a partir dos repositórios do Ubuntu. Primeiro, temos que usar o que for instalado, o que pode ser um problema de reprodutibilidade. Se executámos a nossa análise usando a versão 4.2.1 do R, então gostaríamos de instalar essa versão do R. O segundo problema é que quando construímos a imagem hoje obtemos a versão 4.1.3. Mas não é impossível que, se construirmos a imagem daqui a 6 meses, obtenhamos a versão 4.2.0 do R, pois é provável que a versão que vem nos repositórios do Ubuntu seja actualizada.
+
+Isto significa que, dependendo de quando construímos a imagem do Docker, podemos obter uma versão diferente do R. Existem apenas duas maneiras de evitar esse problema: ou construímos a imagem uma vez e a arquivamos e nos certificamos de manter sempre uma cópia e *embarcamos* essa cópia para sempre (ou pelo tempo que quisermos garantir que o pipeline seja reprodutível), assim como *embarcaríamos* dados, código e qualquer documentação necessária para tornar o pipeline reprodutível. Ou escrevemos o Dockerfile de tal forma que ele sempre produz a mesma imagem, independentemente de quando ele é construído. Aconselha-se vivamente optarmos pela segunda opção, mas também arquivarmos a imagem. Mas, claro, isso também depende de quão crítico é o nosso projeto. Talvez não precisemos de começar a arquivar imagens, ou talvez nem precisemos de nos certificar de que o Dockerfile produz sempre a mesma imagem. Ainda assim é recomendável que escrevamos os nossos Dockerfiles de tal forma que eles sempre produzam a mesma imagem. É mais seguro, e não significa trabalho extra, graças ao projeto Rocker.
+
+Vamos então de novo ao Rocker *project* e especificamente às suas imagens versionadas que podemos encontrar [aqui](https://rocker-project.org/images/versioned/r-ver.html)^[https://rocker-project.org/images/versioned/r-ver.html]. Quando usamos imagens versionadas como base dos nossos projectos estamos a garantir que: 
+
++ uma versão fixa do R que é construída de raíz. Não interessa quando construímos a imagem, sempre embarcará com a mesma versão do R;
++ O sistema operativo será o lançamento LTS correspondente à versão do R;
++ os repositórios R serão definidos Posit Public Package Manager (PPPM) a uma determinada data. Isto garante que os pacotes R não precisam de ser compilados uma vez que o PPPM entrega pacotes binários para a arquitectura amd64 (a arquitectuta que todos os computadores que não são Apple geralmente usam).
+
+Este último ponto requer mais algumas explicações. Devemos ter em conta que as imagens versionadas do Rocker utilizam o PPPM definido numa determinada data. Esta é uma excelente caraterística do PPPM. Por exemplo, a imagem Rocker versionada que vem com o R 4.2.2 tem os repositórios definidos para 14 de março de 2023, como podemos [aqui](https://github.com/rocker-org/rocker-versioned2/blob/fb1d32e70061b0f978b7e35f9c68e2b79bafb69a/dockerfiles/r-ver_4.2.2.Dockerfile#L16)^[https://is.gd/fdrq4p]. Isto significa que se usarmos `install.packages(“dplyr”)` dentro de um *container* executado a partir daquela imagem, então a versão do `{dplyr}` instalada será a que estava disponível no dia 14 de março.
+
+Isto pode ser conveniente em certas situações, e podemos querer, dependendo das nossas necessidades, utilizar o PPPM numa data específica para definir imagens Docker, como faz o projeto Rocker. Podemos inclusivé definir o PPPM numa data específica para a nossa máquina de desenvolvimento principal (basta seguir as instruções [aqui](https://packagemanager.rstudio.com/client/#/repos/2/overview)^[https://is.gd/jbdTKC]). Mas temos de ter presente que não vamos receber nenhuma atualização de pacotes, portanto, se quisermos instalar uma nova versão de um pacote que possa introduzir alguns novos recursos interessantes, precisamos alterar os repositórios novamente. É por isso que é aconselhável manter os repositórios por defeito (ou usar o r2u se estiver no Ubuntu) e gerir as bibliotecas de pacotes dos nossos projectos com o `{renv}`. Desta forma, não tem de mexer em nada e tem a flexibilidade de ter uma biblioteca de pacotes separada por projeto. O outro benefício adicional é que podemos então usar o ficheiro `renv.lock` do projeto para instalarmos exatamente a mesma biblioteca de pacotes dentro da imagem do Docker.
+
+Como uma rápida introdução ao uso de imagens Rocker, vamos usar o ficheiro `renv.lock` do nosso pipeline, que pode ser baixado de [aqui](https://raw.githubusercontent.com/rap4all/housing/980a1b0cd20c60a85322dbd4c6da45fbfcebd931/renv.lock)^[https://is.gd/5UcuxW]. Este é o último ficheiro `renv.lock` que geramos do nosso pipeline, contém todos os pacotes necessários para executarmos o pipeline, incluindo as versões corretas dos pacote `{targets}` e do pacote `{housing}` que desenvolvemos. Uma observação importante: não importa se o ficheiro `renv.lock` contém pacotes que foram lançados após o dia 14 de março. Mesmo que os repositórios dentro da imagem do Rocker que vamos usar estejam definidos para essa data, o ficheiro *lock* também especifica o URL do repositório correto para descarregar os pacotes. Portanto, esse URL será usado em vez do definido para a imagem do Rocker.
+
+Outro aspeto útil do ficheiro `renv.lock` é que também registra a versão do R que foi usada para desenvolver originalmente o pipeline, neste caso, R versão 4.2.2. Portanto, essa é a versão que usaremos em nosso Dockerfile. Precisamos verificar também a versão do `{renv}` que usamos para construir o ficheiro `renv.lock`. Não temos necessariamente de instalar a mesma versão, mas é recomendável que o façamos. Por exemplo, agora está disponível o `{renv}` versão 0.17.1, mas o ficheiro `renv.lock` foi escrito com `{renv}` versão 0.16.0. Assim, para evitarmos um eventual problema de compatibilidade, vamos instalar exatamente a mesma versão. Felizmente, isso é muito fácil de fazer (para verificar a versão de `{renv}` que foi usada para escrever o ficheiro de *lock*, basta procurar a palavra “renv” no ficheiro *lock*).
+
+Enquanto o `{renv}` se encarrega de instalar os pacotes R corretos, não se encarrega de instalar as dependências corretas ao nível do sistema. É por isso que temos de ser nós a instalar estas dependências ao nível do sistema. Vejamos uma lista de dependências ao nível do sistema que podemos instalar para evitar quaisquer problemas abaixo, vamos também ver como conseguimos chegar a essa lista. É bastante fácil graças ao Posit e ao seu PPPM. Por exemplo, [aqui](https://packagemanager.rstudio.com/client/#/repos/2/packages/tidyverse)^[https://is.gd/ZaXHwa] está a página de resumo do pacote `{tidyverse}`. Se selecionar “Ubuntu 22.04 (Jammy)” no canto superior direito, e depois descermos, veremos uma lista de dependências que podemos simplesmente copiar e colar no nosso Dockerfile:
+
+<figure>
+    <img src="images/tidyverse_jammy_deps.png"
+         alt="System-level dependencies for the {tidyverse} package on Ubuntu."></img>
+    <figcaption>Dependência a nivel do sistema para o pacote {tidyverse} no Ubuntu.</figcaption>
+</figure>
+
+Usaremos esta lista para instalarmos as dependências requeridas pelo nosso pipeline.
+
+Criamos uma nova pasta, não importa o nome, e guardamos o ficheiro `renv.lock` do *link* em cima, dentro dessa pasta. Depois criamos um ficheiro de texto vazio que chamamos Dockerfile. Adicionamos as seguintes linhas:
+
+```
+FROM rocker/r-ver:4.2.2
+
+RUN apt-get update && apt-get install -y \
+    libglpk-dev \
+    libxml2-dev \
+    libcairo2-dev \
+    libgit2-dev \
+    default-libmysqlclient-dev \
+    libpq-dev \
+    libsasl2-dev \
+    libsqlite3-dev \
+    libssh2-1-dev \
+    libxtst6 \
+    libcurl4-openssl-dev \
+    libharfbuzz-dev \
+    libfribidi-dev \
+    libfreetype6-dev \
+    libpng-dev \
+    libtiff5-dev \
+    libjpeg-dev \
+    libxt-dev \
+    unixodbc-dev \
+    wget \
+    pandoc
+
+RUN R -e "install.packages('remotes')"
+
+RUN R -e "remotes::install_github('rstudio/renv@0.16.0')"
+
+RUN mkdir /home/housing
+
+COPY renv.lock /home/housing/renv.lock
+
+RUN R -e "setwd('/home/housing');renv::init();renv::restore()"
+```
+
+A primeira linha indica que vamos basear a nossa imagem na imagem do projeto Rocker que vem com a versão 4.2.2 do R, que é a versão correta de que precisamos. Depois, instalamos as dependências necessárias ao nível do sistema com o gestor de pacotes do Ubuntu, como explicado anteriormente. Depois vem o pacote `{remotes}`. Este permite-nos baixar uma versão específica do `{renv}` do Github, que é o que fazemos na próxima linha. Convém sublinhar que fazemos isto simplesmente porque o ficheiro `renv.lock` original foi gerado usando a versão 0.16.0 do `{renv}` e, portanto, para evitar quaisquer possíveis problemas de compatibilidade, também usamos este para restaurar os pacotes necessários para o pipeline. Mas é muito provável que pudéssemos instalar a versão atual do `{renv}` para restaurar os pacotes, e que isso teria funcionado sem problemas. De notar que para versões posteriores do `{renv}`, pode ser necessário inserir um 'v' antes do número da versão: `renv@v1.0.2`, por exemplo. Mas só para estarmos salvaguardados, instalamos a versão correta de `{renv}`. A propósito, todos estes passos estão explicados nesta [vinheta](https://rstudio.github.io/renv/articles/docker.html)^[https://rstudio.github.io/renv/articles/docker.html] (mantivemos apenas as linhas de código absolutamente essenciais para que funcionasse). A seguir vem a linha `RUN mkdir /home/housing`, que cria uma pasta (`mkdir` significa *make diretory*), dentro da imagem Docker, em `/home/housing`. Nas distribuições Linux, `/home/` é o diretório que os usuários usam para armazenar os seus arquivos, criamos então a pasta `/home/` e, dentro dela, criamos uma nova pasta, `housing`, que conterá os arquivos do nosso projeto. Não importa se mantém esta estrutura ou não, podemos ignorar a pasta `/home/`. O que importa é que coloquemos os ficheiros onde os possamos encontrar.
+
+De seguida, vem `COPY renv.lock /home/housing/renv.lock`. Com isto copiamos o ficheiro `renv.lock` do nosso computador (recordemos que devemos salvar esse ficheiro ao lado do Dockerfile) para `/home/housing/renv.lock`. Assim, incluímos o ficheiro `renv.lock` dentro da imagem do Docker, o que será crucial para a próxima e última etapa: `RUN R -e “setwd(‘/home/housing’);renv::init();renv::restore()”`.
+
+Isto executa o programa `R` a partir da linha de comandos do Linux com a opção `-e`. Esta opção permite passar uma expressão `R` para a linha de comandos, que tem de ser escrita entre “”. A utilização do `R -e` tornar-se-á rapidamente um hábito, porque é assim que podemos executar o R de forma não interactiva, a partir da linha de comandos. A expressão que passamos define a pasta de trabalho para `/home/housing`, e então usamos `renv::init()` e `renv::restore()` para restaurarmos os pacotes do ficheiro `renv.lock` que copiamos antes. Usando esse Dockerfile, podemos agora construir uma imagem que virá com a versão 4.2.2 do R pré-instalada, bem como todos os exactos pacotes que usamos para desenvolver o pipeline do `housing`.
+
+Construímos a imagem com `docker build -t housing_image .` (sem esquecer o `.` no final).
+
+O processo de construção vai demorar algum tempo, pelo que podemos ir buscar uma bebida quente entretanto. Agora, já fizemos metade do trabalho: temos um ambiente que contém o *software* necessário para nosso pipeline, mas os ficheiros do pipeline em si ainda estão em falta. Mas antes de adicionarmos o próprio pipeline, vamos ver se a imagem do Docker que construímos funciona. Para isso, fazemos *login* numa linha de comando dentro de um *container* Docker em execução iniciado a partir da nossa imagem com este único comando:
+
+```bash
+owner@localhost ➤ docker run --rm -it --name housing_container housing_image bash
+```
+
+Com isto iniciamos o `bash` (a linha de comandos do Ubuntu) dentro do `housing_container` iniciado a partir da imagem `housing_image`. Ao adicionarmos o marcador `--rm` ao `docker run`, o Docker *container* é parado quando fizermos o *log out* (se não o fizermos o Docker *container* continua a correr em *bakground*). Uma vez autenticados, podemos mover-nos para a pasta do projecto com:
+
+```bash
+user@docker ➤ cd home/housing
+```
+
+e então iniciarmos o interpretador R:
+
+```bash
+user@docker ➤ R
+```
+ se tudo correr bem, deveremos ver uma *prompt* R familiar, com a message do `{renv}` no fim:
+ 
+```r
+R version 4.2.2 (2022-10-31) -- "Innocent and Trusting"
+Copyright (C) 2022 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+* Project '/home/housing' loaded. [renv 0.16.0]
+```
+
+Tentemos carregar o pacote `{housing}` com `library("housing")`, para garantirmos que tudo funciona.
+
+
+## Projectos em Docker
+
+Portanto, agora temos uma imagem do Docker que tem o ambiente certo para o nosso projecto. Ou seja, podemos passar o nosso projecto para um formato Docker. Há duas maneiras de fazer isto: ou simplesmente adicionamos as linhas necessárias ao nosso Dockerfile, isto é, copiamos o script `_targets.R` para a imagem do Docker no momento da compilação e, em seguida, usamos `targets::tar_make()` para executar o pipeline, ou criamos um novo Dockerfile que será compilado sobre essa imagem e adicionamos aí as linhas necessárias. Nesta secção, usaremos a primeira abordagem, e na próxima secção, usaremos a segunda. A vantagem da primeira abordagem é que temos um único Dockerfile, e tudo o que precisamos está lá. Além disso, cada imagem Docker é completamente feita sob medida para cada projecto. O problema é que a construção leva algum tempo, por isso, se para cada projecto reiniciarmos do zero, pode ser enfadonho ter que esperar que o processo de construção seja concluído (especialmente se usarmos a integração contínua, como veremos no próximo capítulo).
+
+A vantagem da segunda abordagem é que temos uma base que podemos continuar a utilizar durante o tempo que quisermos. Só precisamos de esperar uma vez que o R e os pacotes necessários sejam instalados. Depois, podemos usar esta base para qualquer projecto que requeira a mesma versão do R e dos pacotes. Isto é especialmente útil se não atualizar o nosso ambiente de desenvolvimento com muita frequência e desenvolvermos muitos projectos com ele.
+
+Em resumo, na primeira abordagem temos o pipeline em formato Docker, e na segunda temos o ambiente de desenvolvimento Docker e usamo-lo para vários pipelines. Tudo depende de como queremos trabalhar: em investigação, podemos preferir a primeira abordagem, já que cada projecto provavelmente depende das últimas versões do R e dos pacotes. Mas na indústria, onde as pessoas tendem a pôr em prática o velho ditado "se não está partido, não o arranje", os ambientes de desenvolvimento estão normalmente congelados durante algum tempo e só são actualizados quando é realmente necessário (ou de acordo com um calendário fixo).
+
+Para o pipeline em formato Docker, primeiro precisamos entender algo importante sobre o Docker, que já referimos: uma imagem Docker é uma *sandbox* imutável. Isso significa que não podemos alterá-la em tempo de execução, apenas em tempo de construção. Então, se fizermos *login* num *container* Docker em execução (como fizemos antes) e instalarmos um pacote R usando `install.packages(“nome_do_pacote”)`, esse pacote desaparecerá se pararmos esse *container*. O mesmo é verdade para quaisquer arquivos que são criados em tempo de execução: eles também desaparecerão quando o *container* for parado. Então, como é suposto obtermos as saídas que o nosso pipeline gera a partir do Docker *container*? Para isso, precisamos criar um volume. Um volume não é mais do que uma pasta partilhada entre o Docker *container* e a máquina anfitriã que inicia o *container*. Basta especificar o caminho para essa pasta compartilhada ao executar o *container*, e pronto.
+
+Vamos começar po escrever um Dockerfile que contenha todos os ficheiros necessários. Precisamos simplesmente de adicionar o *script* `_targets.R` do nosso pipeline, o ficheiro markdown `analyse_data.Rmd` e todas as funções da pasta `functions/` (podemos encontrar todos os ficheiros necessários [aqui](https://github.com/rap4all/housing/tree/pipeline)^[https://github.com/rap4all/housing/tree/pipeline]):
+
+```
+FROM rocker/r-ver:4.2.2
+
+RUN apt-get update && apt-get install -y \
+    libglpk-dev \
+    libxml2-dev \
+    libcairo2-dev \
+    libgit2-dev \
+    default-libmysqlclient-dev \
+    libpq-dev \
+    libsasl2-dev \
+    libsqlite3-dev \
+    libssh2-1-dev \
+    libxtst6 \
+    libcurl4-openssl-dev \
+    libharfbuzz-dev \
+    libfribidi-dev \
+    libfreetype6-dev \
+    libpng-dev \
+    libtiff5-dev \
+    libjpeg-dev \
+    libxt-dev \
+    unixodbc-dev \
+    wget \
+    pandoc
+
+RUN R -e "install.packages('remotes')"
+
+RUN R -e "remotes::install_github('rstudio/renv@0.16.0')"
+
+RUN mkdir /home/housing
+
+RUN mkdir /home/housing/pipeline_output
+
+RUN mkdir /home/housing/shared_folder
+
+COPY renv.lock /home/housing/renv.lock
+
+COPY functions /home/housing/functions
+
+COPY analyse_data.Rmd /home/housing/analyse_data.Rmd
+
+COPY _targets.R /home/housing/_targets.R
+
+RUN R -e "setwd('/home/housing');renv::init();renv::restore()"
+
+RUN cd /home/housing && R -e "targets::tar_make()"
+
+CMD mv /home/housing/pipeline_output/* /home/housing/shared_folder/
+```
+
+Adicionámos algumas instruções `COPY` para copiar os ficheiros do nosso computador para a imagem Docker e também criámos algumas novas pastas: a `pipeline_output` e a `shared_folder`. `pipeline_output` é a pasta que irá conter todos os *outputs* do pipeline e `shared_folder` será a pasta que iremos utilizar para guardar os *outputs* do pipeline no nosso computador.
+
+Depois usamos `targets::tar_make()` para executar o pipeline, mas primeiro precisamos usar `cd /home/housing` para mudar de diretório para a pasta do projecto. Isto porque, para usar a biblioteca que `{renv}` instalou, precisamos de iniciar a sessão do R na pasta correta. Assim, mudamos para a pasta correta e depois executamos o pipeline usando `R -e "targets::tar_make()"`. Fazemos ambas as operações dentro de uma instrução `RUN`. Isto significa que o pipeline será executado no momento de compilação (recordemos que as instruções `RUN` são executadas no momento de compilação, as instruções `CMD` em tempo de execução). Por outras palavras, a imagem conterá os resultados. Desta forma, se o processo de compilação e o pipeline levarem muito tempo para serem executados, podemos simplesmente deixá-los em execução durante a noite, por exemplo. De manhã, enquanto tomamos café, podemos simplesmente executar o *container* para obter instantaneamente os resultados. Isso ocorre porque transferimos os *outputs* do pipeline da pasta `pipeline_output` para a pasta `shared_folder` com a ordem `CMD`. Assim, quando executamos o *container*, os *outputs* são transferidos para a pasta partilhada as que temos acesso.
+
+Uma última coisa que tivemos de fazer: mudar o último alvo no script `_targets.R`. Antes de o colocarmos no Docker, estava assim:
+
+```{r, eval = F}
+tar_render(
+  analyse_data,
+  "analyse_data.Rmd"
+)
+```
+
+mas tivemos de o alterar para :
+
+```{r, eval = F}
+tar_render(
+  analyse_data,
+  "analyse_data.Rmd",
+  output_dir = "/home/housing/pipeline_output"
+)
+```
+
+O argumento para `output_dir` é passado para` knitr::knit()` e simplesmente diz que os ficheiros de saída devem ser guardados nessa pasta. Agora podemos construir a imagem usando `docker build -t  housing_image .`. Quando o processo de compilação estiver concluído, podemos fazer *login* no *container* para ver se estão lá os nossos ficheiros. mas não é suposto fazermos isto. Podemos simplesmente executar o *container* agora e obter os nossos ficheiros. Mas vamos apenas dar uma olhadela rápida. Podemos entrar numa sessão *bash* com:
+
+```bash
+owner@localhost ➤ docker run --rm -it --name housing_container housing_image bash
+```
+
+Se nos movermos para `/home/housing/pipeline_output` e executarmos `ls` nessa pasta, deveremos ver `analyse_data.html`. E este é o nosso *output*! Mas como o tiramos dali?
+
+precisamos executar o *container* com o sinalizador `-v`, que permite especificar o caminho para a pasta compartilhada no nosso computador e a pasta compartilhada dentro do Docker *container*. O código abaixo mostra como podemos fazer isto (usamos o `\` para quebrar este longo comando em três linhas):
+
+```bash
+owner@localhost $ docker run --rm --name housing_container -v \
+                  /host/path/to/shared_folder: /home/housing/shared_folder:rw \
+                  housing_image
+```
+
+`/host/path/to/shared_folder` é o caminho para a pasta partilhada no nosso computador. `/home/housing/shared_folder` é o caminho para a pasta compartilhada dentro do Docker *container*. Quando estas linhas são executadas, a última instrução `CMD` do Dockerfile é executada, transferindo o conteúdo de dentro do Docker *container* para o nosso computador. Se verificarmos o conteúdo da pasta `shared_folder` no nosso computador, veremos o ficheiro `analyse_data.html`.
+
+E pronto, temos agora já temos um pipeline de análise reprodutível (RAP) completo. Ao executarmos o nosso pipeline, conseguimos marcar as seguintes etapas:
+
++ A mesma versão do R usada no desenvolvimento;
++ As mesmas versões de todos os pacotes usados no desenvolvimento;
++ Todo o processo é executado num ambiente "congelado";
++ Podemos reproduzir este ambiente (mas mais tarde falaremos sobre isso...)
+
+Agora precisamos de partilhar tudo isto com o mundo. Uma solução simples é compartilhar o Dockerfile no Github. Por exemplo, este é o [repositório](https://github.com/rap4all/housing/tree/docker)^[https://github.com/rap4all/housing/tree/docker] com todo o código necessário para construir a imagem do Docker e executar o pipeline. Mas também podemos compartilhar a imagem construída para que outros só precisem executar o pipeline para obter os resultados instantaneamente. Na próxima secção, vamos ver como fazer ambientes de desenvolvimento em Docker e, em seguida, veremos como podemos partilhar imagens que já foram criadas.
+

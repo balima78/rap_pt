@@ -20,7 +20,61 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-</style>
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
@@ -72,8 +126,12 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 <script data-goatcounter="https://brodriguesco-raps-with-r.goatcounter.com/count" async="" src="//gc.zgo.at/count.js"></script>
+
 <noscript>
+
     </noscript></head><body class="nav-sidebar floating"><img src="https://brodriguesco-raps-with-r.goatcounter.com/count?p=/test-noscript">
+
+
 
 
 
@@ -200,7 +258,7 @@ ul.task-list li input[type="checkbox"] {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./github.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Colaboração com desenvolvimento Trunk-based</span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Colaboração com desenvolvimento <em>Trunk-based</em></span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -259,7 +317,7 @@ ul.task-list li input[type="checkbox"] {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./targets.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Automatização com targets</span></span></a>
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Automatização com <code>{targets}</code></span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -300,7 +358,16 @@ ul.task-list li input[type="checkbox"] {
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#o-que-é-o-docker" id="toc-o-que-é-o-docker" class="nav-link active" data-scroll-target="#o-que-é-o-docker"><span class="header-section-number">14.1</span> O que é o Docker?</a></li>
+  <li><a href="#uma-iniciação-ao-linux" id="toc-uma-iniciação-ao-linux" class="nav-link" data-scroll-target="#uma-iniciação-ao-linux"><span class="header-section-number">14.2</span> Uma iniciação ao Linux</a></li>
+  <li><a href="#primeiros-passos-com-o-docker" id="toc-primeiros-passos-com-o-docker" class="nav-link" data-scroll-target="#primeiros-passos-com-o-docker"><span class="header-section-number">14.3</span> Primeiros passos com o Docker</a></li>
+  <li><a href="#o-rocker-project" id="toc-o-rocker-project" class="nav-link" data-scroll-target="#o-rocker-project"><span class="header-section-number">14.4</span> O Rocker project</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/balima78/rap_pt/edit/main/repro_cont.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/balima78/rap_pt/issues" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -324,8 +391,304 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
+<p>Se este livro finalizasse com o capítulo anterior, teria o título “Criação de pipelines de análise em R”, uma vez que ainda não garantimos que o pipeline que construímos é reprodutível. No entanto já fizemos muito:</p>
+<ul>
+<li>usamos programação funcional e literada;</li>
+<li>documantamos, testamos e versionamos o código;</li>
+<li>usamos o <code>{renv}</code> para registarmos as dependências do projeto;</li>
+<li>o projeto foi reescrito como um pipeline <code>{targets}</code> e não pode ser mais fácil re-executá-lo.</li>
+</ul>
+<p>Mas ainda há muitas variáveis que não controlamos. Se voltarmos ao icebergue da reprodutibilidade, veremos que ainda podemos ir mais fundo. O código, tal como está o código, assenta em bibliotecas e paradigmas de programação mas precisamos de considerar outros aspectos.</p>
+<p>Como referimos na introdução do capítulo 10, o <code>{renv}</code> apenas repõe versões de pacotes. A versão do R usada na análise apenas e registada. Assim, para garantirmos que o pipeline reproduz o mesmo resultados temos de instalar a mesma versão R usada na construção do pipeline original. Mas a instalação da versão correcta do R pode ser difícil; depende do sistema operativo em que o queremos instalar, e de quão antiga é a versão. Instalar a versão 4 no Windows é simples, mas a isntalação do R2.15.0 (de março de 2012) numa distribuição Linux actual (ou mesmo num Windows) pode ser desafiante.</p>
+<p>Temos também o sistema operativo em que foi desenvolvido o nosso pipeline. Na prática, isto não costuma ser relevante, mas já houve casos em que o mesmo código produziu resultados diferentes em sistemas operativos diferentes, inclusivamente em versões diferentes do mesmo sistema operativo. Por exemplo, <span class="citation" data-cites="neupane2019">Bhandari Neupane et al. (<a href="references.html#ref-neupane2019" role="doc-biblioref">2019</a>)</span> discutem a sua tentativa de reproduzir um artigo de 2014. Os <em>scripts</em> e os dados originais estavam disponíveis, no entanto não conseguiram reproduzir os resultados, apesar de terem usado a mesma versão do Python que os autores originais de 2014 estavam a usar. O motivo era o sistema operativo: estavam a realizar o exercício de replicação num sistema operativo diferente, o que fazia com que os resultados fossem diferentes. Mas qual era o problema? O <em>script</em> original dependia da forma como o sistema operativo ordenava os ficheiros para análise. Se os ficheiros fossem ordenados de uma forma diferente, os resultados seriam diferentes. E a ordenação dos ficheiros depende do sistema operativo! A seguinte tabela, de <span class="citation" data-cites="neupane2019">Bhandari Neupane et al. (<a href="references.html#ref-neupane2019" role="doc-biblioref">2019</a>)</span>, mostra como os resultados dependem do sistema operativo em que o <em>script</em> é executado:</p>
+<figure class="figure">
+<img src="IMG/neupane_table1.png" alt="Different operating system yield different results." class="figure-img">
+<figcaption>
+Sistemas operativos diferentes dão resultados diferentes.
+</figcaption>
+</figure>
+<p>e esta tabela mostra como o Windows e o Ubuntu (Linux) ordenam os ficheiros:</p>
+<figure class="figure">
+<img src="IMG/neupane_table2.png" alt="Different OS order files differently!" class="figure-img">
+<figcaption>
+OS diferentes ordenam os ficheiros de forma diferente!
+</figcaption>
+</figure>
+<p>Ou seja, os sistemas operativos podem ter impacto no nosso pipeline, e geralmente é um impacto não esperado.</p>
+<p>Finalmente, estamos num período de transição no que diz respeito à arquitetura de <em>hardware</em>. É muito provável que a Apple mude completamente para uma arquitetura ARM com os seus CPUs de silício da Apple (neste momento, o Mac Pro é o único computador fabricado pela Apple que não usa um CPU de silício da Apple e apenas porque foi lançado em 2019) e não seria surpreendente se outros fabricantes seguissem o exemplo e desenvolvessem os seus próprios cpus ARM. Isto significa que os projectos escritos hoje podem deixar de funcionar no futuro, devido a estas alterações de arquitetura. As bibliotecas compiladas para as arquitecturas actuais teriam de ser recompiladas para ARM, o que pode ser difícil.</p>
+<p>Como vimos no capítulo anterior, queremos que o nosso pipeline seja a composição de funções puras. Nada no ambiente global (para além das opções específicas de <code>{target}</code>) deve influenciar as execuções do pipeline. Mas, e o ambiente em que o R está a correr? O motor do R está a correr num tipo de ambiente. Foi o que vimos em cima: o sistema operativo (e todas as bibliotecas matemáticas que estão incluídas no sistema operativo em que o R se baseia para executar o código) e o <em>hardware</em> são variáveis que precisam de ser registadas e/ou congeladas tanto quanto possível.</p>
+<p>Vejamos a seguinte situação: quando executamos uma função pura <code>f()</code> de um argumento, pensamos em:</p>
+<pre><code>f(1)</code></pre>
+<p>mas na verdade estamos a fazer:</p>
+<pre><code>f(1, "windows 10 - build 22H2 - patch 10.0.19045.2075", 
+  "intel x86_64 cpu i9-13900F", 
+  "R version 4.2.2")</code></pre>
+<p>Isto é, <code>f()</code> apenas é uma função pura para a atual versão do R em que é executada. Mas tudo o resto tem de ser considerado. Lembremo-nos que, em termos técnicos, isto significa que a nossa função não é referencialmente transparente. É isto mesmo que acontece no artigo de <span class="citation" data-cites="neupane2019">Bhandari Neupane et al. (<a href="references.html#ref-neupane2019" role="doc-biblioref">2019</a>)</span> que descrevemos. Os autores dependem dum estado escondido (a ordem dos ficheiros) pra programarem os seus <em>scripts</em>; por outras palavras, o nosso pipeline não era referencialmente transparente.</p>
+<p>Para lidarmos com estas situações, vamos aprender a usar o Docker. O Docker vai essencialmente transformar o nosso pipeline referencialmente transparente, congelando as versões do R e do sistema operativo (bem como a arquitetura do CPU)</p>
+<section id="o-que-é-o-docker" class="level2" data-number="14.1">
+<h2 data-number="14.1" class="anchored" data-anchor-id="o-que-é-o-docker"><span class="header-section-number">14.1</span> O que é o Docker?</h2>
+<p>Em termos simples (e tecnicamente errados), o Docker facilita a execução duma máquina virtual (VM) Linux no nosso computador. Uma VM é um computador dentro du computador: a ideia é ligarmos o computador, iniciarmos o Windows (ou o sistema operativo que utilizamos todos os dias), mas depois iniciarmos o Ubuntu (uma distribuição Linux muito popular) como se fosse qualquer outra aplicação instalada no nosso computador e utilizá-lo (quase) como fariamos normalmente. É isto que uma solução VM clássica como o Virtualbox nos oferece. Podemos iniciar e utilizar o Ubuntu de forma interactiva a partir do Windows. O que pode ser bastante útil para testes, por exemplo.</p>
+<p>A diferença entre o Docker e o Virtualbox (ou VMware) é que o primeiro reduz a VM ao seu essencial. Não há interface gráfica de utilizador, por exemplo, e não vamos (normalmente) usar uma VM Docker interativamente. Em vez disso, escrevemos num ficheiro de texto as especificações da VM que pretendemos. A este ficheiro de texto designamos de Dockerfile. Por exemplo, se queremos a VM tenha por base o Ubuntu, então essa seria a primeira linha do Dockerfile. Depois queremos que a VM tenha o R instalado. Então essa seria a segunda linha. Precisamos de instalar pacotes R, então adicionamos essas linhas também. Talvez seja necessário adicionar algumas dependências do sistema? Adicione-mo-las. Por fim, adicionamos o código do pipeline que pretende tornar reproduzível.</p>
+<p>Quando terminarmos, teremos este ficheiro de texto, o Dockerfile, com uma receita completa para gerar uma VM Docker. Essa VM é designada como imagem (como dissemos anteriormente, tecnicamente não é uma VM verdadeira, mas não vamos discutir isso). Então temos um ficheiro de texto que nos ajuda a definir e a gerar uma imagem. Aqui, já podemos ver uma primeira vantagem de usarmos o Docker em relação a uma solução de VM mais tradicional como o Virtualbox: podemos escrever facilmente estes Dockerfiles e versioná-los. Podemos facilmente começar a partir de outro Dockerfile de outro projeto e adaptá-lo ao nosso pipeline atual. E o mais importante, porque tudo está escrito, é reprodutível (mas mais sobre isso no final deste capítulo…).</p>
+<p>Ok, temos a imagem. Esta imagem terá por base em alguma distribuição Linux, geralmente o Ubuntu. Tem uma versão específica do Ubuntu, enós podemos adicionar uma versão específica do R. Podemos também baixar versões específicas de todos os pacotes necessários para o nosso pipeline. O resultado é um ambiente feito sob medida para o nosso pipeline. Podemos agora executar o pipeline com esta imagem Docker e obter sempre exatamente os mesmos resultados, sempre. Isso acontece porque, independentemente de como, onde ou quando executarmos o pipeline <em>dockerizado</em>, a mesma versão do R, com a mesma versão dos pacotes R, na mesma distribuição Linux, será usada para reproduzir os resultados do nosso pipeline. A propósito, quando executamos uma imagem do Docker, ou seja, quando executamos o nosso pipeline com a imagem definida, estamos a referirnos a um <em>container</em> do Docker.</p>
+<p>Ou seja, um ficheiro Docker definie uma imagem Docker, a partir da qual podemos executar <em>containers</em>. As imagens seguintes são ilustrativas. Na primeira vemos o que acontece quando o mesmo pipeline é executado em duas versões diferentes do R e em dois sistemas operativos diferentes:</p>
+<figure class="figure">
+<img src="IMG/without_docker.png" alt="Running a pipeline without Docker results (potentially) in different outputs." class="figure-img">
+<figcaption>
+Executar um pipeline sem o Docker pode resultar (potencialmente) em outputs diferentes.
+</figcaption>
+</figure>
+<p>Se repararmos nos <em>outputs</em>, veremos que são diferentes.</p>
+<p>Agora, se executarmos o mesmo pipeline com o Docker:</p>
+<figure class="figure">
+<img src="IMG/with_docker.png" alt="Running a pipeline with Docker results in the same outputs." class="figure-img">
+<figcaption>
+Executar um pipeline com o Docker tem sempre o mesmo output.
+</figcaption>
+</figure>
+<p>Outra forma de vermos uma imagem Docker: é uma <em>sandbox</em> imutável, onde as regras do jogo são sempre as mesmas. Não importa onde ou quando executamos essa <em>sandbox</em>, o pipeline sempre será executado nesse mesmo espaço bem definido. Como o pipeline é executado nas mesmas versões do R (e pacotes) e no mesmo sistema operativo definido na imagem do Docker, o nosso pipeline é agora verdadeiramente reprodutível.</p>
+<p>Mas porquê o Linux; porque é que não é possível criar imagens Docker com base em Windows ou macOS? Lembremo-nos da introdução, onde explicámos o que é reprodutibilidade:</p>
+<blockquote class="blockquote">
+<p>O código aberto é um requisito fundamental para a reprodutibilidade.</p>
+</blockquote>
+<p>O código aberto não é apenas um requisito para a linguagem de programação que utilizamos para construirmos o pipeline, também se estende ao sistema operativo em que o pipeline é executado. Assim, a razão pela qual o Docker utiliza o Linux é porque pode utilizar distribuições Linux como o Ubuntu gratuitamente e sem restrições. Não há licenças que precisem ser compradas ou ativadas, e as distribuições Linux podem ser personalizadas para qualquer caso de uso imaginável. Assim, as distribuições Linux são a única opção disponível para o Docker para esta tarefa.</p>
+</section>
+<section id="uma-iniciação-ao-linux" class="level2" data-number="14.2">
+<h2 data-number="14.2" class="anchored" data-anchor-id="uma-iniciação-ao-linux"><span class="header-section-number">14.2</span> Uma iniciação ao Linux</h2>
+<p>Até aqui, podiamos ter seguido o livro usando qualquer sistema operativo. A maior parte do código deste livro é código R, por isso não importa em que sistema operativo o estamos a executar. Mas já houve algum código que executámos na consola do Linux (por exemplo, usámos <code>ls</code> para listar ficheiros). Esses comandos também devem funcionar no macOS, mas no Windows, eu usámos o terminal do Git Bash. Isso porque <code>ls</code> (e outros comandos semelhantes) não funcionam no <em>prompt</em> de comando padrão do Windows (mas devem funcionar no Powershell). Em vez de usarmos o terminal (ou o Git Bash) para navegar no sistema de arquivos do nosso computador, podiamos continuar usando a interface de usuário do nosso sistema operacional também. Por exemplo, no <span class="quarto-unresolved-ref">?sec-packages</span>, listamos o conteúdo dpasta <code>dev/</code> com o comando:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">owner@localhost</span> ➤ ls dev/</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>mas podiamos apenas ter aberto a pasta <code>dev/</code> no explorador de ficheiros do nosso sistema operativo. Mas para usarmos o Docker, precisamos de conhecer o Linux e um pouco do ecosistema e de conceitos Linux. Mas não é tão difícil como pode parecer.</p>
+<p>Linux não é o nome de um sistema operativo específico, mas sim do <em>kernel</em> de um sistema operativo. Um <em>kernel</em> é um componente importante de um sistema operativo. O Linux é gratuito e de código aberto, e está entre os projectos gratuitos e de código aberto mais bem sucedidos de sempre. Como a sua licença permite (e encoraja) a reutilização, qualquer pessoa pode usar este <em>kernel</em> e adicionar todos os outros componentes necessários para construir um sistema operativo completo e disponibilizar o produto final. É por isto que existem muitas distribuições Linux: uma distribuição Linux é um sistema operativo completo que usa o Linux como <em>kernel</em>. A distribuição Linux mais popular chama-se Ubuntu, e procurarmos no Google qualquer coisa como <em>“easy linux os for beginners”</em> (sistema operativo Linux fácil para principiantes), a resposta que aparecerá no topo será provavelmente o Ubuntu, ou uma das outras variantes do Ubuntu (sim, porque o Ubuntu em si também é open-source e software livre, e é possível construir variantes usando o Ubuntu como base, como o Linux Mint).</p>
+<p>Para definirmos as nossas imagens Docker, usaremos o Ubuntu como base. O sistema operativo Ubuntu tem duas versões por ano, uma em abril e outra em outubro. Nos anos pares, a versão de abril é uma versão de suporte a longo prazo (LTS). As versões LTS recebem actualizações de segurança durante 5 anos, e as imagens Docker utilizam geralmente uma versão LTS como base. Neste momento (maio de 2023), a atual LTS é o Ubuntu 22.04 Jammy Jellyfish (os lançamentos do Ubuntu são nomeados com um número da forma YY.MM e depois um nome de código baseado em algum animal).</p>
+<p>Podemos instalar o Ubuntu no nosso computador. Mas não é necessário, uma vez que podemos usar o Docker para <em>embarcar</em> os nossos projectos!</p>
+<p>Uma grande diferença entre o Ubuntu (e outras distribuições Linux) e o macOS e o Windows é a forma como instala o <em>software</em>. Resumindo, o <em>software</em> para distribuições Linux é distribuído como pacotes. Se quisermos instalar, por exemplo, o editor de texto Emacs, podemos executar o seguinte comando no terminal:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt-get install emacs-gtk</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Vamos por partes: <code>sudo</code> faz com que os próximos comandos sejam executados como <em>root</em>. <em>root</em> é o jargão do Linux para a conta de administrador. Portanto, se digitarmos <code>sudo xyz</code>, o comando <code>xyz</code> será executado com privilégios de administrador. Depois temos o <code>apt-get install</code>. <code>apt-get</code> é o gestor de pacotes do Ubuntu, e <code>install</code> é o comando que instala o <code>emacs-gtk</code>. <code>emacs-gtk</code> é o nome do pacote Emacs. Como somos utilizadores do R, isto é-nos familiar: afinal, as extensões para o R também são instaladas usando um gestor de pacotes e um comando: <code>install.packages(“nome_do_pacote”)</code>. Tal como no R, onde os pacotes são descarregados do CRAN, o Ubuntu descarrega pacotes de um repositório que podemos consultar <a href="https://packages.ubuntu.com/jammy/">aqui</a><a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>. Claro que, como usar a linha de comando pode ser intimidante para iniciantes, também é possível instalar pacotes usando uma loja de <em>software</em>, assim como no macOS ou no Windows. Mas recordemos, o Docker só usa o que é absolutamente necessário para funcionar, por isso não existe uma interface de utilizador interactiva. Isto não se deve ao facto de os programadores do Docker não gostarem de interfaces de utilizador, mas sim porque o objetivo do Docker não é utilizar imagens Docker de forma interactiva, pelo que não há necessidade de uma interface de utilizador. Portanto, é necessário sabermos como instalar os pacotes do Ubuntu com a linha de comando.</p>
+<p>Tal como para o R, é possível instalarmos software de diferentes fontes. podemos adicionar diferentes repositórios e instalar software a partir daí. Não vamos fazê-lo aqui, mas só como um aparte, se estivermos a usar o Ubuntu no nosso computador como nosso sistema operativo diário, devemos realmente verificar o <a href="https://github.com/eddelbuettel/r2u">r2u</a><a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>, um repositório do Ubuntu que vem com pacotes R pré-compilados que podem ser instalados, muito, muito rapidamente. Apesar de não o utilizarmos aqui (e veremos o porquê mais tarde neste capítulo), devemos definitivamente considerar o <code>r2u</code> como fornecedor de pacotes R binários se utilizarmos o Ubuntu como o nosso sistema operativo diário.</p>
+<p>Vamos supor que estamo a usar o Ubuntu na nossa máquina, e que usamos o R. Se quisermos instalar o pacote R <code>{dplyr}</code>, acontece algo interessante quando escrevemos:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"dplyr"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>No Windows e no macOS, um binário compilado é baixado do CRAN e instalado no nosso computador. Um “binário” é o código fonte compilado dum pacote. Muitos pacotesR vêm com código o C++ ou Fortran e este código não pode ser usado como tal pelo R. Logo esses bits de código C++ e Fortran precisam de ser compilados para serem usados. Pensemos da seguinte forma: se o código fonte são os ingredientes, o binário compilado é refeição cozinhada. Imaginemos que cada vez que queremos comer Bouillabaisse, ou a cozinhamos nós mesmos… ou a mandamos vir entregar em nossa casa. Provavelmente, optaremos pela entrega a domicílio (especialmente se for gratuita). Mas isto significa que houve alguém que teve de confeccionar a Bouillabaisse para nós. O CRAN basicamente cozinha pacotes de código fonte em binários para o Windows e macOS, como podemos ver:</p>
+<figure class="figure">
+<img src="IMG/tidyverse_packages.png" alt="Download links to pre-compiled tidyverse binaries." class="figure-img">
+<figcaption>
+Links de Download links para binários pré-compilados do tidyverse.
+</figcaption>
+</figure>
+<p>Nesta imagem, podemos ver links para binários compilados do pacote <code>{tidyverse}</code> para Windows e macOS, mas nenhum para qualquer distribuição Linux. Isto porque, como referimos na introdução, existem muitas, muitas, muitas distribuições Linux. Então, na melhor das hipóteses, o CRAN poderia oferecer binários para o Ubuntu, mas o Ubuntu não é a única distribuição Linux, e o Ubuntu tem dois lançamentos por ano, o que significa que cada pacote CRAN (que precisa de compilação) precisaria ser compilado duas vezes por ano. Isto é uma tarefa enorme, a menos que o CRAN decida oferecer apenas binários para as versões LTS. Mas isso ainda seria a cada dois anos.</p>
+<p>Então, o que acontece é que o fardo da compilação é empurrado para o utilizador. Sempre que escrevemos <code>install.packages(“nome_do_pacote”)</code>, e se este pacote requer compilação, o pacote é compilado na nossa máquina, o que não só leva algum tempo, mas também pode falhar. Isto porque, muitas vezes, os pacotes R que requerem compilação precisam de algumas dependências adicionais ao nível do sistema que precisam ser instaladas. Por exemplo, estas estão as dependências do Ubuntu que precisam ser instaladas para que a instalação do pacote <code>{tidyverse}</code> seja bem-sucedida:</p>
+<pre><code>libicu-dev
+zlib1g-dev
+make
+libcurl4-openssl-dev
+libssl-dev
+libfontconfig1-dev
+libfreetype6-dev
+libfribidi-dev
+libharfbuzz-dev
+libjpeg-dev
+libpng-dev
+libtiff-dev
+pandoc
+libxml2-dev</code></pre>
+<p>É por isso que o <code>r2u</code> é tão útil: ao adicionarmos este repositório, o que estmos essencialmente a fazer é dizer ao R para não irmos buscar os pacotes ao CRAN, mas sim ao repositório <code>r2u</code>. E este repositório contém pacotes R compilados para o Ubuntu. Assim, as dependências necessárias ao nível do sistema são instaladas automaticamente e o pacote R não precisa de compilação. Logo, a instalação do pacote <code>{tidyverse}</code> demora menos de meio minuto numa máquina moderna.</p>
+</section>
+<section id="primeiros-passos-com-o-docker" class="level2" data-number="14.3">
+<h2 data-number="14.3" class="anchored" data-anchor-id="primeiros-passos-com-o-docker"><span class="header-section-number">14.3</span> Primeiros passos com o Docker</h2>
+<p>Vamos começar por criar uma imagem Docker <em>“Hello World”</em>. Como referimos no início, para definirmos uma imagem Docker, precisamos de criar um Dockerfile com algumas instruções. Mas antes, é claro, precisamos instalar o Docker. Para instalarmos o Docker em qualquer sistema operativo (Windows, macOS ou Ubuntu ou outros Linuxes), podemos instalar o <a href="https://docs.docker.com/desktop/">Docker Desktop</a><a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>. Se estivermos a correr o Ubuntu (ou outra distribuição Linux) e não quisermos a GUI, podemos instalar o <a href="https://docs.docker.com/engine/install/ubuntu/#install-using-the-repository">Docker engine</a><a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> e depois seguirmos os <a href="https://docs.docker.com/engine/install/linux-postinstall/#manage-docker-as-a-non-root-user">passos para Linux</a><a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a> de pós instalação.</p>
+<p>Em qualquer caso, independentemente do nosso sistema operativo, vamos utilizar a linha de comandos para interagir com o Docker. Quando terminarmos de instalar o Docker, criamos uma pasta em algum lugar do seu computador e dentro dessa pasta criamos um arquivo de texto vazio com o nome “Dockerfile”. Isso pode ser complicado no Windows, pois é preciso remover a extensão <code>.txt</code> que é adicionada por padrão. Poderá ser necessário ativar a opção “Extensões de nomes de ficheiros” no painel <code>Ver</code> do explorador de ficheiros do Windows para facilitar este processo. Em seguida, abrimos este ficheiro com o nosso editor de texto preferido e adicionamos as seguintes linhas:</p>
+<pre><code>FROM ubuntu:jammy
+
+RUN uname -a</code></pre>
+<p>Este Dockerfile muito simples faz duas coisas: começa por afirmar que é baseado no sistema operacional Ubuntu Jammy (então versão 22.04), e então executa o <code>uname -a</code>. Este comando, que é executado dentro da linha de comando do Ubunu, imprime a versão do <em>kernel</em> Linux daquela versão particular do Ubuntu. <code>FROM</code> e <code>RUN</code> são comandos do Docker; existem alguns outros que vamos descobrir um pouco mais tarde. Agora, o que fazemos com este Dockerfile? Lembremo-nos, um Dockerfile define uma imagem. Então, agora, precisamos construir essa imagem para executar um <em>container</em>. Abrimos um terminal/ <em>prompt</em> de comando na pasta onde está o Dockerfile e digitamos:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">owner@localhost</span> ➤ docker build <span class="at">-t</span> raps_hello .</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>O comando <code>docker build</code> cria uma imagem a partir do Dockerfileque está no caminho <code>.</code> (um simples <code>.</code> significa “na directoria de trabalho atual”). A opção <code>-t</code> atribui à imagem o nome <code>raps_hello</code>. Se tudo correr, bem deveremos ver o <em>output</em>:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">Sending</span> build context to Docker daemon  2.048kB</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="ex">Step</span> 1/2 : FROM ubuntu:jammy</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a> <span class="ex">---</span><span class="op">&gt;</span> 08d22c0ceb15</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="ex">Step</span> 2/2 : RUN uname <span class="at">-a</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a> <span class="ex">---</span><span class="op">&gt;</span> Running in 697194b9a519</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="ex">Linux</span> 697194b9a519 6.2.6-1-default <span class="co">#1 SMP PREEMPT_DYNAMIC </span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>     <span class="ex">Mon</span> Mar 13 18:57:27 UTC 2023 <span class="er">(</span><span class="ex">fa1a4c6</span><span class="kw">)</span> <span class="ex">x86_64</span> x86_64 x86_64 GNU/Linux</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="ex">Removing</span> intermediate container 697194b9a519</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a> <span class="ex">---</span><span class="op">&gt;</span> a0ea59f23d01</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="ex">Successfully</span> built a0ea59f23d01</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="ex">Successfully</span> tagged raps_hello:latest</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Em <code>Step 2/2</code> veremos o <em>output</em> do comando <code>unamec -a</code>:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">Linux</span> 697194b9a519 6.2.6-1-default <span class="co">#1 SMP PREEMPT_DYNAMIC</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>     <span class="ex">Mon</span> Mar 13 18:57:27 UTC 2023 <span class="er">(</span><span class="ex">fa1a4c6</span><span class="kw">)</span> <span class="ex">x86_64</span> x86_64 x86_64 GNU/Linux</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Cada expressão <code>RUN</code> no Dockerfile é executada no momento de construção e é o que usaremos para instalar o R e os pacotes necessários. Assim, quando é construída, ficamos com uma imagem que contém todo o <em>software</em> que precisamos.</p>
+<p>Agora, gostaríamos de poder usar essa imagem. Com uma imagem construída, podemos iniciar um ou vários <em>containers</em> que podemos utilizar para o que quisermos. Vamos criar um exemplo mais realista. Construimos uma imagem Docker que vem com o R pré-instalado. Para isto, precisamos voltar ao nosso Dockerfile e alterá-lo um pouco:</p>
+<pre><code>FROM ubuntu:jammy
+
+ENV TZ=Europe/Luxembourg
+
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime &amp;&amp; echo $TZ &gt; /etc/timezone
+
+RUN apt-get update &amp;&amp; apt-get install -y r-base
+
+CMD ["R"]</code></pre>
+<p>Primeiro com o <code>ENV</code>, criamos uma variável chamada <code>TZ</code> e definimo-la para o fuso horário da <code>Europe/Luxembourg</code> (podemos alterar para outro fuso horário qualquer). De seguida, executamos um comando de aspecto bastante complexo que define o fuso horário definido para todo o sistema. Tivemos de fazer tudo isto porque, quando instalarmos o R, será instalada uma dependência a nível do sistema chamada <code>tzdata</code>. Esta ferramenta pede então ao utilizador que introduza o seu fuso horário de forma interactiva. Mas como não podemos interagir com a imagem enquanto está a ser construída, o processo de construção ficaria preso neste <em>prompt</em>. Usando estes dois comandos, podemos definir o fuso horário correto e assim que o <code>tzdata</code> for instalado, essa ferramenta já não pede o fuso horário, e o processo de construção pode continuar. Este é um problema bastante comum quando se constroem imagens Docker baseadas no Ubuntu, por isso a correcção é facilmente encontrada com uma pesquisa no Google (mas fica já aqui, de graça).</p>
+<p>Depois temos comandos <code>RUN</code>. O primeiro usa o gestor de pacotes do Ubuntu para refrescar os repositórios (isto garante que os repositórios da nossa instalação local do Ubuntu estão sincronizados com os <em>updates</em> de software mais recentes dos repositórios centrais do Ubuntu). Depois usamos o gestor de pacotes do Ubuntu para instalar o <code>r-base</code>. O <code>r-base</code> é o pacote que instala o R. Finalizamos este ficheiro Docker com a execução de <code>CMD ["R"]</code>. Este é o comando que será executado quando iniciarmos o <em>container</em>. Devemos ter em conta que os comandos <code>RUN</code> são executados no momento da construção enquanto que <code>CMD</code> é executado no momento do arranque. Esta distinção será importante mais tarde.</p>
+<p>Vamos construir a imagem (vai demorar algum tempo porque há muito software a ser instalado):</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="ex">owner@localhost</span> ➤ docker build <span class="at">-t</span> raps_ubuntu_r .</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Esta ordem constrói a imagem designada <code>raps_ubuntu_r</code>. esta imagem tem por base o Ubunto 22.04 Jammy Jellyfish e vem com o R pré-instalado. Mas a versão o R inatalada é q disponibilizada pelos repositórios Ubuntu, que neste moemnto é a versão 4.1.2, enquanto que a última versão do R é 4.2.3. OU seja, a versão disponível a partir dos repositórios do Ubuntu é anterior à versão mais actual. Mas não importa, trataremos disso mais tarde.</p>
+<p>Podemos agora iniciar o <em>container</em> com o comando:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="ex">owner@localhost</span> ➤ docker run raps_ubuntu_r</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>E este é o <em>output</em> que temos:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>Fatal error<span class="sc">:</span> you must specify <span class="st">'--save'</span>, <span class="st">'--no-save'</span> or <span class="st">'--vanilla'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Qual é o problema? Quando iniciamos o <em>container</em>, o comando especificado pelo CMD é executado e, em seguida, o <em>container</em> é encerrado. Assim, aqui, o <em>container</em> executou o comando R, que iniciou o interpretador R, mas depois saiu imediatamente. Ao sair do R, os utilizadores devem especificar se querem ou não guardar o espaço de trabalho. É isto que a mensagem acima nos está a dizer. Então, como é que podemos usar isto? Existe alguma forma de utilizarmos esta versão do R de forma interactiva?</p>
+<p>Sim, existe uma maneira de usar essa versão do R dentro da nossa imagem do Docker de forma interativa, mesmo que não seja isso o que queremos. O que queremos, em vez disso, é que o nosso pipeline seja executado quando executamos o <em>container</em>. Não queremos mexer no <em>container</em> de forma interactiva. Mas vejamos como podemos interagir com esta versão <em>dockerizada</em> do R. Primeiro, é preciso deixar o <em>container</em> rodar em segundo plano. para isso executamos o comando:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="ex">owner@localhost</span> ➤ docker run <span class="at">-d</span> <span class="at">-it</span> <span class="at">--name</span> ubuntu_r_1 raps_ubuntu_r</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Isto inicia o <em>container</em> a que chamamos “ubuntu_r_1” a partir da imagem “raps_ubuntu_r” (recordemos que podemos executar muitos <em>containers</em> a partir de uma única definição de imagem). Graças à opção <code>-d</code>, o <em>container</em> corre em segundo plano, e a opção <code>-it</code> indica que queremos que uma <em>shell</em> interactiva esteja à nossa espera. Assim, o contentor corre em segundo plano, com uma <em>shell</em> interactiva à nossa espera, em vez de lançar (e depois parar imediatamente) o comando R. Podemos agora “ligar-nos” à <em>shell</em> interactiva e iniciar o R nela usando:</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="ex">owner@localhost</span> ➤ docker exec <span class="at">-it</span> ubuntu_r_1 R</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Deveremos estar a ver um <em>prompt</em> familiar:</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>R version <span class="dv">4</span>.<span class="fl">1.2</span> (<span class="dv">2021-11-01</span>) <span class="sc">--</span> <span class="st">"Bird Hippie"</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="fu">Copyright</span> (C) <span class="dv">2021</span> The R Foundation <span class="cf">for</span> Statistical Computing</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>Platform<span class="sc">:</span> x86_64<span class="sc">-</span>pc<span class="sc">-</span>linux<span class="sc">-</span><span class="fu">gnu</span> (<span class="dv">64</span><span class="sc">-</span>bit)</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>R is free software and comes with ABSOLUTELY NO WARRANTY.</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>You are welcome to redistribute it under certain conditions.</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>Type <span class="st">'license()'</span> or <span class="st">'licence()'</span> <span class="cf">for</span> distribution details.</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>R is a collaborative project with many contributors.</span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>Type <span class="st">'contributors()'</span> <span class="cf">for</span> more information and</span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a><span class="st">'citation()'</span> on how to cite R or R packages <span class="cf">in</span> publications.</span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>Type <span class="st">'demo()'</span> <span class="cf">for</span> some demos, <span class="st">'help()'</span> <span class="cf">for</span> on<span class="sc">-</span>line help, or</span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a><span class="st">'help.start()'</span> <span class="cf">for</span> an HTML browser interface to help.</span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>Type <span class="st">'q()'</span> to quit R.</span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Sejamos bem vindos a uma versão <em>dockerizada</em> do R. Tudo isto pode parecer muito complicado, principalmente se é a primeira vez que brincamos com o Docker. No entanto, não nos devemos preocupar muito, uma vez que:</p>
+<ul>
+<li>não vamos usar <em>containers</em> Docker de forma interactiva, não é esse o nosso objectivo, mas pode ser util ligarmo-nos a um container em execução para verificarmos se tudo está a correr como esprado;</li>
+<li>vamos construir as nossas imagens a partir de imagens pré-construidas do <a href="https://rocker-project.org/">Rocker project</a><a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a> e estas imagens vêm já com muito software pré-instalado e com as configurações feitas.</li>
+</ul>
+<p>O que devemos retirar desta secção é que precisamos escrever um ficheiro Docker que nos permita construir uma imagem. Essa imagem pode então ser usada para executar um (ou vários) <em>containers</em>. Esses <em>containers</em>, depois de iniciados, executarão nosso pipeline em um ambiente que está congelado, de modo que o <em>output</em> dessa execução permanecerá constante, para sempre.</p>
+</section>
+<section id="o-rocker-project" class="level2" data-number="14.4">
+<h2 data-number="14.4" class="anchored" data-anchor-id="o-rocker-project"><span class="header-section-number">14.4</span> O Rocker project</h2>
+<p>O projeto Rocker oferece uma coleção muito grande de imagens Docker “R-ready” que podemos usar como ponto de partida para construir as nossas próprias imagens Docker. Antes de usarmos essas imagens, porém, ainda precisamos compreender um conceito muito importante do Docker. Vamos voltar à nossa imagem Docker “Hello World”:</p>
+<pre><code>FROM ubuntu:jammy
+
+RUN uname -a</code></pre>
+<p>A primeira linha, <code>FROM ubuntu:jammy</code> baixa uma imagem do Ubuntu Jammy, mas de onde? Todas estas imagens são descarregadas do Docker Hub, que podemos visitar <a href="https://hub.docker.com/">aqui</a><a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a>. Se criarmos uma conta, podemos até enviar as nossas próprias imagens para lá. Por exemplo, poderíamos colocar a imagem que construímos antes, que chamamos de <code>raps_ubuntu_r</code>, no Docker Hub. Então, se quiséssemos criar uma nova imagem Docker que se baseia em <code>raps_ubuntu_r</code>, poderíamos simplesmente digitar <code>FROM username:raps_ubuntu_r</code> (ou algo similar).</p>
+<p>Também é possível não usarmos o Docker Hub e partilharmos a imagem que construímos como um ficheiro, como veremos mais à frente.</p>
+<p>O projeto Rocker oferece muitas imagens diferentes, que estão descritas <a href="https://rocker-project.org/images/">aqui</a><a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a>. Vamos usar as imagens <em>versionadas</em>. Estas são imagens que carregam versões específicas do R. Desta forma, não importa quando a imagem é construída, a mesma versão do R será instalada ao ser construída a partir do código fonte. Vejamos por que é importante construir o R a partir do código. Quando construímos a imagem com o Dockerfile que escrevemos antes, o R é instalado a partir dos repositórios do Ubuntu. Para isso, usamos o gerenciador de pacotes do Ubuntu e o seguinte comando: <code>apt-get install -y r-base</code>. Neste momento, a versão do R que é instalada é a versão 4.1.3. Há dois problemas com a instalação do R a partir dos repositórios do Ubuntu. Primeiro, temos que usar o que for instalado, o que pode ser um problema de reprodutibilidade. Se executámos a nossa análise usando a versão 4.2.1 do R, então gostaríamos de instalar essa versão do R. O segundo problema é que quando construímos a imagem hoje obtemos a versão 4.1.3. Mas não é impossível que, se construirmos a imagem daqui a 6 meses, obtenhamos a versão 4.2.0 do R, pois é provável que a versão que vem nos repositórios do Ubuntu seja actualizada.</p>
+<p>Isto significa que, dependendo de quando construímos a imagem do Docker, podemos obter uma versão diferente do R. Existem apenas duas maneiras de evitar esse problema: ou construímos a imagem uma vez e a arquivamos e nos certificamos de manter sempre uma cópia e <em>embarcamos</em> essa cópia para sempre (ou pelo tempo que quisermos garantir que o pipeline seja reprodutível), assim como <em>embarcaríamos</em> dados, código e qualquer documentação necessária para tornar o pipeline reprodutível. Ou escrevemos o Dockerfile de tal forma que ele sempre produz a mesma imagem, independentemente de quando ele é construído. Aconselha-se vivamente optarmos pela segunda opção, mas também arquivarmos a imagem. Mas, claro, isso também depende de quão crítico é o nosso projeto. Talvez não precisemos de começar a arquivar imagens, ou talvez nem precisemos de nos certificar de que o Dockerfile produz sempre a mesma imagem. Ainda assim é recomendável que escrevamos os nossos Dockerfiles de tal forma que eles sempre produzam a mesma imagem. É mais seguro, e não significa trabalho extra, graças ao projeto Rocker.</p>
+<p>Vamos então de novo ao Rocker <em>project</em> e especificamente às suas imagens versionadas que podemos encontrar <a href="https://rocker-project.org/images/versioned/r-ver.html">aqui</a><a href="#fn9" class="footnote-ref" id="fnref9" role="doc-noteref"><sup>9</sup></a>. Quando usamos imagens versionadas como base dos nossos projectos estamos a garantir que:</p>
+<ul>
+<li>uma versão fixa do R que é construída de raíz. Não interessa quando construímos a imagem, sempre embarcará com a mesma versão do R;</li>
+<li>O sistema operativo será o lançamento LTS correspondente à versão do R;</li>
+<li>os repositórios R serão definidos Posit Public Package Manager (PPPM) a uma determinada data. Isto garante que os pacotes R não precisam de ser compilados uma vez que o PPPM entrega pacotes binários para a arquitectura amd64 (a arquitectuta que todos os computadores que não são Apple geralmente usam).</li>
+</ul>
+<p>Este último ponto requer mais algumas explicações. Devemos ter em conta que as imagens versionadas do Rocker utilizam o PPPM definido numa determinada data. Esta é uma excelente caraterística do PPPM. Por exemplo, a imagem Rocker versionada que vem com o R 4.2.2 tem os repositórios definidos para 14 de março de 2023, como podemos <a href="https://github.com/rocker-org/rocker-versioned2/blob/fb1d32e70061b0f978b7e35f9c68e2b79bafb69a/dockerfiles/r-ver_4.2.2.Dockerfile#L16">aqui</a><a href="#fn10" class="footnote-ref" id="fnref10" role="doc-noteref"><sup>10</sup></a>. Isto significa que se usarmos <code>install.packages(“dplyr”)</code> dentro de um <em>container</em> executado a partir daquela imagem, então a versão do <code>{dplyr}</code> instalada será a que estava disponível no dia 14 de março.</p>
+<p>Isto pode ser conveniente em certas situações, e podemos querer, dependendo das nossas necessidades, utilizar o PPPM numa data específica para definir imagens Docker, como faz o projeto Rocker. Podemos inclusivé definir o PPPM numa data específica para a nossa máquina de desenvolvimento principal (basta seguir as instruções <a href="https://packagemanager.rstudio.com/client/#/repos/2/overview">aqui</a><a href="#fn11" class="footnote-ref" id="fnref11" role="doc-noteref"><sup>11</sup></a>). Mas temos de ter presente que não vamos receber nenhuma atualização de pacotes, portanto, se quisermos instalar uma nova versão de um pacote que possa introduzir alguns novos recursos interessantes, precisamos alterar os repositórios novamente. É por isso que é aconselhável manter os repositórios por defeito (ou usar o r2u se estiver no Ubuntu) e gerir as bibliotecas de pacotes dos nossos projectos com o <code>{renv}</code>. Desta forma, não tem de mexer em nada e tem a flexibilidade de ter uma biblioteca de pacotes separada por projeto. O outro benefício adicional é que podemos então usar o ficheiro <code>renv.lock</code> do projeto para instalarmos exatamente a mesma biblioteca de pacotes dentro da imagem do Docker.</p>
+<p>Como uma rápida introdução ao uso de imagens Rocker, vamos usar o ficheiro <code>renv.lock</code> do nosso pipeline, que pode ser baixado de <a href="https://raw.githubusercontent.com/rap4all/housing/980a1b0cd20c60a85322dbd4c6da45fbfcebd931/renv.lock">aqui</a><a href="#fn12" class="footnote-ref" id="fnref12" role="doc-noteref"><sup>12</sup></a>. Este é o último ficheiro <code>renv.lock</code> que geramos do nosso pipeline, contém todos os pacotes necessários para executarmos o pipeline, incluindo as versões corretas dos pacote <code>{targets}</code> e do pacote <code>{housing}</code> que desenvolvemos. Uma observação importante: não importa se o ficheiro <code>renv.lock</code> contém pacotes que foram lançados após o dia 14 de março. Mesmo que os repositórios dentro da imagem do Rocker que vamos usar estejam definidos para essa data, o ficheiro <em>lock</em> também especifica o URL do repositório correto para descarregar os pacotes. Portanto, esse URL será usado em vez do definido para a imagem do Rocker.</p>
+<p>Outro aspeto útil do ficheiro <code>renv.lock</code> é que também registra a versão do R que foi usada para desenvolver originalmente o pipeline, neste caso, R versão 4.2.2. Portanto, essa é a versão que usaremos em nosso Dockerfile. Precisamos verificar também a versão do <code>{renv}</code> que usamos para construir o ficheiro <code>renv.lock</code>. Não temos necessariamente de instalar a mesma versão, mas é recomendável que o façamos. Por exemplo, agora está disponível o <code>{renv}</code> versão 0.17.1, mas o ficheiro <code>renv.lock</code> foi escrito com <code>{renv}</code> versão 0.16.0. Assim, para evitarmos um eventual problema de compatibilidade, vamos instalar exatamente a mesma versão. Felizmente, isso é muito fácil de fazer (para verificar a versão de <code>{renv}</code> que foi usada para escrever o ficheiro de <em>lock</em>, basta procurar a palavra “renv” no ficheiro <em>lock</em>).</p>
+<p>Enquanto o <code>{renv}</code> se encarrega de instalar os pacotes R corretos, não se encarrega de instalar as dependências corretas ao nível do sistema. É por isso que temos de ser nós a instalar estas dependências ao nível do sistema. Vejamos uma lista de dependências ao nível do sistema que podemos instalar para evitar quaisquer problemas abaixo, vamos também ver como conseguimos chegar a essa lista. É bastante fácil graças ao Posit e ao seu PPPM. Por exemplo, <a href="https://packagemanager.rstudio.com/client/#/repos/2/packages/tidyverse">aqui</a><a href="#fn13" class="footnote-ref" id="fnref13" role="doc-noteref"><sup>13</sup></a> está a página de resumo do pacote <code>{tidyverse}</code>. Se selecionar “Ubuntu 22.04 (Jammy)” no canto superior direito, e depois descermos, veremos uma lista de dependências que podemos simplesmente copiar e colar no nosso Dockerfile:</p>
+<figure class="figure">
+<img src="images/tidyverse_jammy_deps.png" alt="System-level dependencies for the {tidyverse} package on Ubuntu." class="figure-img">
+<figcaption>
+Dependência a nivel do sistema para o pacote {tidyverse} no Ubuntu.
+</figcaption>
+</figure>
+<p>Usaremos esta lista para instalarmos as dependências requeridas pelo nosso pipeline.</p>
+<p>Criamos uma nova pasta, não importa o nome, e guardamos o ficheiro <code>renv.lock</code> do <em>link</em> em cima, dentro dessa pasta. Depois criamos um ficheiro de texto vazio que chamamos Dockerfile. Adicionamos as seguintes linhas:</p>
+<pre><code>FROM rocker/r-ver:4.2.2
+
+RUN apt-get update &amp;&amp; apt-get install -y \
+    libglpk-dev \
+    libxml2-dev \
+    libcairo2-dev \
+    libgit2-dev \
+    default-libmysqlclient-dev \
+    libpq-dev \
+    libsasl2-dev \
+    libsqlite3-dev \
+    libssh2-1-dev \
+    libxtst6 \
+    libcurl4-openssl-dev \
+    libharfbuzz-dev \
+    libfribidi-dev \
+    libfreetype6-dev \
+    libpng-dev \
+    libtiff5-dev \
+    libjpeg-dev \
+    libxt-dev \
+    unixodbc-dev \
+    wget \
+    pandoc
+
+RUN R -e "install.packages('remotes')"
+
+RUN R -e "remotes::install_github('rstudio/renv@0.16.0')"
+
+RUN mkdir /home/housing
+
+COPY renv.lock /home/housing/renv.lock
+
+RUN R -e "setwd('/home/housing');renv::init();renv::restore()"</code></pre>
+<p>A primeira linha indica que vamos basear a nossa imagem na imagem do projeto Rocker que vem com a versão 4.2.2 do R, que é a versão correta de que precisamos. Depois, instalamos as dependências necessárias ao nível do sistema com o gestor de pacotes do Ubuntu, como explicado anteriormente. Depois vem o pacote <code>{remotes}</code>. Este permite-nos baixar uma versão específica do <code>{renv}</code> do Github, que é o que fazemos na próxima linha. Convém sublinhar que fazemos isto simplesmente porque o ficheiro <code>renv.lock</code> original foi gerado usando a versão 0.16.0 do <code>{renv}</code> e, portanto, para evitar quaisquer possíveis problemas de compatibilidade, também usamos este para restaurar os pacotes necessários para o pipeline. Mas é muito provável que pudéssemos instalar a versão atual do <code>{renv}</code> para restaurar os pacotes, e que isso teria funcionado sem problemas. De notar que para versões posteriores do <code>{renv}</code>, pode ser necessário inserir um ‘v’ antes do número da versão: <code>renv@v1.0.2</code>, por exemplo. Mas só para estarmos salvaguardados, instalamos a versão correta de <code>{renv}</code>. A propósito, todos estes passos estão explicados nesta <a href="https://rstudio.github.io/renv/articles/docker.html">vinheta</a><a href="#fn14" class="footnote-ref" id="fnref14" role="doc-noteref"><sup>14</sup></a> (mantivemos apenas as linhas de código absolutamente essenciais para que funcionasse). A seguir vem a linha <code>RUN mkdir /home/housing</code>, que cria uma pasta (<code>mkdir</code> significa <em>make diretory</em>), dentro da imagem Docker, em <code>/home/housing</code>. Nas distribuições Linux, <code>/home/</code> é o diretório que os usuários usam para armazenar os seus arquivos, criamos então a pasta <code>/home/</code> e, dentro dela, criamos uma nova pasta, <code>housing</code>, que conterá os arquivos do nosso projeto. Não importa se mantém esta estrutura ou não, podemos ignorar a pasta <code>/home/</code>. O que importa é que coloquemos os ficheiros onde os possamos encontrar.</p>
+<p>De seguida, vem <code>COPY renv.lock /home/housing/renv.lock</code>. Com isto copiamos o ficheiro <code>renv.lock</code> do nosso computador (recordemos que devemos salvar esse ficheiro ao lado do Dockerfile) para <code>/home/housing/renv.lock</code>. Assim, incluímos o ficheiro <code>renv.lock</code> dentro da imagem do Docker, o que será crucial para a próxima e última etapa: <code>RUN R -e “setwd(‘/home/housing’);renv::init();renv::restore()”</code>.</p>
+<p>Isto executa o programa <code>R</code> a partir da linha de comandos do Linux com a opção <code>-e</code>. Esta opção permite passar uma expressão <code>R</code> para a linha de comandos, que tem de ser escrita entre “”. A utilização do <code>R -e</code> tornar-se-á rapidamente um hábito, porque é assim que podemos executar o R de forma não interactiva, a partir da linha de comandos. A expressão que passamos define a pasta de trabalho para <code>/home/housing</code>, e então usamos <code>renv::init()</code> e <code>renv::restore()</code> para restaurarmos os pacotes do ficheiro <code>renv.lock</code> que copiamos antes. Usando esse Dockerfile, podemos agora construir uma imagem que virá com a versão 4.2.2 do R pré-instalada, bem como todos os exactos pacotes que usamos para desenvolver o pipeline do <code>housing</code>.</p>
+<p>Construímos a imagem com <code>docker build -t housing_image .</code> (sem esquecer o <code>.</code> no final).</p>
+<p>O processo de construção vai demorar algum tempo, pelo que podemos ir buscar uma bebida quente entretanto. Agora, já fizemos metade do trabalho: temos um ambiente que contém o <em>software</em> necessário para nosso pipeline, mas os ficheiros do pipeline em si ainda estão em falta. Mas antes de adicionarmos o próprio pipeline, vamos ver se a imagem do Docker que construímos funciona. Para isso, fazemos <em>login</em> numa linha de comando dentro de um <em>container</em> Docker em execução iniciado a partir da nossa imagem com este único comando:</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="ex">owner@localhost</span> ➤ docker run <span class="at">--rm</span> <span class="at">-it</span> <span class="at">--name</span> housing_container housing_image bash</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Com isto iniciamos o <code>bash</code> (a linha de comandos do Ubuntu) dentro do <code>housing_container</code> iniciado a partir da imagem <code>housing_image</code>. Ao adicionarmos o marcador <code>--rm</code> ao <code>docker run</code>, o Docker <em>container</em> é parado quando fizermos o <em>log out</em> (se não o fizermos o Docker <em>container</em> continua a correr em <em>bakground</em>). Uma vez autenticados, podemos mover-nos para a pasta do projecto com:</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="ex">user@docker</span> ➤ cd home/housing</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>e então iniciarmos o interpretador R:</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="ex">user@docker</span> ➤ R</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>se tudo correr bem, deveremos ver uma <em>prompt</em> R familiar, com a message do <code>{renv}</code> no fim:</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>R version <span class="dv">4</span>.<span class="fl">2.2</span> (<span class="dv">2022-10-31</span>) <span class="sc">--</span> <span class="st">"Innocent and Trusting"</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="fu">Copyright</span> (C) <span class="dv">2022</span> The R Foundation <span class="cf">for</span> Statistical Computing</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>Platform<span class="sc">:</span> x86_64<span class="sc">-</span>pc<span class="sc">-</span>linux<span class="sc">-</span><span class="fu">gnu</span> (<span class="dv">64</span><span class="sc">-</span>bit)</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>R is free software and comes with ABSOLUTELY NO WARRANTY.</span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>You are welcome to redistribute it under certain conditions.</span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>Type <span class="st">'license()'</span> or <span class="st">'licence()'</span> <span class="cf">for</span> distribution details.</span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>  Natural language support but running <span class="cf">in</span> an English locale</span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>R is a collaborative project with many contributors.</span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a>Type <span class="st">'contributors()'</span> <span class="cf">for</span> more information and</span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a><span class="st">'citation()'</span> on how to cite R or R packages <span class="cf">in</span> publications.</span>
+<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a>Type <span class="st">'demo()'</span> <span class="cf">for</span> some demos, <span class="st">'help()'</span> <span class="cf">for</span> on<span class="sc">-</span>line help, or</span>
+<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a><span class="st">'help.start()'</span> <span class="cf">for</span> an HTML browser interface to help.</span>
+<span id="cb23-17"><a href="#cb23-17" aria-hidden="true" tabindex="-1"></a>Type <span class="st">'q()'</span> to quit R.</span>
+<span id="cb23-18"><a href="#cb23-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-19"><a href="#cb23-19" aria-hidden="true" tabindex="-1"></a><span class="sc">*</span> Project <span class="st">'/home/housing'</span> loaded. [renv <span class="dv">0</span>.<span class="fl">16.0</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Tentemos carregar o pacote <code>{housing}</code> com <code>library("housing")</code>, para garantirmos que tudo funciona.</p>
 
 
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
+<div id="ref-neupane2019" class="csl-entry" role="listitem">
+Bhandari Neupane, Jayanti, Ram P. Neupane, Yuheng Luo, Wesley Y. Yoshida, Rui Sun, and Philip G. Williams. 2019. <span>“Characterization of Leptazolines a–d, Polar Oxazolines from the Cyanobacterium Leptolyngbya Sp., Reveals a Glitch with the <span>‘Willoughby–Hoye’</span> Scripts for Calculating NMR Chemical Shifts.”</span> <em>Organic Letters</em> 21 (20): 8449–53.
+</div>
+</div>
+</section>
+<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn1"><p>https://packages.ubuntu.com/jammy/<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>https://github.com/eddelbuettel/r2u<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>https://docs.docker.com/desktop/<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>https://docs.docker.com/engine/install/ubuntu/#install-using-the-repository<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5"><p>https://docs.docker.com/engine/install/linux-postinstall/#manage-docker-as-a-non-root-user<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn6"><p>https://rocker-project.org/<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn7"><p>https://hub.docker.com/<a href="#fnref7" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn8"><p>https://rocker-project.org/images/<a href="#fnref8" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn9"><p>https://rocker-project.org/images/versioned/r-ver.html<a href="#fnref9" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn10"><p>https://is.gd/fdrq4p<a href="#fnref10" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn11"><p>https://is.gd/jbdTKC<a href="#fnref11" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn12"><p>https://is.gd/5UcuxW<a href="#fnref12" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn13"><p>https://is.gd/ZaXHwa<a href="#fnref13" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn14"><p>https://rstudio.github.io/renv/articles/docker.html<a href="#fnref14" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
 
 <p><a href="https://bioestatisticas.wixsite.com/bioestatisticas"><img src="IMG/logoOB.jpg" class="img-fluid"></a></p></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -883,8 +1246,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./targets.html" class="pagination-link" aria-label="Automatização com targets">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Automatização com targets</span></span>
+      <a href="./targets.html" class="pagination-link" aria-label="Automatização com `{targets}`">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Automatização com <code>{targets}</code></span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
@@ -898,4 +1261,4 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 
 
 
-<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions"><ul><li><a href="https://github.com/balima78/rap_pt/edit/main/repro_cont.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/balima78/rap_pt/issues" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/balima78/rap_pt/edit/main/repro_cont.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/balima78/rap_pt/issues" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>

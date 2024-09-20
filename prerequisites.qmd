@@ -1,1 +1,43 @@
 # Antes de começarmos
+
+Este não é um livro introdutório, por isso, antes de abordarmos os tópicos aqui apresentados, certifiquemo-nos de que estamos familiarizados com o que é apresentado em baixo. 
+Se lermos este capítulo e tudo for óbvio ou conhecido, então não deveremos ter problemas em seguir em frente. Se, pelo contrário, o que lermos aqui for enigmático, então devemos dedicar algum tempo a melhorar a nossa compreensão sobres estes tópicos.
+
+## Conhecimentos essenciais
+
+É importante conhecermos as partes que constituem o R. Vamos deixar uma coisa clara: o R não é o RStudio (ou outro qualquer interface que possamos usar para aceder ao R). O R é um interpretador de linguagem de programação específico de um domínio. O R é específico de um domínio porque é principalmente usado para fazer estatística. É um interpretador porque obtemos resultados imediatamente assim que executamos um *script* na consola. Ou seja, quando escrevemos `1+1` na consola, obtemos de imediato `2`. Há linguagens de programação designadas como compiladoras que precisam que o código seja compilado em binários antes da execução. O C é uma dessas linguagens. Pelo facto do R ser um interpretador permite que facilmente possamos fazer análise exploratória de dados de forma interactiva mas também apresenta alguns aspetos negativos de que falaremos ao longo do livro. A consola do R é um exemplo de um ambiente REPL (*Read-Eval-Print-Loop*). O código é lido, avaliado, impresso e o estado lido é devolvido iniciando de novo o *loop*.
+
+Para que o nosso trabalho em R seja facilitado, não devemos escrever o código na consola mas sim num ficheiro de texto. Podemos guardar estes ficheiros de texto, atualizá-los e partilhá-los com outros colaboradores. Chamamos os ficheiros de texto como *scripts*. Embora possamos escrever estes *scripts* em qualquer editor de texto básico (como o Notepad, por exemplo), devemos usar editores de texto desenvolvidos especificamente para facilitar a programação. As escolhas mais populares são o RStudio ou o Visual Studio Code mas também hã alternativas como o Emacs. Seja qual for o editor de texto que escolhamos, devemos gastar o nosso tempo a configurá-lo e a aprender como usá-lo. Vamos passar muito tempo e mujitas horas nesse editor de texto. O código que escevermos nesse editor será o nosso 'ganha pão'. Devemos aprender os principais atalhos de teclado e as características avançadas do nosso editor. Este investimento inicial dar-nos-á o retorno devido. Além disso, devemos perceber o que é um ficheiro de texto. Um documento Word (fickheiro com extensão `.docx`) não é um ficheiro de texto. Pode parecer um ficheiro de texto mas não é. Um ficheiro `.docx` é um formato muito mais complexo com várias camadas de abstração. Um ficheiro de texto verdadeiro pode ser aberto pelo editor de texto mais simples de um qualquer sistema operativo.
+
+Como referimos, o R é uma linguagem de programação específica de um domínio principalmente usada para fazer estatística ou ciência de dados (se preferirmos esta designação). As suas capacidades básicas podem ser extendidas com a instalação de pacotes. Por exemplo, a instalação base do R tem funções úteis como `mean()` ou `sd()`, para calcularmos a média e desvio padrão dum vector de números, ou a função `rnorm()` para calcular valores aleatórios duma distribuição Gaussiana (Normal). No entanto não tem nenhuma função que permita treinar um modelo de *random forest*. Para isto precisamos de instalar um pacote com o comando `install.packages("randomForest")`. Este copmando instala o pacote `{randomForest}` (ao longo do livro os pacotes estarão sempre ente chavetas). Um conjunto de pacotes instalados, designamos como "livraria". Geralmente os pacotes são baixados do CRAN (*Comprehensive R Archive Network*) embora também possamos aceder a eles a partir de outros repositórios. Possivelmente uma das razões pelo que o R se tornou tão popular é devido à facilidade com que podemos criar pacotes, como veremos mais à frente. Alguns pacotes são escritos noutras linguagens de programação como o Fortran ou C++. O código destes pacotes é compilado e pode ser executado pelo R usando uma função disponibilizada ao utilizador. Por exemplo, se explorarmos o código fonte do pacote `{randomForest}` vamos encontrar código C e Fortran. É importante termos isto presente porque às vezes os pacotes têm de ser compilados por `install.packages()` e às vezes esta compilação falha.
+
+Quando usamos o R, lemos consjuntos de dados, fazemos gráficos, treinamos modelos, etc. Esses dados, gráficos e modelos são objectos gravados no ambeinte global. Para vermos um lista dos objectos que temos no ambiente global, podemos escrever `ls()` na consola do R. Quando saímos do R aparece a pergunta se queremos gravas o *workspace*: isto gravará o atual estado do ambiente global que será carregado na próxima vez que iniciarmos o R. É recolmendável que nunca gravemos o *workspace* ao sairmos do R. No caso de estarmos a usar o RStudio, podemos configurar este comportamento nas opções globais (em *workspace* e passar *Save workspace to .RData* para *Never*). Gravas e ler o *workspace* impossibilita iniciarmos uma nova sessão de R do zero o que nos pode trazer problemas difíceis de contornar.
+
+Devemos também estar confortáveis com os caminhos do sistema de ficheiros do nosso computador. Ou seja, sermos capazes de encontrar para onde são feitos os *downloads* dos ficheiros, ou sermos capazer de navegar para qualquer pasta quer seja através de um GUI ou através de um terminal. è também recomendável que usemos caminhos relativos nos nossos *scripts* em vez de caminhos absolutos. Isto é, não devemos começar os nossos scripts com uma linha como:
+
+```r
+setwd("H:/Username/Projects/housing_regression/")
+```
+
+Em vez disto, devemos usar "Projects" quando estamos no RStudio. Assim podemos usar caminhos relativos o que facilita o trabalho colaborativo. Usando "Projects" no RStudio, para lermos dadops apenas temos de escrever:
+
+```r
+dataset <- read.csv("data.csv")
+```
+
+e não temos de definir directorias de trabalho com `setwd()` que depois não vão existir no computador de um colaborador. O pacote `{here}` é um facilitador para usar caminhos relativos tal como  descrito neste [post](https://github.com/jennybc/here_here)^[https://github.com/jennybc/here_here].
+
+Devemos estar familiarizados com a escrita de funçõe. Neste livro temos um capítulo dedicado à programação funcional e vamos a escrever algumas funções.
+
+Finalmente, devemos saber como pedir ajuda. se precisarmos de ajuda com este livro podemos abrir um *issue* no repositório Github [aqui](https://github.com/balima78/rap_pt)^[https://github.com/balima78/rap_pt]. Tal como para este livro, se tivermos alguma dúvida com algum pacote devemos procurar o seu repositório (geralmente no Github, mas nem sempre), ou podemos tentar contactar directamente o autor do pacote, ou então recorrer ao Stackoverflow. Seja qual for a nossa opção devemos fazer o trabalho de casa primeiro:
+
++ Ler a documentação. Podemos a estar a ferramenta de forma errada.
++ Tomar nota da mensagem de erro. Embora as mensagens de erros possam parecer cripticas mas com a experiência aprendemos a descodificá-las;
++ Escrever o script mais simples possível que reproduz o problema que temos. Este MRE (*Minimal Reproducible Example*) é a melhor forma para transmitirmos o nosso problema e facilitarmos a vida de quem nos queira ajudar. Regras gerais para escrever um MRE podem ser encontradas neste [clássico *post*](https://jonskeet.uk/csharp/complete.html)^[https://jonskeet.uk/csharp/complete.html].
+
+Como diz o provérbio popular:
+
+> O material tem sempre razão!
+
+
+
